@@ -1,0 +1,225 @@
+# ------------------------------------------------------------
+# duck.py
+#
+# tokenizer for MyLittleDuck language
+# ------------------------------------------------------------
+import ply.lex as lex
+
+# List of reserved words in the language
+reserved = {
+    'print': 'PRINT',
+    'if' : 'IF',
+    'else' : 'ELSE',
+    'int' : 'INT_TYPE',
+    'float' : 'FLOAT_TYPE',
+    'program': 'PROGRAM',
+    'var': 'VARIABLE'
+}
+
+# List of token names.   This is always required
+tokens = [
+   'EQUALS',
+   'ASSIGNATION',
+   'EXPRESSION',
+   'SIGN',
+   'TERM',
+   'IDENTIFIER',
+   'FLOAT',
+   'INT',
+   'LPARENTHESIS',
+   'RPARENTHESIS',
+   'LBRACKET',
+   'RBRACKET',
+   'SEMICOLON',
+   'COMMA',
+   'STRINGS'
+] + list(reserved.values())
+
+# Regular expression rules for simple tokens
+t_EQUALS        = r'='
+t_ASSIGNATION   = r':'
+t_EXPRESSION    = r'<>|<|>'
+t_SIGN          = r'\+|-'
+t_TERM          = r'\*|/'
+t_FLOAT         = r'[-]?[0-9]+.[0-9]+'
+t_INT           = r'[-]?[0-9]+'
+t_LPARENTHESIS  = r'\('
+t_RPARENTHESIS  = r'\)'
+t_LBRACKET      = r'\{'
+t_RBRACKET      = r'\}'
+t_SEMICOLON     = r';'
+t_COMMA         = r'\,'
+t_STRINGS       = r'\'(\'\'|[^\n\t])*\''
+
+def t_IDENTIFIER(t):
+    r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
+    t.type = reserved.get(t.value,'IDENTIFIER') # Check for reserved words
+    return t
+
+# Define a rule so we can track line numbers
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
+# A string containing ignored characters (spaces and tabs)
+t_ignore  = ' \t'
+
+# Error handling rule
+def t_error(t):
+    print("Illegal character '%s'" % t.value[0])
+    t.lexer.skip(1)
+
+# Build the lexer
+lexer = lex.lex()
+
+# Test it out
+data = '''program p1; var fac1, fac2:int;
+{
+    fac1 = 2;
+    fac2 = fac1 + 5;
+    if(fac1 > fac2) {
+        print('fac1 es mayor');
+    }
+    else {
+        print('fac2 es mayor');
+    };
+}
+'''
+
+# Give the lexer some input
+lexer.input(data)
+
+# Tokenize
+for tok in lexer:
+    print(tok)
+
+# Yacc
+import ply.yacc as yacc
+
+# Get the token map from the lexer.  This is required.
+
+precedence = (
+    ('nonassoc', 'EXPRESSION'),  # Nonassociative operators
+    ('left', 'SIGN'),
+    ('left', 'TERM'),
+)
+
+def p_PROGRAMA(p):
+    'PROGRAMA : PROGRAM IDENTIFIER SEMICOLON PBLOCK'
+
+def p_empty(p):
+    'empty :'
+    pass
+
+def p_PBLOCK(p):
+    '''PBLOCK   : PBLOCK2 BLOQUE'''
+
+def p_PBLOCK2(p):
+    '''PBLOCK2  : VARS
+                | empty'''
+
+def p_VARS(p):
+    'VARS : VARIABLE VBLOCK'
+
+def p_VBLOCK(p):
+    'VBLOCK : IDENTIFIER VBLOCK2'
+
+def p_VBLOCK2(p):
+    '''VBLOCK2  : COMMA VBLOCK 
+                | ASSIGNATION TYPE  SEMICOLON VBLOCK3'''
+
+def p_TYPE(p):
+    '''TYPE : INT_TYPE
+            | FLOAT_TYPE'''
+
+def p_VBLOCK3(p):
+    '''VBLOCK3  : VBLOCK 
+                | empty'''
+
+def p_ESTATUTO(p):
+    '''ESTATUTO : ASIGNACION 
+                | CONDICION 
+                | ESCRITURA'''
+
+def p_ASIGNACION(p):
+    'ASIGNACION : IDENTIFIER EQUALS EXPRESION SEMICOLON'
+
+def p_EXPRESION(p):
+    '''EXPRESION : EXP EXPBLOCK
+                 | EXP '''
+def p_EXPBLOCK(p):
+    'EXPBLOCK : EXPRESSION EXP'
+
+def p_EXP(p):
+    '''EXP  : TERMINO EX1
+            | TERMINO '''
+
+def p_EX1(p):
+    'EX1 : SIGN EXP'
+
+def p_TERMINO(p):
+    'TERMINO  : FACTOR TBLOCK2'
+
+def p_TBLOCK2(p):
+    '''TBLOCK2  : TBLOCK 
+                | empty'''
+
+def p_TBLOCK(p):
+    'TBLOCK : TERM TERMINO'
+
+def p_VAR(p):
+    '''VAR  : IDENTIFIER 
+            | INT 
+            | FLOAT'''
+
+def p_CONDICION(p):
+    'CONDICION : IF LPARENTHESIS EXPRESION RPARENTHESIS BLOQUE CBLOCK'
+
+def p_CBLOCK(p):
+    '''CBLOCK   : ELSE BLOQUE SEMICOLON 
+                |  SEMICOLON'''
+
+def p_BLOQUE(p):
+    'BLOQUE : LBRACKET BBLOCK'
+
+def p_BBLOCK(p):
+    '''BBLOCK   : ESTATUTO BBLOCK 
+                | RBRACKET'''
+
+def p_ESCRITURA(p):
+    'ESCRITURA : PRINT LPARENTHESIS  EBLOCK  RPARENTHESIS SEMICOLON'
+
+def p_EBLOCK(p):
+    '''EBLOCK   : EXPRESION EB3
+                | STRINGS EB3'''
+
+def p_EB3(p):
+    '''EB3  : EB2 
+            | empty'''
+
+def p_EB2(p):
+    'EB2 : COMMA EBLOCK'
+
+def p_FACTOR(p):
+    '''FACTOR   : LPARENTHESIS EXPRESION RPARENTHESIS 
+                | FBLOCK'''
+
+def p_FBLOCK(p):
+    '''FBLOCK   : SIGN VAR 
+                | VAR'''
+
+# Error rule for syntax errors
+def p_error(p):
+    print("Syntax error in input!")
+
+# Build the parser
+parser = yacc.yacc()
+
+while True:
+   try:
+       s = raw_input('calc > ')
+   except EOFError:
+       break
+   if not s: continue
+   result = parser.parse(s)
+   print(result)
