@@ -21,7 +21,7 @@ reserved = {
     'false': 'FALSE',
     'bool': 'BOOL',
     'int': 'INT',
-    'double': 'DOUBLE'
+    'double': 'DOUBLE',
     'string': 'STRING',
     'void': 'VOID',
     'break': 'BREAK',
@@ -61,26 +61,27 @@ tokens = [
    'EOL',
    'SPACE',
    'COMMA',
-   'COLON'
+   'COLON',
+   'ID'
 ] + list(reserved.values())
 
 #Regular expression rules for simple tokens
 t_PLUS                  = r'\+'
-t_MINUS                 = r'-'
+t_MINUS                 = r'\-'
 t_TIMES                 = r'\*'
-t_DIVIDES               = r'/'
+t_DIVIDE                = r'/'
 t_LESS                  = r'<'
 t_GREATER               = r'>'
 t_EQUALS                = r'='
 t_EQUALS_EQUALS         = r'=='
-t_GRATER_EQUALS         = r'>='
+t_GREATER_EQUALS         = r'>='
 t_LESS_EQUALS           = r'<='
 t_COMMA                 = r'\,'
 t_COLON                 = r':'
 t_NOT_EQUALS            = r'!='
-t_PLUS_EQUALS           = r'+='
-t_MINUS_EQUALS          = r'-='
-t_TIMES_EQUALS          = r'*='
+t_PLUS_EQUALS           = r'\+='
+t_MINUS_EQUALS          = r'\-='
+t_TIMES_EQUALS          = r'\*='
 t_DIVIDE_EQUALS         = r'/='
 t_PERCENTAGE            = r'%'
 t_LEFT_PARENTHESIS      = r'\('
@@ -89,9 +90,9 @@ t_LEFT_BRACKET          = r'\['
 t_RIGHT_BRACKET         = r'\]'
 
 
-def t_IDENTIFIER(t):
+def t_ID(t):
     r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
-    t.type = reserved.get(t.value,'IDENTIFIER') # Check for reserved words
+    t.type = reserved.get(t.value,'ID') # Check for reserved words
     return t
 
 # Define a rule so we can track line numbers
@@ -130,7 +131,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test it out
-data = '''program p1; var fac1, fac2:int;
+data = '''
 a = 1
 func hola() a = 2
 print a
