@@ -1,9 +1,8 @@
 # ------------------------------------------------------------
-# duck.py
 #
 # tokenizer for Project Cobra Language
 # ------------------------------------------------------------
-
+import ply.lex as lex
 # List of reserved words in the leanguage
 
 reserved = {
@@ -23,6 +22,7 @@ reserved = {
 	'false': 'FALSE',
 	'bool': 'BOOL',
 	'int': 'INT',
+	'double': 'DOUBLE'
 	'string': 'STRING',
 	'void': 'VOID',
 	'break': 'BREAK',
@@ -63,3 +63,16 @@ tokens = [
    'COMMA',
    'COLON'
 ] + list(reserved.values())
+
+
+# Build the parser
+parser = yacc.yacc()
+
+while True:
+   try:
+       s = raw_input('> ')
+   except EOFError:
+       break
+   if not s: continue
+   result = parser.parse(s)
+   print(result)
