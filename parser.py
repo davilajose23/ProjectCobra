@@ -82,8 +82,12 @@ def p_post_cond(p):
                 | empty'''
 
 def p_expression(p):
-    '''expression : exp
-                    | exp relational_operator exp'''
+    'expression : exp post_expression'
+
+def p_post_expression(p):
+    '''post_expression : relational_operator exp
+                        | empty'''
+
 def p_relational_operator(p):
     '''relational_operator : LESS
                         	| GREATER
@@ -101,13 +105,13 @@ def p_post_exp(p):
                 | empty'''
 
 def p_term(p):
-    'term : factor post_factor'
+    'term : factor post_factor term'
 
 def p_post_factor(p):
-    '''post_factor : TIMES term
-                    | DIVIDE term
-					| MOD term
-					| PERCENTAGE term'''
+    '''post_factor : TIMES
+                    | DIVIDE
+					| MOD
+					| PERCENTAGE'''
                     
 def p_post_term(p):
     ''' post_term : TIMES term
