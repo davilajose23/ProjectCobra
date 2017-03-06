@@ -169,6 +169,32 @@ def p_factor(p):
                 | MINUS variable_constant
                 | call_function'''
 
+def p_loop(p):
+    '''loop: for
+            | while'''
+
+# for
+def p_for(p):
+    'for: FOR identifier post_for'
+
+def p_post_for(p):
+    '''post_for: IN identifier post_cycle
+                | FROM exp TO exp post_cycle'''
+
+# while
+def p_while(p):
+    'while: WHILE cond post_cycle'
+
+# Cycle common grammar
+def p_post_cycle(p):
+    'post_cycle: COLON statement post_post_cycle'
+
+def p_post_post_cycle(p):
+    '''post_post_cycle: statement post_post_cycle
+                        | END'''
+
+                        
+
 def p_expression_uminus(p):
     'expression : MINUS expression %prec UMINUS'
     p[0] = -p[2]
