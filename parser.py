@@ -8,7 +8,7 @@ precedence = (
     ('nonassoc', 'LESS', 'GREATER', 'EQUALS_EQUALS', 'GREATER_EQUALS', 'LESS_EQUALS', 'NOT_EQUALS'),
     ('left','PLUS','MINUS'),
     ('left','TIMES','DIVIDE', 'MOD', 'PERCENTAGE'),
-    ('right','UMINUS'),
+    # ('right','UMINUS'),
 )
 
 # dictionary of names (for storing variables)
@@ -110,6 +110,8 @@ def p_term(p):
 def p_post_term(p):
     ''' post_term : TIMES term
                 | DIVIDE term
+                | PERCENTAGE term
+                | MOD term
                 | empty'''
 
 def p_factor(p):
@@ -117,12 +119,6 @@ def p_factor(p):
                 | variable_constant
                 | MINUS variable_constant
                 | call_function'''
-
-def p_post_factor(p):
-    '''post_factor : TIMES
-                    | DIVIDE
-					| MOD
-					| PERCENTAGE'''
 
 def p_variable_constant(p):
     '''variable_constant : identifier
@@ -206,8 +202,8 @@ def p_BOOL_CONSTANT(p):
 	'''BOOL_CONSTANT : TRUE
 					| FALSE'''
 
-def p_expression_uminus(p):
-    'expression : MINUS expression %prec UMINUS'
+'''def p_expression_uminus(p):
+    'expression : MINUS expression %prec UMINUS'''
 
 # Error rule for syntax errors
 def p_error(p):
