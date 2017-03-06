@@ -103,6 +103,10 @@ def p_post_exp(p):
 def p_term(p):
     'term : factor post_factor'
 
+def p_post_factor(p):
+    '''post_factor: TIMES term
+                    | DIVIDE term'''
+                    
 def p_post_term(p):
     ''' post_term : TIMES term
                 | DIVIDE term
