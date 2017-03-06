@@ -20,9 +20,9 @@ reserved = {
     'true': 'TRUE',
     'false': 'FALSE',
     'bool': 'BOOL',
-    'int': 'INT',
-    'double': 'DOUBLE',
-    'string': 'STRING',
+    'int': 'INT_CONSTANT',
+    'double': 'DOUBLE_CONSTANT',
+    'string': 'STRING_CONSTANT',
     'break': 'BREAK',
     'from': 'FROM',
     'to': 'TO',
@@ -107,17 +107,17 @@ def t_COMMENT(t):
     r'\#.*'
     pass
     
-def t_DOUBLE (t):
+def t_DOUBLE_CONSTANT(t):
     r'([-]?[0-9]+[.])[0-9]+'
     t.value = float(t.value)
     return t
 
-def t_INT(t):
+def t_INT_CONSTANT(t):
     r'[-]?[0-9]+'
     t.value = int(t.value)
     return t
 
-def t_STRING(t):
+def t_STRING_CONSTANT(t):
     r'\'(\'\'|[^\n\t])*\''
     t.value = str(t)
     return t

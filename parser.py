@@ -192,7 +192,9 @@ def p_post_post_cycle(p):
     '''post_post_cycle : statement post_post_cycle
                         | END'''
 
-                        
+def p_BOOL_CONSTANT(p):
+	'''BOOL_CONSTANT : TRUE
+					| FALSE'''
 
 def p_expression_uminus(p):
     'expression : MINUS expression %prec UMINUS'
