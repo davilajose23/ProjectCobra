@@ -104,7 +104,7 @@ def p_term(p):
     'term : factor post_factor'
 
 def p_post_factor(p):
-    '''post_factor: TIMES term
+    '''post_factor : TIMES term
                     | DIVIDE term'''
                     
 def p_post_term(p):
