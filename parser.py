@@ -22,7 +22,7 @@ def p_empty(p):
     pass
 
 def p_pre_call_function(p):
-    'pre_call_function : ID LEFTPARENTHESIS'
+    'pre_call_function : ID LEFT_PARENTHESIS'
     
 def p_call_function(p):
     'call_function :  pre_call_function post_call_function'
