@@ -105,7 +105,9 @@ def p_term(p):
 
 def p_post_factor(p):
     '''post_factor : TIMES term
-                    | DIVIDE term'''
+                    | DIVIDE term
+					| MOD term
+					| PERCENTAGE term'''
                     
 def p_post_term(p):
     ''' post_term : TIMES term
