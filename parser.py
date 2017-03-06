@@ -107,16 +107,22 @@ def p_post_exp(p):
 def p_term(p):
     'term : factor post_term'
 
+def p_post_term(p):
+    ''' post_term : TIMES term
+                | DIVIDE term
+                | empty'''
+
+def p_factor(p):
+    '''factor : LEFT_PARENTHESIS cond RIGHT_PARENTHESIS
+                | variable_constant
+                | MINUS variable_constant
+                | call_function'''
+
 def p_post_factor(p):
     '''post_factor : TIMES
                     | DIVIDE
 					| MOD
 					| PERCENTAGE'''
-                    
-def p_post_term(p):
-    ''' post_term : TIMES term
-                | DIVIDE term
-                | empty'''
 
 def p_variable_constant(p):
     '''variable_constant : identifier
@@ -171,12 +177,6 @@ def p_identifier(p):
 def p_post_identifier(p):
     '''post_identifier : LEFT_BRACKET exp RIGHT_BRACKET
                         | empty'''
-
-def p_factor(p):
-    '''factor : LEFT_PARENTHESIS cond RIGHT_PARENTHESIS
-                | variable_constant
-                | MINUS variable_constant
-                | call_function'''
 
 def p_loop(p):
     '''loop : for
