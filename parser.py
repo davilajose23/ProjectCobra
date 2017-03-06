@@ -141,7 +141,7 @@ def p_post_post_else(p):
 def p_print(p):
     'print : PRINT cond post_print'
 
-def post_print(p):
+def p_post_print(p):
     '''post_print :  COMMA STRING_CONSTANT EOL
                     | empty'''
 

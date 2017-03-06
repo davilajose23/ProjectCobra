@@ -32,7 +32,7 @@ reserved = {
     'lang': 'LANG',
     'es': 'SPANISH',
     'en': 'ENGLISH',
-    'func': 'FUNCTION'
+    'func': 'FUNC'
 }
 
 # List of token names.   This is always required
