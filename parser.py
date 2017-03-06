@@ -105,7 +105,7 @@ def p_post_exp(p):
                 | empty'''
 
 def p_term(p):
-    'term : factor post_factor term'
+    'term : factor post_term'
 
 def p_post_factor(p):
     '''post_factor : TIMES
