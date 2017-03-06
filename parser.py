@@ -1,5 +1,6 @@
 # Yacc
 import ply.yacc as yacc
+from scanner import tokens
 
 # Precedence rules for the arithmetic operators
 precedence = (
@@ -114,9 +115,7 @@ def p_variable_constant(p):
                         | STRING_CONSTANT
                         | BOOL_CONSTANT '''
 
-
-
-# **************************************FALTA
+# if conditional
 def p_condition(p):
     'condition: IF cond COLON post_condition '
 
@@ -197,14 +196,21 @@ def p_post_post_cycle(p):
 
 def p_expression_uminus(p):
     'expression : MINUS expression %prec UMINUS'
-    p[0] = -p[2]
 
 # Error rule for syntax errors
 def p_error(p):
     print("Syntax error in input!")
 
 
-
-
 # Build the parser
 parser = yacc.yacc()
+
+# Test it out
+data = '''
+a = 1
+func hola() a = 2
+print a
+'''
+
+result = parser.parse(data)
+print(result)
