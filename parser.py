@@ -105,7 +105,7 @@ def p_statement(p):
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
-    'assignment : identifier assignment_operator cond EOL' 
+    'assignment : identifier assignment_operator cond ' 
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
@@ -194,20 +194,20 @@ def p_print(p):
     'print : PRINT cond post_print'
 
 def p_post_print(p):
-    '''post_print :  COMMA STRING_CONSTANT EOL
+    '''post_print :  COMMA STRING_CONSTANT 
                     | empty'''
 
 # ********************* Diagram read *********************
 def p_read(p):
-    'read : READ LEFT_PARENTHESIS RIGHT_PARENTHESIS EOL'
+    'read : READ LEFT_PARENTHESIS RIGHT_PARENTHESIS '
 
 # ********************* Diagram list *********************
 def p_list(p):
     'list : identifier post_list'
 
 def p_post_list(p):
-    '''post_list : EQUALS LEFT_BRACKET exp RIGHT_BRACKET EOL
-                  | EOL'''
+    '''post_list : EQUALS LEFT_BRACKET exp RIGHT_BRACKET 
+                  | empty'''
 
 # ********************* Diagram identifier *********************
 def p_identifier(p):
