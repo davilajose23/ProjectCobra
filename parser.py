@@ -14,18 +14,22 @@ precedence = (
 # dictionary of names (for storing variables)
 names = { }
 
+'''
+    TODO: 
+    - Ciclar cada fase de la regla program, excepto variable, y volverlos opcionales
+    - Garantizar la necesidad de los EOL
+    - Ciclar statement
+'''
+
 def p_program(p):
     'program : variable function statement'
     
 def p_empty(p):
     'empty :'
     pass
-
-def p_pre_call_function(p):
-    'pre_call_function : ID LEFT_PARENTHESIS'
     
 def p_call_function(p):
-    'call_function :  pre_call_function post_call_function'
+    'call_function :  ID LEFT_PARENTHESIS post_call_function'
 
 def p_post_call_function(p):
     ''' post_call_function : parameters RIGHT_PARENTHESIS 
