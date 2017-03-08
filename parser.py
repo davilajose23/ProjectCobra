@@ -260,7 +260,9 @@ parser = yacc.yacc()
 
 # Test it out
 data = '''a = 1 func hola() a = 2 end
-print a
+main
+a = 2
+end_main
 '''
 
 result = parser.parse(data)
