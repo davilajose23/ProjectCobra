@@ -14,41 +14,76 @@ precedence = (
 # dictionary of names (for storing variables)
 names = { }
 
-'''
-    TODO: 
-    - Ciclar cada fase de la regla program, excepto variable, y volverlos opcionales
-    - Garantizar la necesidad de los EOL
-    - Ciclar statement
-'''
-
+# ********************* Diagram program *********************
 def p_program(p):
-    'program : variable function statement'
+    '''program : variable functions main
+                | functions main
+                | variable main
+                | main'''
+# ********************* Diagram functions *********************
+def p_functions(p):
+    'functions : function post_functions'
     
-def p_empty(p):
-    'empty :'
-    pass
     
+def p_post_functions(p):
+    '''post_functions : functions
+                    | empty'''
+    
+# ********************* Diagram main *********************
+def p_main(p):
+    'main : MAIN block END_MAIN'
+    
+# ********************* Diagram block *********************
+def p_block(p):
+    'block : statement post_block'
+    
+def p_post_block(p):
+    '''post_block : block
+                    | empty'''
+
+# ********************* Diagram call_function *********************
 def p_call_function(p):
     'call_function :  ID LEFT_PARENTHESIS post_call_function'
 
 def p_post_call_function(p):
-    ''' post_call_function : parameters RIGHT_PARENTHESIS 
+    ''' post_call_function : call_parameters RIGHT_PARENTHESIS 
                             | RIGHT_PARENTHESIS'''
+                            
+# ********************* Diagram call_parameters *********************
+def p_call_parameters(p):
+    'call_parameters : Cond post_call_parameters'
 
+def p_post_call_parameters(p):
+    '''post_call_parameters: COMMA call_parameters 
+                            | empty'''
+
+# ********************* Diagram function *********************
 def p_function(p):
-    'function : FUNC ID LEFT_PARENTHESIS post_def_function'
+    'function : FUNC ID LEFT_PARENTHESIS post_function'
 
-def p_post_def_function(p):
-    '''post_def_function : parameters RIGHT_PARENTHESIS statement END
-                          | RIGHT_PARENTHESIS statement END'''
+def p_post_function(p):
+    '''post_function : parameters RIGHT_PARENTHESIS func_return
+                          | RIGHT_PARENTHESIS func_return'''
+
+def p_func_return(p):
+    '''func_return : void_return 
+                    | value_return'''
+                   
+def p_void_return(p):
+    'void_return : block END'
+
+def p_value_return(p):
+    'value_return : block RETURN cond END'
+# ********************* Diagram parameters *********************
 
 def p_parameters(p):
     'parameters : identifier post_parameters'
 
-def p_post_parameters(p):
+def p_post_parameters(p):c
     '''post_parameters : COMMA parameters
                         | empty'''
 
+# ********************* Diagram variable *********************
 def p_variable(p):
     ''' variable : assignment post_variable
                   | list post_variable'''
@@ -57,16 +92,22 @@ def p_post_variable(p):
     ''' post_variable : variable
                         | empty'''
 
+# ********************* Diagram statement *********************
 def p_statement(p):
-    ''' statement : assignment
+    ''' statement : variable
                     | condition
                     | print
                     | read
                     | loop
                     | call_function'''
+                    
+                    
+# ********************* Diagram assignment *********************
+
 def p_assignment(p):
     'assignment : identifier assignment_operator cond EOL' 
 
+# ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
     '''assignment_operator : EQUALS
                             | TIMES_EQUALS
@@ -74,6 +115,7 @@ def p_assignment_operator(p):
                             | PLUS_EQUALS
                             | MINUS_EQUALS '''
 
+# ********************* Diagram cond *********************
 def p_cond(p):
     'cond : expression post_cond' 
 
@@ -82,6 +124,7 @@ def p_post_cond(p):
                 | OR  cond
                 | empty'''
 
+# ********************* Diagram expression *********************
 def p_expression(p):
     'expression : exp post_expression'
 
@@ -89,14 +132,16 @@ def p_post_expression(p):
     '''post_expression : relational_operator exp
                         | empty'''
 
+# ********************* Diagram relational_operator *********************
 def p_relational_operator(p):
     '''relational_operator : LESS
-                        	| GREATER
-                        	| GREATER_EQUALS
-                        	| LESS_EQUALS
-                        	| EQUALS_EQUALS
-                        	| NOT_EQUALS'''
+                            | GREATER
+                            | GREATER_EQUALS
+                            | LESS_EQUALS
+                            | EQUALS_EQUALS
+                            | NOT_EQUALS'''
 
+# ********************* Diagram exp *********************
 def p_exp(p):
     'exp : term post_exp'
 
@@ -105,6 +150,7 @@ def p_post_exp(p):
                 | MINUS exp
                 | empty'''
 
+# ********************* Diagram term *********************
 def p_term(p):
     'term : factor post_term'
 
@@ -115,12 +161,14 @@ def p_post_term(p):
                 | MOD term
                 | empty'''
 
+# ********************* Diagram factor *********************
 def p_factor(p):
     '''factor : LEFT_PARENTHESIS cond RIGHT_PARENTHESIS
                 | variable_constant
                 | MINUS variable_constant
                 | call_function'''
 
+# ********************* Diagram variable_constant *********************
 def p_variable_constant(p):
     '''variable_constant : identifier
                         | INT_CONSTANT
@@ -128,29 +176,20 @@ def p_variable_constant(p):
                         | STRING_CONSTANT
                         | BOOL_CONSTANT '''
 
-# if conditional
+# ********************* Diagram condition *********************
 def p_condition(p):
-    'condition : IF cond COLON post_condition '
+    'condition : IF cond COLON block post_condition END'
+
 
 def p_post_condition(p):
-    'post_condition : statement post_post_condition'
-
-def p_post_post_condition(p):
-    '''post_post_condition : post_condition
-                        | END
-                        | else'''
+    '''post_condition : else
+                        | empty'''
 
 # else
 def p_else(p):
-    'else : ELSE COLON post_else'
+    'else : ELSE COLON block'
 
-def p_post_else(p):
-    'post_else : statement post_post_else'
-
-def p_post_post_else(p):
-    ''' post_post_else : post_else
-                        | END'''
-
+# ********************* Diagram print *********************
 def p_print(p):
     'print : PRINT cond post_print'
 
@@ -158,9 +197,11 @@ def p_post_print(p):
     '''post_print :  COMMA STRING_CONSTANT EOL
                     | empty'''
 
+# ********************* Diagram read *********************
 def p_read(p):
     'read : READ LEFT_PARENTHESIS RIGHT_PARENTHESIS EOL'
 
+# ********************* Diagram list *********************
 def p_list(p):
     'list : identifier post_list'
 
@@ -168,6 +209,7 @@ def p_post_list(p):
     '''post_list : EQUALS LEFT_BRACKET exp RIGHT_BRACKET EOL
                   | EOL'''
 
+# ********************* Diagram identifier *********************
 def p_identifier(p):
     'identifier : ID post_identifier'
 
@@ -175,6 +217,7 @@ def p_post_identifier(p):
     '''post_identifier : LEFT_BRACKET exp RIGHT_BRACKET
                         | empty'''
 
+# ********************* Diagram loop *********************
 def p_loop(p):
     '''loop : for
             | while'''
@@ -193,15 +236,15 @@ def p_while(p):
 
 # Cycle common grammar
 def p_post_cycle(p):
-    'post_cycle : COLON statement post_post_cycle'
-
-def p_post_post_cycle(p):
-    '''post_post_cycle : statement post_post_cycle
-                        | END'''
+    'post_cycle : COLON block END'
 
 def p_BOOL_CONSTANT(p):
-	'''BOOL_CONSTANT : TRUE
-					| FALSE'''
+    '''BOOL_CONSTANT : TRUE
+                    | FALSE'''
+
+def p_empty(p):
+    'empty :'
+    pass
 
 '''def p_expression_uminus(p):
     'expression : MINUS expression %prec UMINUS'''
