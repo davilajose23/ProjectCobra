@@ -88,6 +88,7 @@ t_LEFT_PARENTHESIS      = r'\('
 t_RIGHT_PARENTHESIS     = r'\)'
 t_LEFT_BRACKET          = r'\['
 t_RIGHT_BRACKET         = r'\]'
+t_EOL                   = r'\n'
 
 
 def t_ID(t):
