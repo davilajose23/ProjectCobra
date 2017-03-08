@@ -32,8 +32,8 @@ reserved = {
     'lang': 'LANG',
     'es': 'SPANISH',
     'en': 'ENGLISH',
-    'func': 'FUNC'
-    'main': 'MAIN'
+    'func': 'FUNC',
+    'main': 'MAIN',
     'end_main': 'END_MAIN'
 }
 

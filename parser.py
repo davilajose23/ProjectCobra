@@ -51,10 +51,10 @@ def p_post_call_function(p):
                             
 # ********************* Diagram call_parameters *********************
 def p_call_parameters(p):
-    'call_parameters : Cond post_call_parameters'
+    'call_parameters : cond post_call_parameters'
 
 def p_post_call_parameters(p):
-    '''post_call_parameters: COMMA call_parameters 
+    '''post_call_parameters : COMMA call_parameters 
                             | empty'''
 
 # ********************* Diagram function *********************
@@ -79,7 +79,7 @@ def p_value_return(p):
 def p_parameters(p):
     'parameters : identifier post_parameters'
 
-def p_post_parameters(p):c
+def p_post_parameters(p):
     '''post_parameters : COMMA parameters
                         | empty'''
 
