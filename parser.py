@@ -31,11 +31,8 @@ def p_post_call_function(p):
     ''' post_call_function : parameters RIGHT_PARENTHESIS 
                             | RIGHT_PARENTHESIS'''
 
-def p_pre_def_function(p):
-    'pre_def_function : FUNC ID LEFT_PARENTHESIS'
-
 def p_function(p):
-    'function : pre_def_function post_def_function'
+    'function : FUNC ID LEFT_PARENTHESIS post_def_function'
 
 def p_post_def_function(p):
     '''post_def_function : parameters RIGHT_PARENTHESIS statement END
@@ -215,8 +212,7 @@ def p_error(p):
 parser = yacc.yacc()
 
 # Test it out
-data = '''a = 1
-func hola() a = 2 end
+data = '''a = 1 func hola() a = 2 end
 print a
 '''
 
