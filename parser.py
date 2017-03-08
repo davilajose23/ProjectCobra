@@ -1,7 +1,6 @@
-# Yacc
 import ply.yacc as yacc
 from scanner import tokens
-
+import sys
 # Precedence rules for the arithmetic operators
 precedence = (
     ('nonassoc', 'AND', 'OR'),  # Nonassociative operators
@@ -258,12 +257,18 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
-# Test it out
-data = '''a = 1 func hola() a = 2 end
-main
-a = 2
-end_main
-'''
-
-result = parser.parse(data)
-print(result)
+if __name__ == '__main__':
+  if (len(sys.argv) > 1):
+    # Obtiene el archivo
+    file = sys.argv[1]
+    try:
+        f = open(file,'r')
+        data = f.read()
+        f.close()
+        #Se realiza la gramatica
+        parser.parse(data, tracking=True)
+        #print ('Trabajando correctamente - APROPIADO');
+    except EOFError:
+        print(EOFError)
+  else:
+    print('The file does not exist')

@@ -130,17 +130,3 @@ def t_error(t):
 
 # Build the lexer
 lexer = lex.lex()
-
-# Test it out
-data = '''
-a = 1
-func hola() a = 2
-print a
-'''
-
-# Give the lexer some input
-lexer.input(data)
-
-# Tokenize
-for tok in lexer:
-    print(tok)
