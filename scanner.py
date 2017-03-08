@@ -33,6 +33,8 @@ reserved = {
     'es': 'SPANISH',
     'en': 'ENGLISH',
     'func': 'FUNC'
+    'main': 'MAIN'
+    'end_main': 'END_MAIN'
 }
 
 # List of token names.   This is always required

@@ -1,0 +1,3 @@
+a = 1
+lang hola() a = 2
+print a
