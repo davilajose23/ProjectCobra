@@ -207,7 +207,8 @@ def p_BOOL_CONSTANT(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+    #print("Syntax error in input!")
+    print("Syntax error at '%s'" % repr(p)) #p.value)
 
 
 # Build the parser
