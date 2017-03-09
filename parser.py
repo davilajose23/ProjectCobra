@@ -255,23 +255,37 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
+import os
+import glob
+
+path = 'testcases'
+
 welcome = '''Project Cobra '''
 if __name__ == '__main__':
     
     if (len(sys.argv) > 1):
     # Obtiene el archivo
         if (sys.argv[1] == 'test'):
-            pass
-            print 'test mode'
+            print('test mode')
+            try:
+                for file in glob.glob(os.path.join(path, '*.co')):
+                    print('checking ' + str(file))
+                    f = open(file,'r')
+                    data = f.read()
+                    f.close()
+                    #Se aplica la gramatica
+                    parser.parse(data, tracking=True)
+            except EOFError:
+                print(EOFError)
         else:
             file = sys.argv[1]
             try:
                 f = open(file,'r')
                 data = f.read()
                 f.close()
-                #Se realiza la gramatica
+                #Se aplica la gramatica
                 parser.parse(data, tracking=True)
-                print 'ok'
+                print('ok')
             except EOFError:
                 print(EOFError)
     else:
