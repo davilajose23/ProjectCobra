@@ -1,8 +1,0 @@
-a = 1 
-func hola() 
-	a = 2 
-end
-
-main
-	a = 2
-end_main

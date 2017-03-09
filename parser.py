@@ -1,5 +1,6 @@
 import ply.yacc as yacc
 from scanner import tokens
+from TestCobra import TestC
 import sys
 # Precedence rules for the arithmetic operators
 precedence = (
@@ -20,13 +21,15 @@ def p_program(p):
                 | pre_variables main
                 | main'''
 
+    p[0] = 'ok'
+
 def p_pre_variables(p):
     'pre_variables : variable post_variables'
 
 def p_post_variables(p):
     '''post_variables : pre_variables
                         | empty'''
-                        
+
 # ********************* Diagram functions *********************
 def p_functions(p):
     'functions : function post_functions'
@@ -263,28 +266,15 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
-import os
-import glob
-
-path = 'testcases'
-
 welcome = '''Project Cobra '''
 if __name__ == '__main__':
     print(welcome)
     if (len(sys.argv) > 1):
     # Obtiene el archivo
         if (sys.argv[1] == 'test'):
-            print('test mode')
-            try:
-                for file in glob.glob(os.path.join(path, '*.co')):
-                    print('checking ' + str(file))
-                    f = open(file,'r')
-                    data = f.read()
-                    f.close()
-                    #Se aplica la gramatica
-                    parser.parse(data, tracking=True)
-            except EOFError:
-                print(EOFError)
+            t = TestC()
+            t.setup(parser)
+            t.runTest()
         else:
             file = sys.argv[1]
             try:
@@ -300,7 +290,7 @@ if __name__ == '__main__':
         print(welcome)
         while True:
             try:
-                s = raw_input('calc > ')
+                s = raw_input('>>> ')
                 print s
             except EOFError:
                 break
