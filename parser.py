@@ -72,7 +72,9 @@ def p_void_return(p):
     'void_return : block END'
 
 def p_value_return(p):
-    'value_return : block RETURN cond END'
+    '''value_return : block RETURN cond END
+                    | RETURN cond END'''
+                    
 # ********************* Diagram parameters *********************
 
 def p_parameters(p):
@@ -205,7 +207,7 @@ def p_list(p):
     'list : identifier post_list'
 
 def p_post_list(p):
-    '''post_list : EQUALS LEFT_BRACKET exp RIGHT_BRACKET 
+    '''post_list : EQUALS LEFT_BRACKET call_parameters RIGHT_BRACKET 
                   | empty'''
 
 # ********************* Diagram identifier *********************
