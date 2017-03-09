@@ -259,18 +259,35 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
+welcome = '''Project Cobra '''
 if __name__ == '__main__':
-  if (len(sys.argv) > 1):
+    
+    if (len(sys.argv) > 1):
     # Obtiene el archivo
-    file = sys.argv[1]
-    try:
-        f = open(file,'r')
-        data = f.read()
-        f.close()
-        #Se realiza la gramatica
-        parser.parse(data, tracking=True)
-        #print ('Trabajando correctamente - APROPIADO');
-    except EOFError:
-        print(EOFError)
-  else:
-    print('The file does not exist')
+        if (sys.argv[1] == 'test'):
+            pass
+            print 'test mode'
+        else:
+            file = sys.argv[1]
+            try:
+                f = open(file,'r')
+                data = f.read()
+                f.close()
+                #Se realiza la gramatica
+                parser.parse(data, tracking=True)
+                print 'ok'
+            except EOFError:
+                print(EOFError)
+    else:
+        print(welcome)
+        while True:
+            try:
+                s = raw_input('calc > ')
+                print s
+            except EOFError:
+                break
+            if not s:
+                continue
+            if s == 'exit()':
+                break
+            yacc.parse(s)
