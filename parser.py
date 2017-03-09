@@ -15,10 +15,18 @@ names = { }
 
 # ********************* Diagram program *********************
 def p_program(p):
-    '''program : variable functions main
+    '''program : pre_variables functions main
                 | functions main
-                | variable main
+                | pre_variables main
                 | main'''
+
+def p_pre_variables(p):
+    'pre_variables : variable post_variables'
+
+def p_post_variables(p):
+    '''post_variables : pre_variables
+                        | empty'''
+                        
 # ********************* Diagram functions *********************
 def p_functions(p):
     'functions : function post_functions'
