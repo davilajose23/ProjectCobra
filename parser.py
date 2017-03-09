@@ -262,7 +262,7 @@ path = 'testcases'
 
 welcome = '''Project Cobra '''
 if __name__ == '__main__':
-    
+    print(welcome)
     if (len(sys.argv) > 1):
     # Obtiene el archivo
         if (sys.argv[1] == 'test'):
