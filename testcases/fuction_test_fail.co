@@ -1,0 +1,7 @@
+hola()
+	print 'Hoola'
+end
+
+main
+	x = 2
+end_main
