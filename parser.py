@@ -86,12 +86,8 @@ def p_post_parameters(p):
 
 # ********************* Diagram variable *********************
 def p_variable(p):
-    ''' variable : assignment post_variable
-                  | list post_variable'''
-
-def p_post_variable(p):
-    ''' post_variable : variable
-                        | empty'''
+    ''' variable : assignment
+                  | list'''
 
 # ********************* Diagram statement *********************
 def p_statement(p):
