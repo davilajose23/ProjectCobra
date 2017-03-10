@@ -7,17 +7,17 @@ func otro_hola(x, b, c)
 end
 
 func final(a, b)
-	return a + b
+	return a + b 
 end
 
 func hyp(a, b, c)
 	c = a - b
-	return c
+	return c 
 end
 
-func recursivo(a)
-	return recursivo(a - 1)
-end
+func recursivo(a) 
+	return recursivo()
+end 
 
 main
 	print l

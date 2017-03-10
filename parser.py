@@ -20,11 +20,13 @@ def p_program(p):
                 | functions main
                 | pre_variables main
                 | main'''
-
     p[0] = 'ok'
 
 def p_pre_variables(p):
     'pre_variables : variable post_variables'
+
+def p_required_eol(p):
+    'required_eol : EOL optional_eol'
 
 def p_post_variables(p):
     '''post_variables : pre_variables
@@ -41,7 +43,15 @@ def p_post_functions(p):
     
 # ********************* Diagram main *********************
 def p_main(p):
-    'main : MAIN block END_MAIN'
+    'main : MAIN EOL block END_MAIN optional_eol'
+
+def p_optional_eol(p):
+    '''optional_eol : EOL post_optional_eol 
+                | empty'''
+
+def p_post_optional_eol(p):
+    '''post_optional_eol : optional_eol 
+                        | empty'''
     
 # ********************* Diagram block *********************
 def p_block(p):
@@ -56,8 +66,8 @@ def p_call_function(p):
     'call_function :  ID LEFT_PARENTHESIS post_call_function'
 
 def p_post_call_function(p):
-    ''' post_call_function : call_parameters RIGHT_PARENTHESIS 
-                            | RIGHT_PARENTHESIS'''
+    ''' post_call_function : call_parameters RIGHT_PARENTHESIS optional_eol
+                            | RIGHT_PARENTHESIS optional_eol'''
                             
 # ********************* Diagram call_parameters *********************
 def p_call_parameters(p):
@@ -72,19 +82,19 @@ def p_function(p):
     'function : FUNC ID LEFT_PARENTHESIS post_function'
 
 def p_post_function(p):
-    '''post_function : parameters RIGHT_PARENTHESIS func_return
-                          | RIGHT_PARENTHESIS func_return'''
+    '''post_function : parameters RIGHT_PARENTHESIS required_eol func_return
+                          | RIGHT_PARENTHESIS required_eol func_return'''
 
 def p_func_return(p):
     '''func_return : void_return 
                     | value_return'''
                    
 def p_void_return(p):
-    'void_return : block END'
+    'void_return : block END required_eol'
 
 def p_value_return(p):
-    '''value_return : block RETURN cond END
-                    | RETURN cond END'''
+    '''value_return : block RETURN cond required_eol END required_eol
+                    | RETURN cond required_eol END required_eol'''
                     
 # ********************* Diagram parameters *********************
 
@@ -102,13 +112,12 @@ def p_variable(p):
 
 # ********************* Diagram statement *********************
 def p_statement(p):
-    ''' statement : variable
-                    | condition
-                    | print
-                    | read
-                    | loop
-                    | call_function'''
-                    
+    ''' statement : variable required_eol
+                    | condition required_eol
+                    | print required_eol
+                    | read required_eol
+                    | loop required_eol
+                    | call_function optional_eol'''
                     
 # ********************* Diagram assignment *********************
 
@@ -121,7 +130,7 @@ def p_assignment_operator(p):
                             | TIMES_EQUALS
                             | DIVIDE_EQUALS
                             | PLUS_EQUALS
-                            | MINUS_EQUALS '''
+                            | MINUS_EQUALS'''
 
 # ********************* Diagram cond *********************
 def p_cond(p):
@@ -186,7 +195,7 @@ def p_variable_constant(p):
 
 # ********************* Diagram condition *********************
 def p_condition(p):
-    'condition : IF cond COLON block post_condition END'
+    'condition : IF cond COLON optional_eol block post_condition END'
 
 
 def p_post_condition(p):
@@ -195,7 +204,7 @@ def p_post_condition(p):
 
 # else
 def p_else(p):
-    'else : ELSE COLON block'
+    'else : ELSE COLON optiona_eol block'
 
 # ********************* Diagram print *********************
 def p_print(p):
@@ -244,7 +253,7 @@ def p_while(p):
 
 # Cycle common grammar
 def p_post_cycle(p):
-    'post_cycle : COLON block END'
+    'post_cycle : COLON optional_end block END'
 
 def p_BOOL_CONSTANT(p):
     '''BOOL_CONSTANT : TRUE

@@ -63,7 +63,8 @@ tokens = [
    'SPACE',
    'COMMA',
    'COLON',
-   'ID'
+   'ID',
+   'EOL'
 ] + list(reserved.values())
 
 #Regular expression rules for simple tokens
@@ -97,9 +98,10 @@ def t_ID(t):
     return t
 
 # Define a rule so we can track line numbers
-def t_newline(t):
+def t_EOL(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+    return t
 
 # A string containing ignored characters (spaces and tabs)
 t_ignore  = ' \t'

@@ -1,0 +1,8 @@
+func hola(a)
+	a = 1
+	return a
+end
+
+main 
+	hola(a)
+end_main
