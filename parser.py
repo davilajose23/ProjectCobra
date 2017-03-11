@@ -28,6 +28,10 @@ def p_pre_variables(p):
 def p_required_eol(p):
     'required_eol : EOL optional_eol'
 
+def p_optional_eol(p):
+    '''optional_eol : required_eol
+                | empty'''
+
 def p_post_variables(p):
     '''post_variables : pre_variables
                         | empty'''
@@ -44,14 +48,6 @@ def p_post_functions(p):
 # ********************* Diagram main *********************
 def p_main(p):
     'main : MAIN EOL block END_MAIN optional_eol'
-
-def p_optional_eol(p):
-    '''optional_eol : EOL post_optional_eol 
-                | empty'''
-
-def p_post_optional_eol(p):
-    '''post_optional_eol : optional_eol 
-                        | empty'''
     
 # ********************* Diagram block *********************
 def p_block(p):
@@ -204,7 +200,7 @@ def p_post_condition(p):
 
 # else
 def p_else(p):
-    'else : ELSE COLON optiona_eol block'
+    'else : ELSE COLON optional_eol block'
 
 # ********************* Diagram print *********************
 def p_print(p):
@@ -253,7 +249,7 @@ def p_while(p):
 
 # Cycle common grammar
 def p_post_cycle(p):
-    'post_cycle : COLON optional_end block END'
+    'post_cycle : COLON optional_eol block END'
 
 def p_BOOL_CONSTANT(p):
     '''BOOL_CONSTANT : TRUE
