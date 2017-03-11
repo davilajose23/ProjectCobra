@@ -15,9 +15,10 @@ func hyp(a, b, c)
 	return c 
 end
 
-func recursivo(a) 
-	return recursivo()
-end 
+func recursivo(a)
+	x = a
+	return recursivo(a - 1) 
+end
 
 main
 	print l

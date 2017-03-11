@@ -23,14 +23,14 @@ def p_program(p):
     p[0] = 'ok'
 
 def p_pre_variables(p):
-    'pre_variables : variable post_variables'
+    'pre_variables : variable required_eol post_variables'
 
 def p_required_eol(p):
     'required_eol : EOL optional_eol'
 
 def p_optional_eol(p):
-    '''optional_eol : required_eol
-                | empty'''
+    '''optional_eol : empty
+                | required_eol'''
 
 def p_post_variables(p):
     '''post_variables : pre_variables
@@ -113,7 +113,7 @@ def p_statement(p):
                     | print required_eol
                     | read required_eol
                     | loop required_eol
-                    | call_function optional_eol'''
+                    | call_function'''
                     
 # ********************* Diagram assignment *********************
 
@@ -216,11 +216,11 @@ def p_read(p):
 
 # ********************* Diagram list *********************
 def p_list(p):
-    'list : identifier post_list'
+    'list : identifier EQUALS LEFT_BRACKET post_list'
 
 def p_post_list(p):
-    '''post_list : EQUALS LEFT_BRACKET call_parameters RIGHT_BRACKET 
-                  | empty'''
+    '''post_list :  call_parameters RIGHT_BRACKET 
+                  | RIGHT_BRACKET'''
 
 # ********************* Diagram identifier *********************
 def p_identifier(p):
