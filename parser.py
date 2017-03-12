@@ -23,7 +23,7 @@ def p_program(p):
     p[0] = 'ok'
 
 def p_pre_variables(p):
-    'pre_variables : variable required_eol post_variables'
+    'pre_variables : variable optional_eol post_variables'
 
 def p_required_eol(p):
     'required_eol : EOL optional_eol'
@@ -62,8 +62,8 @@ def p_call_function(p):
     'call_function :  ID LEFT_PARENTHESIS post_call_function'
 
 def p_post_call_function(p):
-    ''' post_call_function : call_parameters RIGHT_PARENTHESIS optional_eol
-                            | RIGHT_PARENTHESIS optional_eol'''
+    ''' post_call_function : call_parameters RIGHT_PARENTHESIS
+                            | RIGHT_PARENTHESIS'''
                             
 # ********************* Diagram call_parameters *********************
 def p_call_parameters(p):
@@ -108,17 +108,17 @@ def p_variable(p):
 
 # ********************* Diagram statement *********************
 def p_statement(p):
-    ''' statement : variable required_eol
+    ''' statement : variable optional_eol
                     | condition required_eol
                     | print required_eol
                     | read required_eol
                     | loop required_eol
-                    | call_function'''
+                    | call_function required_eol'''
                     
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
-    'assignment : identifier assignment_operator cond ' 
+    'assignment : identifier assignment_operator cond' 
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
@@ -130,7 +130,7 @@ def p_assignment_operator(p):
 
 # ********************* Diagram cond *********************
 def p_cond(p):
-    'cond : expression post_cond' 
+    '''cond : expression post_cond''' 
 
 def p_post_cond(p):
     '''post_cond : AND cond

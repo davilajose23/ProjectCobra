@@ -2,6 +2,10 @@ hola()
 	print 'Hoola'
 end
 
+func hola([])
+	print hola
+end
+
 main
 	x = 2
 end_main

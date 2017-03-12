@@ -5,4 +5,7 @@ end
 
 main 
 	hola(a)
+	otro(x - 1)
+	mas(x, b)
+	x = hola(x) + hola(x - 1)
 end_main
