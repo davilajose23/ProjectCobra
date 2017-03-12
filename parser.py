@@ -23,7 +23,7 @@ def p_program(p):
     p[0] = 'ok'
 
 def p_pre_variables(p):
-    'pre_variables : variable optional_eol post_variables'
+    'pre_variables : variable required_eol post_variables'
 
 def p_required_eol(p):
     'required_eol : EOL optional_eol'
@@ -108,7 +108,7 @@ def p_variable(p):
 
 # ********************* Diagram statement *********************
 def p_statement(p):
-    ''' statement : variable optional_eol
+    ''' statement : variable required_eol
                     | condition required_eol
                     | print required_eol
                     | read required_eol
