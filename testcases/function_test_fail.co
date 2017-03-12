@@ -5,6 +5,9 @@ hola()
 func otro(x, b, z)
 	a = 4 end
 
+func other(a)
+	return other(a - 1) end
+
 func hola([])
 	print hola
 end
