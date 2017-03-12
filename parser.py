@@ -2,6 +2,9 @@ import ply.yacc as yacc
 from scanner import tokens
 from TestCobra import TestC
 import sys
+from symbol_table import functions_dir
+
+functions_directory = functions_dir()
 # Precedence rules for the arithmetic operators
 precedence = (
     ('nonassoc', 'AND', 'OR'),  # Nonassociative operators

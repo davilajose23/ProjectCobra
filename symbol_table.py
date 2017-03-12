@@ -2,11 +2,23 @@ class functions_dir(object):
 	'''docstring for functions_dir'''
 	def __init__(self):
 		super(functions_dir, self).__init__()
-		self.scope = 'global'
+		''' 
+			Las funciones son entradas en el diccionario functions.
+			A cada funcion le corresponde de valor una tupla.
+			Esta tupla contiene otro diccionario para varibales, y un return type
+			Scope global del programa se inicia con diccionario de variables globales vacio.
+			No se tiene un return type para el scope global.
+			Scope es el function_id de cada funcion.
+		'''
 		self.functions = {}
 		self.functions['global'] = ({}, None)
+
+		# 0 es el indice de la tupla de una funcion para accesar a su diccionario de variables
 		self.variables_dict = 0
+
+		# 1 es el indice de la tupla de una funcionpara accesar su return type
 		self.return_type = 1
+		self.scope = 'global'
 
 	# Add function to fuctions directory
 	def insert_function(self, function_id):
@@ -20,6 +32,9 @@ class functions_dir(object):
 	def validate_function(self, function_id):
 		if self.functions.get(function_id) is None:
 			raise ValueError('Function not declared')
+
+	def set_return_type(self, function_id, function_return_type):
+		self.fuctions[scope][return_type] = function_return_type
 
 	# Change the current scope from global to function scope
 	def set_scope(self, scope):
@@ -42,7 +57,7 @@ class functions_dir(object):
 				raise ValueError('Variable not declared!')
 
 	@property
-	def scope(self):
+	def current_scope(self):
 		return self.scope
 
 
