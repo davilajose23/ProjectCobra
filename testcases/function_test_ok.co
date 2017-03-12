@@ -1,5 +1,6 @@
 func hola()
 	print 'Hola mundo'
+	return 
 end
 
 func otro_hola(x, b, c)

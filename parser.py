@@ -86,7 +86,11 @@ def p_func_return(p):
                     | value_return'''
                    
 def p_void_return(p):
-    'void_return : block END required_eol'
+    'void_return : block post_void_return'
+
+def p_post_void_return(p):
+    '''post_void_return : END required_eol
+                        | RETURN required_eol END required_eol'''
 
 def p_value_return(p):
     '''value_return : block RETURN cond required_eol END required_eol

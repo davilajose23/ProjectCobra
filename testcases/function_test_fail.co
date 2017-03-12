@@ -1,6 +1,9 @@
 hola()
 	print 'Hoola'
-end
+	return end
+
+func otro(x, b, z)
+	a = 4 end
 
 func hola([])
 	print hola
