@@ -8,4 +8,5 @@ end
 
 main
 	x = 2
+	func hola()
 end_main

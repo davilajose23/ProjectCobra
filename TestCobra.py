@@ -13,7 +13,7 @@ class TestC(unittest.TestCase):
 		
 
 	def runTest(self):
-		print('-------- test mode --------')
+		print('-------------------- TEST MODE --------------------')
 		try:
 			
 			for file in glob.glob(os.path.join(self.path, '*.co')):
@@ -23,8 +23,8 @@ class TestC(unittest.TestCase):
 				f.close()
 				#Se aplica la gramatica
 				if self.parser.parse(data, tracking=True) == 'ok':
-					print('Test ok')
+					print('-------------------- OK --------------------')
 				else:
-					print('Error')				
+					print('-------------------- ERROR --------------------')				
 		except EOFError:
 			print(EOFError)
