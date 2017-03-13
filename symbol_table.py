@@ -11,29 +11,36 @@ class functions_dir(object):
 			Scope es el function_id de cada funcion.
 		'''
 		self.functions = {}
-		self.functions['global'] = ({}, None)
+		self.functions['global'] = ({}, None, 0)
 
 		# 0 es el indice de la tupla de una funcion para accesar a su diccionario de variables
 		self.variables_dict = 0
 
-		# 1 es el indice de la tupla de una funcionpara accesar su return type
+		# 1 es el indice de la tupla de una funcion para accesar su return type
 		self.return_type = 1
+
+		# 2 es el indide de la tupla de una funcion para indicar la cantidad de argumentos que espera
+		self.expected_arguments = 2
 		self.scope = 'global'
 
 	# Add function to fuctions directory
-	def insert_function(self, function_id):
+	def add_function(self, function_id):
 		# Verify if function already exists
 		if self.functions.get(function_id) is not None:
 			raise NameError('Function already declared!')
 		else:
-			self.functions[function_id] = ({}, None)
+			self.functions[function_id] = ({}, None, 0)
 
 	# Validate function exists
 	def validate_function(self, function_id):
 		if self.functions.get(function_id) is None:
 			raise ValueError('Function not declared')
 
-	def set_return_type(self, function_id, function_return_type):
+	# Incrementa cantidad de argumentos esperados por una funcion
+	def increase_expected_arguments():
+		self.functions[scope][expected_arguments] += 1
+
+	def set_return_type(self, function_return_type):
 		self.fuctions[scope][return_type] = function_return_type
 
 	# Change the current scope from global to function scope
@@ -45,7 +52,7 @@ class functions_dir(object):
 		self.scope = 'global'
 
 	# Add variable to current scope
-	def add_var(self, variable_id, value, var_type):
+	def add_var(self, variable_id, value = 0, var_type = 'mutable'):
 		self.functions[scope][variables_dict][variable_id] = (value, var_type)
 
 	# Validate variable exists
@@ -59,7 +66,3 @@ class functions_dir(object):
 	@property
 	def current_scope(self):
 		return self.scope
-
-
-
-		

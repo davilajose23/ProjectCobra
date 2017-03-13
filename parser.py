@@ -3,6 +3,7 @@ from scanner import tokens
 from TestCobra import TestC
 import sys
 from symbol_table import functions_dir
+from stack import Stack
 
 functions_directory = functions_dir()
 # Precedence rules for the arithmetic operators
@@ -62,7 +63,12 @@ def p_post_block(p):
 
 # ********************* Diagram call_function *********************
 def p_call_function(p):
-    'call_function :  ID LEFT_PARENTHESIS post_call_function'
+    'call_function :  ID validate_function_call LEFT_PARENTHESIS post_call_function'
+
+# Validates call to a function
+def p_validate_function_call(p):
+    'validate_function_call :'
+    functions_directory.validate_function(p[-1])
 
 def p_post_call_function(p):
     ''' post_call_function : call_parameters RIGHT_PARENTHESIS
@@ -78,7 +84,12 @@ def p_post_call_parameters(p):
 
 # ********************* Diagram function *********************
 def p_function(p):
-    'function : FUNC ID LEFT_PARENTHESIS post_function'
+    'function : FUNC ID register_function LEFT_PARENTHESIS post_function'
+
+def p_register_function(p):
+    'register_function :'
+    functions_directory.add_function(p[-1])
+    functions_directory.set_scope(p[-1])
 
 def p_post_function(p):
     '''post_function : parameters RIGHT_PARENTHESIS required_eol func_return
@@ -92,17 +103,36 @@ def p_void_return(p):
     'void_return : block post_void_return'
 
 def p_post_void_return(p):
-    '''post_void_return : END required_eol
-                        | RETURN required_eol END required_eol'''
+    '''post_void_return : END required_eol set_void_return
+                        | RETURN required_eol END required_eol set_void_return'''
 
 def p_value_return(p):
-    '''value_return : block RETURN cond required_eol END required_eol
-                    | RETURN cond required_eol END required_eol'''
+    '''value_return : block RETURN cond required_eol END required_eol set_value_return
+                    | RETURN cond required_eol END required_eol set_value_return'''
+
+# Adds to functions directory de return type of the function
+# Resets the scope of functions directory after
+def p_set_void_return(p):
+    'set_void_return :'
+    functions_directory.set_return_type('void')
+    functions_directory.reset_scope()
+
+def p_set_value_return(p):
+    'set_value_return :'
+    functions_directory.set_return_type('value')
+    functions_directory.reset_scope()
                     
 # ********************* Diagram parameters *********************
 
 def p_parameters(p):
-    'parameters : identifier post_parameters'
+    'parameters : identifier update_function_parameters post_parameters'
+
+# Increases the quantity of expected arguments by a function
+def p_update_function_parameters(p):
+    'update_function_parameters :'
+    functions_directory.increase_expected_arguments()
+    # Registers the expected argument in the function variables directory
+    functions_directory.add_var(variable_id=p[-1])
 
 def p_post_parameters(p):
     '''post_parameters : COMMA parameters
@@ -125,7 +155,12 @@ def p_statement(p):
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
-    'assignment : identifier assignment_operator cond' 
+    'assignment : identifier register_variable assignment_operator cond'
+
+# Registra/actualiza variable en directorio de funciones
+def p_register_variable(p):
+    'register_variable :'
+    functions_dir.add_var(variable_id=p[-1])
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
@@ -190,11 +225,37 @@ def p_factor(p):
 
 # ********************* Diagram variable_constant *********************
 def p_variable_constant(p):
-    '''variable_constant : identifier
+    '''variable_constant : identifier validate_variable
                         | INT_CONSTANT
                         | DOUBLE_CONSTANT
                         | STRING_CONSTANT
                         | BOOL_CONSTANT '''
+
+def p_validate_variable(p):
+    'validate_variable :'
+    # Checks if the variable to validate is in array notation
+    if p[-1] == ']':
+        # Creates stack to check for pair quantity of brackets
+        helper = Stack()
+        helper.push(']')
+        iterator = -2
+
+        # Checks for same level brackets (matrices)
+        while helper.length > 0:
+
+            # Checks for nested brackets
+            while helper.length > 0:
+                if p[iterator] == ']': helper.push(']')
+                elif p[iterator] == '[': helper.pop()
+                iterator -= 1
+
+            if p[iterator] == ']': 
+                helper.push(']')
+                iterator -= 1
+
+        functions_directory.validate_variable(p[iterator])
+    else:
+        functions_directory.validate_variable(p[-1])
 
 # ********************* Diagram condition *********************
 def p_condition(p):
@@ -223,7 +284,7 @@ def p_read(p):
 
 # ********************* Diagram list *********************
 def p_list(p):
-    'list : identifier EQUALS LEFT_BRACKET post_list'
+    'list : identifier register_variable EQUALS LEFT_BRACKET post_list'
 
 def p_post_list(p):
     '''post_list :  call_parameters RIGHT_BRACKET 
@@ -244,10 +305,10 @@ def p_loop(p):
 
 # for
 def p_for(p):
-    'for : FOR identifier post_for'
+    'for : FOR identifier validate_variable post_for'
 
 def p_post_for(p):
-    '''post_for : IN identifier post_cycle
+    '''post_for : IN identifier validate_variable post_cycle
                 | FROM exp TO exp post_cycle'''
 
 # while
