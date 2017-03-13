@@ -11,7 +11,7 @@ class functions_dir(object):
 			Scope es el function_id de cada funcion.
 		'''
 		self.functions = {}
-		self.functions['global'] = ({}, None, 0)
+		self.functions['global'] = [{}, None, 0]
 
 		# 0 es el indice de la tupla de una funcion para accesar a su diccionario de variables
 		self.variables_dict = 0
@@ -26,22 +26,22 @@ class functions_dir(object):
 	# Add function to fuctions directory
 	def add_function(self, function_id):
 		# Verify if function already exists
-		if self.functions.get(function_id) is not None:
+		if self.functions.get(function_id, None) is not None:
 			raise NameError('Function already declared!')
 		else:
-			self.functions[function_id] = ({}, None, 0)
+			self.functions[function_id] = [{}, None, 0]
 
 	# Validate function exists
 	def validate_function(self, function_id):
-		if self.functions.get(function_id) is None:
+		if self.functions.get(function_id, None) is None:
 			raise ValueError('Function not declared')
 
 	# Incrementa cantidad de argumentos esperados por una funcion
-	def increase_expected_arguments():
-		self.functions[scope][expected_arguments] += 1
+	def increase_expected_arguments(self):
+		self.functions[self.scope][self.expected_arguments] += 1
 
 	def set_return_type(self, function_return_type):
-		self.fuctions[scope][return_type] = function_return_type
+		self.functions[self.scope][self.return_type] = function_return_type
 
 	# Change the current scope from global to function scope
 	def set_scope(self, scope):
@@ -53,14 +53,14 @@ class functions_dir(object):
 
 	# Add variable to current scope
 	def add_var(self, variable_id, value = 0, var_type = 'mutable'):
-		self.functions[scope][variables_dict][variable_id] = (value, var_type)
+		self.functions[self.scope][self.variables_dict][variable_id] = (value, var_type)
 
 	# Validate variable exists
 	def validate_variable(self, variable_id):
 		# Look for variable in current scope
-		if self.functions[scope][variables_dict].get(variable_id) is None:
+		if self.functions[self.scope][self.variables_dict].get(variable_id, None) is None:
 			# Look for variable in global scope
-			if self.functions['global'][variables_dict].get(variable_id) is None:
+			if self.functions['global'][self.variables_dict].get(variable_id, None) is None:
 				raise ValueError('Variable not declared!')
 
 	@property

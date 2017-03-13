@@ -160,7 +160,7 @@ def p_assignment(p):
 # Registra/actualiza variable en directorio de funciones
 def p_register_variable(p):
     'register_variable :'
-    functions_dir.add_var(variable_id=p[-1])
+    functions_directory.add_var(variable_id=p[-1])
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
