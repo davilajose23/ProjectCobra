@@ -4,8 +4,8 @@ class functions_dir(object):
 		super(functions_dir, self).__init__()
 		''' 
 			Las funciones son entradas en el diccionario functions.
-			A cada funcion le corresponde de valor una tupla.
-			Esta tupla contiene otro diccionario para varibales, y un return type
+			A cada funcion le corresponde de valor una lista.
+			Esta lista contiene otro diccionario para varibales, y un return type, y cantidad de args
 			Scope global del programa se inicia con diccionario de variables globales vacio.
 			No se tiene un return type para el scope global.
 			Scope es el function_id de cada funcion.
