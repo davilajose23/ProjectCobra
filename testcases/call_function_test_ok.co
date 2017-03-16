@@ -1,8 +1,17 @@
+b = 3
+x = 3
 func hola(a)
 	a = 1
 	return a
 end
 
+func otro(p)
+	s = 2
+
+end
+func mas(i, d)
+	d = 9 * 3
+end
 main 
 	hola(a)
 	otro(x - 1)
