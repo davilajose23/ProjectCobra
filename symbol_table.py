@@ -22,19 +22,20 @@ class functions_dir(object):
 		# 2 es el indide de la tupla de una funcion para indicar la cantidad de argumentos que espera
 		self.expected_arguments = 2
 		self.scope = 'global'
+		self.evaluating = False
 
 	# Add function to fuctions directory
 	def add_function(self, function_id):
 		# Verify if function already exists
 		if self.functions.get(function_id, None) is not None:
-			raise NameError('Function already declared!')
+			raise NameError('Function already declared! Function: ' + str(function_id))
 		else:
 			self.functions[function_id] = [{}, None, 0]
 
 	# Validate function exists
 	def validate_function(self, function_id):
 		if self.functions.get(function_id, None) is None:
-			raise ValueError('Function not declared')
+			raise ValueError('Function not declared! Name: ' + str(function_id))
 
 	# Incrementa cantidad de argumentos esperados por una funcion
 	def increase_expected_arguments(self):
@@ -61,7 +62,13 @@ class functions_dir(object):
 		if self.functions[self.scope][self.variables_dict].get(variable_id, None) is None:
 			# Look for variable in global scope
 			if self.functions['global'][self.variables_dict].get(variable_id, None) is None:
-				raise ValueError('Variable not declared!')
+				raise ValueError('Variable not declared! Var: ' + str(variable_id))
+
+	def start_evaluating(self):
+		self.evaluating = True
+
+	def finish_evaluating(self):
+		self.evaluating = False
 
 	@property
 	def current_scope(self):

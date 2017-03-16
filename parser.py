@@ -155,20 +155,23 @@ def p_statement(p):
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
-    'assignment : identifier register_variable assignment_operator cond'
-
-# Registra/actualiza variable en directorio de funciones
-def p_register_variable(p):
-    'register_variable :'
-    functions_directory.add_var(variable_id=p[-1])
+    'assignment : identifier assignment_operator cond finish_evaluating'
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
-    '''assignment_operator : EQUALS
+    '''assignment_operator : EQUALS start_evaluating
                             | TIMES_EQUALS
                             | DIVIDE_EQUALS
                             | PLUS_EQUALS
                             | MINUS_EQUALS'''
+
+def p_start_evaluating(p):
+    'start_evaluating :'
+    functions_directory.start_evaluating()
+
+def p_finish_evaluating(p):
+    'finish_evaluating :'
+    functions_directory.finish_evaluating()
 
 # ********************* Diagram cond *********************
 def p_cond(p):
@@ -225,37 +228,19 @@ def p_factor(p):
 
 # ********************* Diagram variable_constant *********************
 def p_variable_constant(p):
-    '''variable_constant : identifier validate_variable
+    '''variable_constant : identifier
                         | INT_CONSTANT
                         | DOUBLE_CONSTANT
                         | STRING_CONSTANT
                         | BOOL_CONSTANT '''
 
-def p_validate_variable(p):
-    'validate_variable :'
+def p_process_variable(p):
+    'process_variable :'
     # Checks if the variable to validate is in array notation
-    if p[-1] == ']':
-        # Creates stack to check for pair quantity of brackets
-        helper = Stack()
-        helper.push(']')
-        iterator = -2
-
-        # Checks for same level brackets (matrices)
-        while helper.length > 0:
-
-            # Checks for nested brackets
-            while helper.length > 0:
-                if p[iterator] == ']': helper.push(']')
-                elif p[iterator] == '[': helper.pop()
-                iterator -= 1
-
-            if p[iterator] == ']': 
-                helper.push(']')
-                iterator -= 1
-
-        functions_directory.validate_variable(p[iterator])
-    else:
+    if functions_directory.evaluating:
         functions_directory.validate_variable(p[-1])
+    else:
+        functions_directory.add_var(variable_id=p[-1])
 
 # ********************* Diagram condition *********************
 def p_condition(p):
@@ -284,7 +269,7 @@ def p_read(p):
 
 # ********************* Diagram list *********************
 def p_list(p):
-    'list : identifier register_variable EQUALS LEFT_BRACKET post_list'
+    'list : identifier EQUALS LEFT_BRACKET post_list'
 
 def p_post_list(p):
     '''post_list :  call_parameters RIGHT_BRACKET 
@@ -292,7 +277,7 @@ def p_post_list(p):
 
 # ********************* Diagram identifier *********************
 def p_identifier(p):
-    'identifier : ID post_identifier'
+    'identifier : ID process_variable post_identifier'
 
 def p_post_identifier(p):
     '''post_identifier : LEFT_BRACKET exp RIGHT_BRACKET
@@ -305,10 +290,10 @@ def p_loop(p):
 
 # for
 def p_for(p):
-    'for : FOR identifier validate_variable post_for'
+    'for : FOR identifier post_for'
 
 def p_post_for(p):
-    '''post_for : IN identifier validate_variable post_cycle
+    '''post_for : IN identifier post_cycle
                 | FROM exp TO exp post_cycle'''
 
 # while
@@ -332,8 +317,9 @@ def p_empty(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    #print("Syntax error in input!")
     print("Syntax error at '%s'" % repr(p)) #p.value)
+    # While there are syntax errors, turn off the semantics reporting
+    
 
 
 # Build the parser
