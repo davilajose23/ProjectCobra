@@ -1,8 +1,11 @@
-a = 1 
+a = 1
 b = 2
-x = [1, 3, 4 + 4]
-a = hola() 
+x = [1, 2, 4]
+
+func hola()
+	return 1
+end
 
 main
-	x = 1
+	x = hola()
 end_main
