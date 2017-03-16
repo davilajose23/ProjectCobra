@@ -257,7 +257,7 @@ def p_else(p):
 
 # ********************* Diagram print *********************
 def p_print(p):
-    'print : PRINT cond post_print'
+    'print : PRINT start_evaluating cond post_print finish_evaluating'
 
 def p_post_print(p):
     '''post_print :  COMMA STRING_CONSTANT 
