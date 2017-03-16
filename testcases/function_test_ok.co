@@ -1,5 +1,3 @@
-l = 0
-
 func hola()
 	print 'Hola mundo'
 	return 
