@@ -1,0 +1,11 @@
+a = [1, 2, 3, 4]
+
+func print_vals(n)
+	for i from 0 to 3:
+		print a[i]
+	end
+end
+
+main
+	print_vals(a)
+end_main
