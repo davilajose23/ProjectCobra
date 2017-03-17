@@ -51,9 +51,11 @@ def p_post_functions(p):
     
 # ********************* Diagram main *********************
 def p_main(p):
-    'main : MAIN required_eol post_variables block END_MAIN optional_eol'
+    'main : MAIN required_eol block_with_variables END_MAIN optional_eol'
     
 # ********************* Diagram block *********************
+def p_block_with_variables(p):
+    'block_with_variables : post_variables block'
 
 def p_block(p):
     'block : statement post_block'
@@ -93,22 +95,22 @@ def p_register_function(p):
     functions_directory.set_scope(p[-1])
 
 def p_post_function(p):
-    '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return
-                          | RIGHT_PARENTHESIS required_eol post_variables func_return'''
+    '''post_function : parameters RIGHT_PARENTHESIS required_eol func_return
+                          | RIGHT_PARENTHESIS required_eol func_return'''
 
 def p_func_return(p):
     '''func_return : void_return 
                     | value_return'''
                    
 def p_void_return(p):
-    'void_return : block post_void_return'
+    'void_return : block_with_variables post_void_return'
 
 def p_post_void_return(p):
     '''post_void_return : END required_eol set_void_return
                         | RETURN required_eol END required_eol set_void_return'''
 
 def p_value_return(p):
-    '''value_return : block RETURN cond required_eol END required_eol set_value_return
+    '''value_return : block_with_variables RETURN cond required_eol END required_eol set_value_return
                     | RETURN cond required_eol END required_eol set_value_return'''
 
 # Adds to functions directory de return type of the function
