@@ -51,9 +51,10 @@ def p_post_functions(p):
     
 # ********************* Diagram main *********************
 def p_main(p):
-    'main : MAIN EOL block END_MAIN optional_eol'
+    'main : MAIN required_eol post_variables block END_MAIN optional_eol'
     
 # ********************* Diagram block *********************
+
 def p_block(p):
     'block : statement post_block'
     
@@ -92,8 +93,8 @@ def p_register_function(p):
     functions_directory.set_scope(p[-1])
 
 def p_post_function(p):
-    '''post_function : parameters RIGHT_PARENTHESIS required_eol func_return
-                          | RIGHT_PARENTHESIS required_eol func_return'''
+    '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return
+                          | RIGHT_PARENTHESIS required_eol post_variables func_return'''
 
 def p_func_return(p):
     '''func_return : void_return 

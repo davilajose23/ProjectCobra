@@ -1,4 +1,5 @@
 func hola()
+	a = 2
 	print 'Hola'
 end
 
@@ -9,8 +10,8 @@ end
 main
 	a = 1
 	b = 2
+	x = a + b
 	hola()
 	mas(a, b)
 	mas(a + 1, b - 1)
-	x = a + b
 end_main
