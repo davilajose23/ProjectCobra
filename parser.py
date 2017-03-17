@@ -298,7 +298,7 @@ def p_post_for(p):
 
 # while
 def p_while(p):
-    'while : WHILE cond post_cycle'
+    'while : WHILE start_evaluating cond  finish_evaluating post_cycle'
 
 # Cycle common grammar
 def p_post_cycle(p):

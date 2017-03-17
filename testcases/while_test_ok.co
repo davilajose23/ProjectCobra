@@ -1,0 +1,14 @@
+a = 1
+
+func increment(n)
+	while a < n:
+		a += 1
+	end
+	return
+end
+
+main
+	n = 10
+	increment(n)
+	print a
+end_main
