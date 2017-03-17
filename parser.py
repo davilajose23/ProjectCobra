@@ -290,11 +290,7 @@ def p_loop(p):
 
 # for
 def p_for(p):
-    'for : FOR identifier post_for'
-
-def p_post_for(p):
-    '''post_for : IN identifier post_cycle
-                | FROM exp TO exp post_cycle'''
+    'for : FOR identifier FROM exp TO exp post_cycle'
 
 # while
 def p_while(p):
