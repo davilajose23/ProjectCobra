@@ -145,8 +145,7 @@ def p_variable(p):
 
 # ********************* Diagram statement *********************
 def p_statement(p):
-    ''' statement : variable required_eol
-                    | condition required_eol
+    ''' statement : condition required_eol
                     | print required_eol
                     | read required_eol
                     | loop required_eol
