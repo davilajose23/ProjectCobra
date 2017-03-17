@@ -1,0 +1,17 @@
+a = 0
+
+func eval(a)
+	if a >= 0:
+		a -= 1
+	else:
+		a += 2
+	end
+	return a
+end
+
+main
+	a = eval(a)
+	if a >= 1:
+		print a, '\n'
+	end
+end_main

@@ -1,0 +1,20 @@
+a = 5
+b = 7
+
+func max(a, b)
+	x = 0
+
+	if a < b:
+		x = b
+	else:
+		if a == b:
+			x = b
+	end
+
+	return x
+end
+
+main
+	x = max(a, b)
+	print x
+end_main

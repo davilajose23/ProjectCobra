@@ -3,6 +3,7 @@ b = 2
 x = [1, 2, 4]
 
 func hola()
+	a = 3
 	return 1
 end
 
