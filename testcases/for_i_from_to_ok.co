@@ -6,6 +6,7 @@ func print_vals(n)
 	end
 end
 
+# Funcion main
 main
 	print_vals(a)
 end_main
