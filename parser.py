@@ -4,6 +4,7 @@ from TestCobra import TestC
 import sys
 from symbol_table import functions_dir
 from stack import Stack
+from cube import semantic_cube
 
 functions_directory = functions_dir()
 # Precedence rules for the arithmetic operators
@@ -18,52 +19,6 @@ precedence = (
 # dictionary of names (for storing variables)
 names = { }
 
-operations      = ( '+',  '-', '*', '/', '+=', '-=', '*=', '/=', '%', 'mod', '<', '>', '!=', '==', '<=', '>=', 'and', 'not', 'or')
-create = lambda x: dict(zip(operations, x))
-create_manual = lambda x: dict(zip(operations, [x] * len(operations)))
-# semantic cube
-semantic_cube = {
-    #                       '+',        '-',        '*',        '/',        '+=',       '-=',       '*=',       '/=',        '%',        'mod',       <,           >,          !=,         ==,        <=,          >=,         and,        not,        or
-    'int': {
-        'int' : create([    'int',      'int',      'int',      'int',      'int',      'int',      'int',      'int',      'int',      'int',      'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool']) ,
-        'double': create([  'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool']) ,
-        'string': create_manual('Error'),
-        'bool': create_manual('Error'),
-        'list': create_manual('Error') 
-    },    
-    #                       '+',        '-',        '*',        '/',        '+=',       '-=',       '*=',       '/=',        '%',        'mod',       <,           >,          !=,         ==,        <=,          >=,         and,        not,        or
-    'double': {
-        'int' :   create([  'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool']) ,
-        'double': create([  'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'double',   'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool']) ,
-        'string': create_manual('Error'),
-        'bool': create_manual('Error'),
-        'list': create_manual('Error') 
-    },
-    #                       '+',        '-',        '*',        '/',        '+=',       '-=',       '*=',       '/=',        '%',        'mod',       <,           >,          !=,         ==,        <=,          >=,         and,        not,        or
-    'string': {
-        'int' : create_manual('Error'),
-        'double': create_manual('Error'),
-        'string': create([  'String',   'Error',    'Error',    'Error',    'String',   'Error',    'Error',    'Error',    'Error',    'Error',    'Error',    'Error',    'bool',    'bool',    'Error',    'Error',    'Error',    'Error',    'Error']), 
-        'bool': create_manual('Error'),
-        'list': create_manual('Error') 
-    },
-     #                       '+',        '-',        '*',        '/',        '+=',       '-=',       '*=',      '/=',        '%',        'mod',       <,           >,          !=,         ==,        <=,          >=,         and,        not,        or  
-    'bool': {
-        'int' : create_manual('Error'),
-        'double': create_manual('Error'),
-        'string': create_manual('Error') ,
-        'bool':  create([  'Error',     'Error',   'Error',     'Error',    'Error',    'Error',   'Error',     'Error',    'Error',    'Error',      'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool']) ,
-        'list': create_manual('Error') 
-    },
-    #                       '+',        '-',        '*',        '/',        '+=',       '-=',       '*=',       '/=',        '%',        'mod',       <,           >,          !=,         ==,        <=,          >=,         and,        not,        or
-    'list': {
-        'int' : create_manual('Error'),
-        'double': create_manual('Error'),
-        'string': create_manual('Error'),
-        'bool': create_manual('Error'),
-        'list': create_manual('Error') 
-    }
-}
 # ********************* Diagram program *********************
 def p_program(p):
     '''program : pre_variables functions main
@@ -97,12 +52,9 @@ def p_post_functions(p):
     
 # ********************* Diagram main *********************
 def p_main(p):
-    'main : MAIN required_eol block_with_variables END_MAIN optional_eol'
+    'main : MAIN required_eol block END_MAIN optional_eol'
     
 # ********************* Diagram block *********************
-def p_block_with_variables(p):
-    'block_with_variables : post_variables block'
-
 def p_block(p):
     'block : statement post_block'
     
@@ -149,14 +101,14 @@ def p_func_return(p):
                     | value_return'''
                    
 def p_void_return(p):
-    'void_return : block_with_variables post_void_return'
+    'void_return : block post_void_return'
 
 def p_post_void_return(p):
     '''post_void_return : END required_eol set_void_return
                         | RETURN required_eol END required_eol set_void_return'''
 
 def p_value_return(p):
-    '''value_return : block_with_variables RETURN cond required_eol END required_eol set_value_return
+    '''value_return : block RETURN cond required_eol END required_eol set_value_return
                     | RETURN cond required_eol END required_eol set_value_return'''
 
 # Adds to functions directory de return type of the function
@@ -194,7 +146,8 @@ def p_variable(p):
 
 # ********************* Diagram statement *********************
 def p_statement(p):
-    ''' statement : condition required_eol
+    ''' statement : variable required_eol
+                    | condition required_eol
                     | print required_eol
                     | read required_eol
                     | loop required_eol
