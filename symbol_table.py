@@ -13,14 +13,15 @@ class functions_dir(object):
 		self.functions = {}
 		self.functions['global'] = [{}, None, 0]
 
-		# 0 es el indice de la tupla de una funcion para accesar a su diccionario de variables
+		# 0 es el indice de la lista de una funcion para accesar a su diccionario de variables
 		self.variables_dict = 0
 
-		# 1 es el indice de la tupla de una funcion para accesar su return type
+		# 1 es el indice de la lista de una funcion para accesar su return type
 		self.return_type = 1
 
-		# 2 es el indide de la tupla de una funcion para indicar la cantidad de argumentos que espera
+		# 2 es el indide de la lista de una funcion para indicar la cantidad de argumentos que espera
 		self.expected_arguments = 2
+		
 		self.scope = 'global'
 		self.evaluating = False
 
@@ -54,7 +55,7 @@ class functions_dir(object):
 
 	# Add variable to current scope
 	def add_var(self, variable_id, value = 0, var_type = 'mutable'):
-		self.functions[self.scope][self.variables_dict][variable_id] = (value, var_type)
+		self.functions[self.scope][self.variables_dict][variable_id] = [value, var_type]
 
 	# Validate variable exists
 	def validate_variable(self, variable_id):
