@@ -21,7 +21,7 @@ class functions_dir(object):
 
 		# 2 es el indide de la lista de una funcion para indicar la cantidad de argumentos que espera
 		self.expected_arguments = 2
-		
+
 		self.scope = 'global'
 		self.evaluating = False
 
@@ -55,7 +55,16 @@ class functions_dir(object):
 
 	# Add variable to current scope
 	def add_var(self, variable_id, value = 0, var_type = 'mutable'):
-		self.functions[self.scope][self.variables_dict][variable_id] = [value, var_type]
+		# Consider, when making cuadruples, determine type and value
+		if self.functions[self.scope][self.variables_dict].get(variable_id, None) is None:
+			# Look for variable in global scope
+			if self.functions['global'][self.variables_dict].get(variable_id, None) is None:
+				# If the variable is None in both, its added to the current scope
+				self.functions[self.scope][self.variables_dict][variable_id] = [value, var_type]
+			else:
+				self.functions['global'][self.variables_dict][variable_id] = [value, var_type]
+		else:
+			self.functions[self.scope][self.variables_dict][variable_id] = [value, var_type]
 
 	# Validate variable exists
 	def validate_variable(self, variable_id):
