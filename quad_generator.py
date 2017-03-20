@@ -71,3 +71,9 @@ class QuadGenerator(object):
 
     def validate_operator(self, operator):
         return operator in self.operations
+
+    def export(self):
+        f = open(self.file, 'w')
+        for q in self.quadruples:
+            f.write(q.repr())
+        f.close()  # you can omit in most cases as the destructor will call it
