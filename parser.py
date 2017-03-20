@@ -16,9 +16,6 @@ precedence = (
     # ('right','UMINUS'),
 )
 
-# dictionary of names (for storing variables)
-names = { }
-
 # ********************* Diagram program *********************
 def p_program(p):
     '''program : pre_variables functions main
