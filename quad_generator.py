@@ -1,6 +1,26 @@
 from stack import Stack
 from cube import semantic_cube
 
+class Variable(object):
+    """docstring for Variable"""
+    def __init__(self, name, value, var_type):
+        super(Variable, self).__init__()
+        self.name = name
+        self.value = value
+        self.type = var_type
+
+    def repr(self):
+        return 'VAR. NAME: {0}, VALUE: {1}, TYPE: {2}'.format(self.name, self.value, self.type)
+
+    def get_type(self):
+        return self.type
+
+    def get_name(self):
+        return self.name
+
+    def get_value(self):
+        return self.value
+
 class Quadruple(object):
     """docstring for Quadruple"""
     def __init__(self, op, left_operand, right_operand, res):
@@ -11,7 +31,7 @@ class Quadruple(object):
         self.res = res
 
     def repr(self):
-        return '({0}, {1}, {2}, {3})'.format(op, left_operand, right_operand, res)
+        return '({0}, {1}, {2}, {3})'.format(self.op, self.left_operand, self.right_operand, self.res)
 
 class QuadGenerator(object):
     """docstring for QuadGenerator"""
@@ -25,52 +45,33 @@ class QuadGenerator(object):
         self.file = filename
         # Id of temporal vars
         self.temporal_id = 1
-        # Valid operators
-        self.operations = ('+',  '-', '*', '/', '+=', '-=', '*=', '/=', '%', 'mod', '<', '>', '!=', '==', '<=', '>=', 'and', 'not', 'or', '(', ')')
-        # False bottoms counter
-        self.false_bottom = 0
         # List of quadruples
         self.quadruples = []
 
     def read_operand(self, operand):
+        # Push Variable
         self.pile_o.push(operand)
 
     def read_operator(self, operator):
-        if operator in self.operations:
-            if self.false_bottom > 0:
-                    if operator == '(':
-                        t = Stack()
-                        self.popper.push(t)
-                        self.false_bottom += 1
-                    elif operator == ')':
-                        self.popper.pop()
-                        self.false_bottom -= 1
-                    else:
-                        self.popper.top().push(operator)
-            else:
-                self.popper.push(operator)
-        else:
-            print('Invalid operator ' + str(operator))
-                
+        self.popper.push(operator)     
 
-    def write_quad(self):
-        if self.false_bottom > 0:
-            op = self.popper.top().pop()
-        else:
-            op = self.popper.pop()
-
+    def generate_quad(self):
+        op = self.popper.pop()
         right_operand = self.pile_o.pop()
         left_operand = self.pile_o.pop()
-        res = semantic_cube[type(left_operand)][type(right_operand)][op]
+        res = semantic_cube[right_operand.get_type][left_operand.get_type][op]
 
         if res != 'Error':
-            quad = Quadruple(op=op, left_operand=left_operand, right_operand=right_operand, res='t' + str(self.temporal_id))
+            # Genera variable temporal
+            temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
+            # Aumenta id de temporales
+            self.temporal_id += 1
+            # Genera cuadruplo
+            quad = Quadruple(op=op, left_operand=left_operand.get_name, right_operand=right_operand.get_name, res=temp.get_name)
+            # Insert cuadruplo en la lista de cuadruplos
             self.quadruples.append(quad)
         else:
-            print('Type missmatch ' + str(type(left_operand)) + ' and ' + str(type(right_operand)) + ' for operator: ' + op)
-
-    def validate_operator(self, operator):
-        return operator in self.operations
+            raise TypeError('Type missmatch ' + str(type(left_operand)) + ' and ' + str(type(right_operand)) + ' for operator: ' + op)
 
     def export(self):
         f = open(self.file, 'w')

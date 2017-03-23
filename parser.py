@@ -5,6 +5,7 @@ import sys
 from symbol_table import functions_dir
 from stack import Stack
 from cube import semantic_cube
+from quad_generator import *
 
 functions_directory = functions_dir()
 # Precedence rules for the arithmetic operators
@@ -15,6 +16,8 @@ precedence = (
     ('left','TIMES','DIVIDE', 'MOD', 'PERCENTAGE'),
     # ('right','UMINUS'),
 )
+
+generator = QuadGenerator('output.txt')
 
 # ********************* Diagram program *********************
 def p_program(p):
@@ -173,20 +176,39 @@ def p_finish_evaluating(p):
 
 # ********************* Diagram cond *********************
 def p_cond(p):
-    '''cond : expression post_cond''' 
+    '''cond : expression pop_op_and_or post_cond'''
+
+def p_pop_op_and_or(p):
+    'pop_op_and_or :'
+    if generator.popper.top() == 'and' or generator.popper.top() == 'or':
+        generator.generate_quad()
 
 def p_post_cond(p):
-    '''post_cond : AND cond
-                | OR  cond
+    '''post_cond : AND push_op_and_or cond
+                | OR  push_op_and_or cond
                 | empty'''
+
+def p_push_op_and_or(p):
+    'push_op_and_or :'
+    generator.popper.push(p[-1])
 
 # ********************* Diagram expression *********************
 def p_expression(p):
-    'expression : exp post_expression'
+    'expression : exp pop_relop post_expression'
+
+def p_pop_relop(p):
+    'pop_relop :'
+    relops = ['<', '>', '<=', '>=', '!=']
+    if generator.popper.top() in relops:
+        generator.generate_quad()
 
 def p_post_expression(p):
-    '''post_expression : relational_operator exp
+    '''post_expression : relational_operator push_relop exp
                         | empty'''
+
+def p_push_relop(p):
+    'push_relop :'
+    generator.popper.push(p[-1])
 
 # ********************* Diagram relational_operator *********************
 def p_relational_operator(p):
@@ -199,23 +221,42 @@ def p_relational_operator(p):
 
 # ********************* Diagram exp *********************
 def p_exp(p):
-    'exp : term post_exp'
+    'exp : term pop_exp post_exp'
+
+def p_pop_exp(p):
+    'pop_exp :'
+    if generator.popper.top() == '+' or generator.popper.top() == '-':
+        generator.generate_quad()
 
 def p_post_exp(p):
-    ''' post_exp : PLUS exp
-                | MINUS exp
+    ''' post_exp : PLUS push_exp exp
+                | MINUS push_exp exp
                 | empty'''
+
+def p_push_exp(p):
+    'push_exp :'
+    generator.popper.push(p[-1])
 
 # ********************* Diagram term *********************
 def p_term(p):
-    'term : factor post_term'
+    'term : factor pop_term post_term'
+
+def p_pop_term(p):
+    'pop_term :'
+    operators = ['*', '/', '%', 'mod']
+    if generator.popper.top() in operators:
+        generator.generate_quad()
 
 def p_post_term(p):
-    ''' post_term : TIMES term
-                | DIVIDE term
-                | PERCENTAGE term
-                | MOD term
+    ''' post_term : TIMES push_term term
+                | DIVIDE push_term term
+                | PERCENTAGE push_term term
+                | MOD push_term term
                 | empty'''
+
+def p_push_term(p):
+    'push_term :'
+    generator.popper.push(p[-1])
 
 # ********************* Diagram factor *********************
 def p_factor(p):
