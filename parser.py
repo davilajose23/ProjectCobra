@@ -260,10 +260,16 @@ def p_push_term(p):
 
 # ********************* Diagram factor *********************
 def p_factor(p):
-    '''factor : LEFT_PARENTHESIS cond RIGHT_PARENTHESIS
+    '''factor : LEFT_PARENTHESIS push_paren cond RIGHT_PARENTHESIS pop_paren
                 | variable_constant
                 | MINUS variable_constant
                 | call_function'''
+
+def p_push_paren(p):
+    generator.popper.push(p[-1])
+
+def p_pop_paren(p):
+    generator.popper.pop()
 
 # ********************* Diagram variable_constant *********************
 def p_variable_constant(p):
