@@ -28,8 +28,13 @@ def p_program(p):
     p[0] = 'ok'
 
 def p_pre_variables(p):
-    'pre_variables : variable required_eol post_variables'
+    'pre_variables : declaration post_variables'
 
+def p_post_variables(p):
+    '''post_variables : pre_variables
+                        | empty'''
+
+# ********************* Diagram EOL helpers *********************
 def p_required_eol(p):
     'required_eol : EOL optional_eol'
 
@@ -37,8 +42,29 @@ def p_optional_eol(p):
     '''optional_eol : empty
                 | required_eol'''
 
-def p_post_variables(p):
-    '''post_variables : pre_variables
+# ********************* Diagram types *********************
+def p_types(p):
+    '''types : INT
+            | DOUBLE
+            | STRING
+            | BOOL'''
+
+# ********************* Diagram delcaration *********************
+def p_declaration(p):
+    'declaration : types inter_declaration required_eol'
+
+def p_inter_declaration(p):
+    'inter_declaration: ID post_declaration'
+
+def p_post_declaration(p):
+    '''post_declaration : array_declaration cycle_declaration
+                        | cycle_declaration'''
+
+def p_array_declaration(p):
+    'array_declaration : LEFT_BRACKET exp RIGH_BRACKET'
+
+def p_cycle_declaration(p):
+    '''cycle_declaration : COMMA inter_declaration
                         | empty'''
 
 # ********************* Diagram functions *********************
@@ -52,7 +78,7 @@ def p_post_functions(p):
     
 # ********************* Diagram main *********************
 def p_main(p):
-    'main : MAIN required_eol block END_MAIN optional_eol'
+    'main : MAIN required_eol pre_variables block END_MAIN optional_eol'
     
 # ********************* Diagram block *********************
 def p_block(p):
@@ -72,15 +98,15 @@ def p_validate_function_call(p):
     functions_directory.validate_function(p[-1])
 
 def p_post_call_function(p):
-    ''' post_call_function : call_parameters RIGHT_PARENTHESIS
+    ''' post_call_function : arguments RIGHT_PARENTHESIS
                             | RIGHT_PARENTHESIS'''
                             
-# ********************* Diagram call_parameters *********************
-def p_call_parameters(p):
-    'call_parameters : cond post_call_parameters'
+# ********************* Diagram arguments *********************
+def p_arguments(p):
+    'arguments : cond post_arguments'
 
-def p_post_call_parameters(p):
-    '''post_call_parameters : COMMA call_parameters 
+def p_post_arguments(p):
+    '''post_arguments : COMMA arguments 
                             | empty'''
 
 # ********************* Diagram function *********************
@@ -93,8 +119,8 @@ def p_register_function(p):
     functions_directory.set_scope(p[-1])
 
 def p_post_function(p):
-    '''post_function : parameters RIGHT_PARENTHESIS required_eol func_return
-                          | RIGHT_PARENTHESIS required_eol func_return'''
+    '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return
+                          | RIGHT_PARENTHESIS required_eol post_variables func_return'''
 
 def p_func_return(p):
     '''func_return : void_return 
@@ -124,9 +150,8 @@ def p_set_value_return(p):
     functions_directory.reset_scope()
                     
 # ********************* Diagram parameters *********************
-
 def p_parameters(p):
-    'parameters : identifier update_function_parameters post_parameters'
+    'parameters : types identifier update_function_parameters post_parameters'
 
 # Increases the quantity of expected arguments by a function
 def p_update_function_parameters(p):
@@ -139,14 +164,9 @@ def p_post_parameters(p):
     '''post_parameters : COMMA parameters
                         | empty'''
 
-# ********************* Diagram variable *********************
-def p_variable(p):
-    ''' variable : assignment
-                  | list'''
-
 # ********************* Diagram statement *********************
 def p_statement(p):
-    ''' statement : variable required_eol
+    ''' statement : assignment required_eol
                     | condition required_eol
                     | print required_eol
                     | read required_eol
@@ -176,7 +196,7 @@ def p_finish_evaluating(p):
 
 # ********************* Diagram cond *********************
 def p_cond(p):
-    '''cond : expression pop_op_and_or post_cond'''
+    'cond : expression pop_op_and_or post_cond'
 
 def p_pop_op_and_or(p):
     'pop_op_and_or :'
@@ -311,14 +331,6 @@ def p_post_print(p):
 # ********************* Diagram read *********************
 def p_read(p):
     'read : READ LEFT_PARENTHESIS RIGHT_PARENTHESIS '
-
-# ********************* Diagram list *********************
-def p_list(p):
-    'list : identifier EQUALS LEFT_BRACKET post_list'
-
-def p_post_list(p):
-    '''post_list :  call_parameters RIGHT_BRACKET 
-                  | RIGHT_BRACKET'''
 
 # ********************* Diagram identifier *********************
 def p_identifier(p):
