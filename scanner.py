@@ -34,7 +34,8 @@ reserved = {
     'en': 'ENGLISH',
     'func': 'FUNC',
     'main': 'MAIN',
-    'end_main': 'END_MAIN'
+    'end_main': 'END_MAIN',
+    'void': 'VOID'
 }
 
 # List of token names.   This is always required
