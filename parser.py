@@ -108,7 +108,7 @@ def p_post_arguments(p):
 
 # ********************* Diagram function *********************
 def p_function(p):
-    'function : func_types ID register_function LEFT_PARENTHESIS post_function'
+    'function : FUNC func_types ID register_function LEFT_PARENTHESIS post_function'
 
 def p_func_types(p):
     '''func_types : INT
@@ -135,16 +135,16 @@ def p_void_return(p):
     'void_return : block post_void_return'
 
 def p_post_void_return(p):
-    '''post_void_return : END required_eol 
-                        | RETURN required_eol END required_eol'''
-    functions_directory.reset_scope()
+    '''post_void_return : END reset_scope required_eol 
+                        | RETURN required_eol END reset_scope required_eol'''
 
 def p_value_return(p):
-    '''value_return : block RETURN cond required_eol END required_eol
-                    | RETURN cond required_eol END required_eol'''
+    '''value_return : block RETURN cond required_eol END reset_scope required_eol
+                    | RETURN cond required_eol END reset_scope required_eol'''
+
+def p_reset_scope(p):
+    'reset_scope :'
     functions_directory.reset_scope()
-
-
 
 # ********* DEPRECATED (now all functions have a type and it is registered after get the ID of the function)
 #
