@@ -108,11 +108,9 @@ def p_post_arguments(p):
 
 # ********************* Diagram function *********************
 def p_function(p):
-<<<<<<< HEAD
+
     'function : FUNC func_types COLON ID register_function LEFT_PARENTHESIS post_function'
-=======
-    'function : FUNC func_types ID register_function LEFT_PARENTHESIS post_function'
->>>>>>> f76bff639eabf72b1e6173197bda220d265d9291
+
 
 def p_func_types(p):
     '''func_types : types
