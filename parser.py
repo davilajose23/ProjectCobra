@@ -108,7 +108,11 @@ def p_post_arguments(p):
 
 # ********************* Diagram function *********************
 def p_function(p):
+<<<<<<< HEAD
     'function : FUNC func_types COLON ID register_function LEFT_PARENTHESIS post_function'
+=======
+    'function : FUNC func_types ID register_function LEFT_PARENTHESIS post_function'
+>>>>>>> f76bff639eabf72b1e6173197bda220d265d9291
 
 def p_func_types(p):
     '''func_types : types
@@ -132,16 +136,16 @@ def p_void_return(p):
     'void_return : block post_void_return'
 
 def p_post_void_return(p):
-    '''post_void_return : END required_eol 
-                        | RETURN required_eol END required_eol'''
-    functions_directory.reset_scope()
+    '''post_void_return : END reset_scope required_eol 
+                        | RETURN required_eol END reset_scope required_eol'''
 
 def p_value_return(p):
-    '''value_return : block RETURN cond required_eol END required_eol
-                    | RETURN cond required_eol END required_eol'''
+    '''value_return : block RETURN cond required_eol END reset_scope required_eol
+                    | RETURN cond required_eol END reset_scope required_eol'''
+
+def p_reset_scope(p):
+    'reset_scope :'
     functions_directory.reset_scope()
-
-
 
 # ********* DEPRECATED (now all functions have a type and it is registered after get the ID of the function)
 #
@@ -184,15 +188,15 @@ def p_statement(p):
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
-    'assignment : identifier assignment_operator cond finish_evaluating'
+    'assignment : start_evaluating identifier assignment_operator cond finish_evaluating'
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
-    '''assignment_operator : EQUALS start_evaluating
-                            | TIMES_EQUALS start_evaluating
-                            | DIVIDE_EQUALS start_evaluating
-                            | PLUS_EQUALS start_evaluating
-                            | MINUS_EQUALS start_evaluating'''
+    '''assignment_operator : EQUALS
+                            | TIMES_EQUALS
+                            | DIVIDE_EQUALS
+                            | PLUS_EQUALS
+                            | MINUS_EQUALS'''
 
 def p_start_evaluating(p):
     'start_evaluating :'
@@ -395,8 +399,7 @@ if __name__ == '__main__':
     # Obtiene el archivo
         if (sys.argv[1] == 'test'):
             t = TestC()
-            t.setup(parser)
-            t.runTest()
+            t.set_up(parser)
         else:
             file = sys.argv[1]
             try:
