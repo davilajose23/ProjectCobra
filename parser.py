@@ -58,7 +58,7 @@ def p_set_type(p):
     functions_directory.set_type(p[-1])
 
 def p_inter_declaration(p):
-    'inter_declaration: identifier cycle_declaration'
+    'inter_declaration : identifier cycle_declaration'
 
 def p_cycle_declaration(p):
     '''cycle_declaration : COMMA inter_declaration
@@ -108,13 +108,10 @@ def p_post_arguments(p):
 
 # ********************* Diagram function *********************
 def p_function(p):
-    'function : func_types ID register_function LEFT_PARENTHESIS post_function'
+    'function : FUNC func_types COLON ID register_function LEFT_PARENTHESIS post_function'
 
 def p_func_types(p):
-    '''func_types : INT
-            | DOUBLE
-            | STRING
-            | BOOL
+    '''func_types : types
             | VOID'''
 
 def p_register_function(p):

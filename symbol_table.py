@@ -55,7 +55,7 @@ class functions_dir(object):
 		self.scope = 'global'
 
 	# Add variable to current scope
-	def add_var(self, variable_id, value = 0, var_type):
+	def add_var(self, variable_id, var_type, value=0):
 		# Consider, when making cuadruples, determine type and value
 		if self.functions[self.scope][self.variables_dict].get(variable_id, None) is None:
 			# Look for variable in global scope
