@@ -1,6 +1,9 @@
-a = [1, 2, 3, 4]
+int a[3]
+a[0] = 1
+a[1] = 2
+a[2] = 3
 
-func print_vals(n)
+func void print_vals(n)
 	for i from 0 to 3:
 		print a[i]
 	end

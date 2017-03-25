@@ -1,6 +1,7 @@
+int a
 a = 0
 
-func eval(a)
+func int eval(a)
 	if a >= 0:
 		a -= 1
 	else:

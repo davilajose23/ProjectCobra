@@ -1,6 +1,7 @@
+int a
 a = 1
 
-func increment(n)
+func void increment(int n)
 	while a < n:
 		a += 1
 	end
@@ -8,6 +9,7 @@ func increment(n)
 end
 
 main
+	int n
 	n = 10
 	increment(n)
 	print a

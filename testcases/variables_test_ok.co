@@ -1,6 +1,6 @@
-a = 1
-b = 2
-x = [1, 2, 4]
+int a
+int b
+int x
 
 func hola()
 	a = 3

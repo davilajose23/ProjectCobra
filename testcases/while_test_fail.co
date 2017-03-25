@@ -1,4 +1,4 @@
-func increment(n)
+func void increment(n)
 	while a < n:
 		a += 1
 	end
