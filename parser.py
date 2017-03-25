@@ -187,15 +187,15 @@ def p_statement(p):
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
-    'assignment : identifier assignment_operator cond finish_evaluating'
+    'assignment : start_evaluating identifier assignment_operator cond finish_evaluating'
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
-    '''assignment_operator : EQUALS start_evaluating
-                            | TIMES_EQUALS start_evaluating
-                            | DIVIDE_EQUALS start_evaluating
-                            | PLUS_EQUALS start_evaluating
-                            | MINUS_EQUALS start_evaluating'''
+    '''assignment_operator : EQUALS
+                            | TIMES_EQUALS
+                            | DIVIDE_EQUALS
+                            | PLUS_EQUALS
+                            | MINUS_EQUALS'''
 
 def p_start_evaluating(p):
     'start_evaluating :'

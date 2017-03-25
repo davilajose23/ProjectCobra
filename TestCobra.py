@@ -24,7 +24,7 @@ class TestC(unittest.TestCase):
 			f.close()
 			#Se aplica la gramatica
 			if self.parser.parse(data, tracking=True) == 'ok':
-				print('-------------------- OK --------------------')
+				print('--------------------- OK ----------------------')
 			else:
 				print('-------------------- ERROR --------------------')
 		except EOFError:
