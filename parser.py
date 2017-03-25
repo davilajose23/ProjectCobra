@@ -54,14 +54,14 @@ def p_declaration(p):
     'declaration : types inter_declaration required_eol'
 
 def p_inter_declaration(p):
-    'inter_declaration: ID post_declaration'
+    'inter_declaration : ID post_declaration'
 
 def p_post_declaration(p):
     '''post_declaration : array_declaration cycle_declaration
                         | cycle_declaration'''
 
 def p_array_declaration(p):
-    'array_declaration : LEFT_BRACKET exp RIGH_BRACKET'
+    'array_declaration : LEFT_BRACKET exp RIGHT_BRACKET'
 
 def p_cycle_declaration(p):
     '''cycle_declaration : COMMA inter_declaration
@@ -111,11 +111,19 @@ def p_post_arguments(p):
 
 # ********************* Diagram function *********************
 def p_function(p):
-    'function : FUNC ID register_function LEFT_PARENTHESIS post_function'
+    'function : func_types ID register_function LEFT_PARENTHESIS post_function'
+
+def p_func_types(p):
+    '''func_types : INT
+            | DOUBLE
+            | STRING
+            | BOOL
+            | VOID'''
 
 def p_register_function(p):
     'register_function :'
     functions_directory.add_function(p[-1])
+    functions_directory.set_return_type(p[-2])
     functions_directory.set_scope(p[-1])
 
 def p_post_function(p):
@@ -130,24 +138,30 @@ def p_void_return(p):
     'void_return : block post_void_return'
 
 def p_post_void_return(p):
-    '''post_void_return : END required_eol set_void_return
-                        | RETURN required_eol END required_eol set_void_return'''
+    '''post_void_return : END required_eol 
+                        | RETURN required_eol END required_eol'''
+    functions_directory.reset_scope()
 
 def p_value_return(p):
-    '''value_return : block RETURN cond required_eol END required_eol set_value_return
-                    | RETURN cond required_eol END required_eol set_value_return'''
-
-# Adds to functions directory de return type of the function
-# Resets the scope of functions directory after
-def p_set_void_return(p):
-    'set_void_return :'
-    functions_directory.set_return_type('void')
+    '''value_return : block RETURN cond required_eol END required_eol
+                    | RETURN cond required_eol END required_eol'''
     functions_directory.reset_scope()
 
-def p_set_value_return(p):
-    'set_value_return :'
-    functions_directory.set_return_type('value')
-    functions_directory.reset_scope()
+
+
+# ********* DEPRECATED (now all functions have a type and it is registered after get the ID of the function)
+#
+# # Adds to functions directory de return type of the function
+# # Resets the scope of functions directory after
+# def p_set_void_return(p):
+#     'set_void_return :'
+#     functions_directory.set_return_type('void')
+#     functions_directory.reset_scope()
+
+# def p_set_value_return(p):
+#     'set_value_return :'
+#     functions_directory.set_return_type('value')
+#     functions_directory.reset_scope()
                     
 # ********************* Diagram parameters *********************
 def p_parameters(p):
@@ -286,9 +300,11 @@ def p_factor(p):
                 | call_function'''
 
 def p_push_paren(p):
+    'push_paren : '
     generator.popper.push(p[-1])
 
 def p_pop_paren(p):
+    'pop_paren : '
     generator.popper.pop()
 
 # ********************* Diagram variable_constant *********************
