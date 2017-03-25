@@ -1,16 +1,13 @@
 import os
 import glob
 import unittest
+from parser import parser as global_parser
 
 class TestC(unittest.TestCase):
 
 	path = ''
 	parser = None
-	parser_copy = None
-
-	def set_up(self, parser, p='testcases'):
-		self.parser_copy = parser
-		self.path = p
+	parser_copy = global_parser
 
 	def setUp(self):
 		self.parser = self.parser_copy
