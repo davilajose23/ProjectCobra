@@ -24,6 +24,7 @@ class functions_dir(object):
 
 		self.scope = 'global'
 		self.evaluating = False
+		self.last_type = None
 
 	# Add function to fuctions directory
 	def add_function(self, function_id):
@@ -54,7 +55,7 @@ class functions_dir(object):
 		self.scope = 'global'
 
 	# Add variable to current scope
-	def add_var(self, variable_id, value = 0, var_type = 'mutable'):
+	def add_var(self, variable_id, value = 0, var_type):
 		# Consider, when making cuadruples, determine type and value
 		if self.functions[self.scope][self.variables_dict].get(variable_id, None) is None:
 			# Look for variable in global scope
@@ -79,6 +80,9 @@ class functions_dir(object):
 
 	def finish_evaluating(self):
 		self.evaluating = False
+
+	def set_type(self, last_type):
+		self.last_type = last_type
 
 	@property
 	def current_scope(self):

@@ -51,17 +51,14 @@ def p_types(p):
 
 # ********************* Diagram delcaration *********************
 def p_declaration(p):
-    'declaration : types inter_declaration required_eol'
+    'declaration : types set_type inter_declaration required_eol'
+
+def p_set_type(p):
+    'set_type :'
+    functions_directory.set_type(p[-1])
 
 def p_inter_declaration(p):
-    'inter_declaration: ID post_declaration'
-
-def p_post_declaration(p):
-    '''post_declaration : array_declaration cycle_declaration
-                        | cycle_declaration'''
-
-def p_array_declaration(p):
-    'array_declaration : LEFT_BRACKET exp RIGH_BRACKET'
+    'inter_declaration: identifier cycle_declaration'
 
 def p_cycle_declaration(p):
     '''cycle_declaration : COMMA inter_declaration
@@ -151,14 +148,14 @@ def p_set_value_return(p):
                     
 # ********************* Diagram parameters *********************
 def p_parameters(p):
-    'parameters : types identifier update_function_parameters post_parameters'
+    'parameters : types set_type identifier update_function_parameters post_parameters'
 
 # Increases the quantity of expected arguments by a function
 def p_update_function_parameters(p):
     'update_function_parameters :'
     functions_directory.increase_expected_arguments()
     # Registers the expected argument in the function variables directory
-    functions_directory.add_var(variable_id=p[-1])
+    functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
 
 def p_post_parameters(p):
     '''post_parameters : COMMA parameters
@@ -181,10 +178,10 @@ def p_assignment(p):
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
     '''assignment_operator : EQUALS start_evaluating
-                            | TIMES_EQUALS
-                            | DIVIDE_EQUALS
-                            | PLUS_EQUALS
-                            | MINUS_EQUALS'''
+                            | TIMES_EQUALS start_evaluating
+                            | DIVIDE_EQUALS start_evaluating
+                            | PLUS_EQUALS start_evaluating
+                            | MINUS_EQUALS start_evaluating'''
 
 def p_start_evaluating(p):
     'start_evaluating :'
@@ -305,7 +302,7 @@ def p_process_variable(p):
     if functions_directory.evaluating:
         functions_directory.validate_variable(p[-1])
     else:
-        functions_directory.add_var(variable_id=p[-1])
+        functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
 
 # ********************* Diagram condition *********************
 def p_condition(p):
