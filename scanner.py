@@ -65,7 +65,10 @@ tokens = [
    'COMMA',
    'COLON',
    'ID',
-   'EOL'
+   'EOL',
+   'INT_CONSTANT',
+   'DOUBLE_CONSTANT',
+   'STRING_CONSTANT'
 ] + list(reserved.values())
 
 #Regular expression rules for simple tokens
