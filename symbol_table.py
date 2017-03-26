@@ -84,10 +84,10 @@ class functions_dir(object):
 		return self.functions
 
 	def get_var(self, variable_id):
-		if variable_id in self.functions[self.scope][variables_dict]:
-			return self.functions[self.scope][variables_dict].get(variable_id)
-		elif variable_id  in self.functions['global'][variables_dict]:
-			return self.functions['global'][variables_dict].get(variable_id)
+		if variable_id in self.functions[self.scope][self.variables_dict]:
+			return self.functions[self.scope][self.variables_dict].get(variable_id)
+		elif variable_id  in self.functions['global'][self.variables_dict]:
+			return self.functions['global'][self.variables_dict].get(variable_id)
 		return None
 
 	@property

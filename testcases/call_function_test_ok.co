@@ -1,5 +1,4 @@
 int a
-a = 0
 
 func void hola()
 	a = 2

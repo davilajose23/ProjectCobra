@@ -9,7 +9,8 @@ class Variable(object):
         self.value = value
         self.type = var_type
 
-    def repr(self):
+    def __str__(self):
+       
         return 'VAR. NAME: {0}, VALUE: {1}, TYPE: {2}'.format(self.name, self.value, self.type)
 
     def get_type(self):
@@ -31,7 +32,7 @@ class Quadruple(object):
         self.right_operand = right_operand
         self.res = res
 
-    def repr(self):
+    def printeame(self):
         return '({0}, {1}, {2}, {3})'.format(self.op, self.left_operand, self.right_operand, self.res)
 
 class QuadGenerator(object):
@@ -53,6 +54,10 @@ class QuadGenerator(object):
         # Quadruple counter
         self.cont = 0
 
+    def printeame(self):
+        for i in self.quadruples:
+            print (i.printeame())
+
     def read_operand(self, operand):
         # Push Variable
         self.pile_o.push(operand)
@@ -61,21 +66,33 @@ class QuadGenerator(object):
         self.popper.push(operator)     
 
     def generate_quad(self):
+        print(self.popper)
         op = self.popper.pop()
+        # print(self.pile_o)
         right_operand = self.pile_o.pop()
         left_operand = self.pile_o.pop()
-        res = semantic_cube[right_operand.get_type][left_operand.get_type][op]
+        res = semantic_cube[right_operand.get_type()][left_operand.get_type()][op]
 
         if res != 'Error':
             # Genera variable temporal
             temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
             # Aumenta id de temporales
             self.temporal_id += 1
+            # Obtiene el nombre o valor de los operandoss
+            name_left = left_operand.get_name()
+            name_right = right_operand.get_name()
+            if name_left == 'constant':
+                name_left = left_operand.get_value()
+            if name_right == 'constant':
+                name_right = right_operand.get_value()
+
             # Genera cuadruplo
-            quad = Quadruple(id=self.cont, op=op, left_operand=left_operand.get_name, right_operand=right_operand.get_name, res=temp.get_name)
+            quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand=name_right, res=temp.get_name())
             # Insert cuadruplo en la lista de cuadruplos
             self.quadruples.append(quad)
             self.cont += 1
+            # pushea temporal a pila de operandos
+            self.pile_o.push(temp)
         else:
             raise TypeError('Type missmatch ' + str(type(left_operand)) + ' and ' + str(type(right_operand)) + ' for operator: ' + op)
 

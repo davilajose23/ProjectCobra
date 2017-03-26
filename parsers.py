@@ -1,10 +1,11 @@
 import ply.yacc as yacc
 from scanner import tokens
+# from TestCobra import TestC
 import sys
 from symbol_table import functions_dir
 from stack import Stack
 from cube import semantic_cube
-from quad_generator import Variable, Quadruple, QuadGenerator
+from quad_generator import *
 
 functions_directory = functions_dir()
 # Precedence rules for the arithmetic operators
@@ -17,8 +18,7 @@ precedence = (
 )
 
 generator = QuadGenerator('output.txt')
-def debug(x):
-    print(x)
+
 # ********************* Diagram program *********************
 def p_program(p):
     '''program : pre_variables functions main
@@ -26,7 +26,6 @@ def p_program(p):
                 | pre_variables main
                 | main'''
     p[0] = 'ok'
-    debug(generator.printeame())
 
 def p_pre_variables(p):
     'pre_variables : declaration post_variables'
@@ -49,14 +48,14 @@ def p_types(p):
             | DOUBLE
             | STRING
             | BOOL'''
-   
-    functions_directory.set_type(p[1])
+
 # ********************* Diagram delcaration *********************
 def p_declaration(p):
-    'declaration : finish_evaluating types set_type inter_declaration required_eol start_evaluating'
+    'declaration : types set_type inter_declaration required_eol'
 
 def p_set_type(p):
     'set_type :'
+    functions_directory.set_type(p[-1])
 
 def p_inter_declaration(p):
     'inter_declaration : identifier cycle_declaration'
@@ -110,22 +109,18 @@ def p_post_arguments(p):
 # ********************* Diagram function *********************
 def p_function(p):
 
-    'function : FUNC func_types set_type ID register_function LEFT_PARENTHESIS post_function'
+    'function : FUNC func_types COLON ID register_function LEFT_PARENTHESIS post_function'
 
 
 def p_func_types(p):
     '''func_types : types
             | VOID'''
-    
-    if p[1] == 'void':
-        functions_directory.set_type('void')
 
 def p_register_function(p):
     'register_function :'
     functions_directory.add_function(p[-1])
+    functions_directory.set_return_type(p[-2])
     functions_directory.set_scope(p[-1])
-    functions_directory.set_return_type(functions_directory.last_type)
-    
 
 def p_post_function(p):
     '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return
@@ -166,12 +161,14 @@ def p_reset_scope(p):
                     
 # ********************* Diagram parameters *********************
 def p_parameters(p):
-    'parameters : finish_evaluating types set_type identifier update_function_parameters post_parameters start_evaluating'
+    'parameters : types set_type identifier update_function_parameters post_parameters'
 
 # Increases the quantity of expected arguments by a function
 def p_update_function_parameters(p):
     'update_function_parameters :'
     functions_directory.increase_expected_arguments()
+    # Registers the expected argument in the function variables directory
+    functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
 
 def p_post_parameters(p):
     '''post_parameters : COMMA parameters
@@ -189,7 +186,7 @@ def p_statement(p):
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
-    'assignment : identifier assignment_operator cond'
+    'assignment : start_evaluating identifier assignment_operator cond finish_evaluating'
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
@@ -213,7 +210,7 @@ def p_cond(p):
 
 def p_pop_op_and_or(p):
     'pop_op_and_or :'
-    if generator.popper.top == 'and' or generator.popper.top == 'or':
+    if generator.popper.top() == 'and' or generator.popper.top() == 'or':
         generator.generate_quad()
 
 def p_post_cond(p):
@@ -232,34 +229,33 @@ def p_expression(p):
 def p_pop_relop(p):
     'pop_relop :'
     relops = ['<', '>', '<=', '>=', '!=']
-    if generator.popper.top in relops:
+    if generator.popper.top() in relops:
         generator.generate_quad()
 
 def p_post_expression(p):
-    '''post_expression : relational_operator exp
+    '''post_expression : relational_operator push_relop exp
                         | empty'''
 
 def p_push_relop(p):
     'push_relop :'
     generator.popper.push(p[-1])
+
 # ********************* Diagram relational_operator *********************
 def p_relational_operator(p):
-    '''relational_operator : LESS push_relop
-                            | GREATER push_relop
-                            | GREATER_EQUALS push_relop
-                            | LESS_EQUALS push_relop
-                            | EQUALS_EQUALS push_relop
-                            | NOT_EQUALS push_relop'''
-    
-    
-    
+    '''relational_operator : LESS
+                            | GREATER
+                            | GREATER_EQUALS
+                            | LESS_EQUALS
+                            | EQUALS_EQUALS
+                            | NOT_EQUALS'''
+
 # ********************* Diagram exp *********************
 def p_exp(p):
     'exp : term pop_exp post_exp'
 
 def p_pop_exp(p):
     'pop_exp :'
-    if generator.popper.top == '+' or generator.popper.top == '-':
+    if generator.popper.top() == '+' or generator.popper.top() == '-':
         generator.generate_quad()
 
 def p_post_exp(p):
@@ -278,7 +274,7 @@ def p_term(p):
 def p_pop_term(p):
     'pop_term :'
     operators = ['*', '/', '%', 'mod']
-    if generator.popper.top in operators:
+    if generator.popper.top() in operators:
         generator.generate_quad()
 
 def p_post_term(p):
@@ -314,22 +310,11 @@ def p_variable_constant(p):
                         | DOUBLE_CONSTANT
                         | STRING_CONSTANT
                         | BOOL_CONSTANT '''
-    p[0] = p[1]
-    if functions_directory.get_var(p[1]) is not None:
-        # A list with value and var_type is returned
-        res = functions_directory.get_var(p[1])
-        # Create variable
-        var = Variable(name=p[1], value=res[0], var_type=res[1])
-        generator.pile_o.push(var)
-    else:
-        var = Variable(name='constant', value=p[1], var_type=get_type(p[1]))
-        generator.pile_o.push(var)
 
-    
 def p_process_variable(p):
     'process_variable :'
     # Checks if the variable to validate is in array notation
-    if  functions_directory.evaluating:
+    if functions_directory.evaluating:
         functions_directory.validate_variable(p[-1])
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
@@ -349,7 +334,7 @@ def p_else(p):
 
 # ********************* Diagram print *********************
 def p_print(p):
-    'print : PRINT cond post_print '
+    'print : PRINT start_evaluating cond post_print finish_evaluating'
 
 def p_post_print(p):
     '''post_print :  COMMA STRING_CONSTANT 
@@ -378,7 +363,7 @@ def p_for(p):
 
 # while
 def p_while(p):
-    'while : WHILE  cond  post_cycle'
+    'while : WHILE start_evaluating cond  finish_evaluating post_cycle'
 
 # Cycle common grammar
 def p_post_cycle(p):
@@ -400,19 +385,22 @@ def p_error(p):
     print("Syntax error at '%s'" % repr(p)) #p.value)
     # While there are syntax errors, turn off the semantics reporting
     
-def get_type(symbol):
-  if symbol == 'TRUE' or symbol == 'FALSE':
-    return 'bool'
-  res = str(type(symbol))[7:10]
-  if res == 'int':
-    return 'int'
-  elif res == 'flo':
-    return 'double'
-  elif res == 'str':
-    return 'string'
+
 
 # Build the parser
 parser = yacc.yacc()
+
+def doFile(filename):
+    file = filename
+    try:
+        f = open(file,'r')
+        data = f.read()
+        f.close()
+        #Se aplica la gramatica
+        parser.parse(data, tracking=True)
+        print('ok')
+    except EOFError:
+        print(EOFError)
 
 welcome = '''Project Cobra '''
 if __name__ == '__main__':
@@ -420,10 +408,8 @@ if __name__ == '__main__':
     if (len(sys.argv) > 1):
     # Obtiene el archivo
         if (sys.argv[1] == 'test'):
-            t = TestC()
-            t.init(parser)
-            t.setUp()
-            t.run()
+            # 
+            pass
         else:
             file = sys.argv[1]
             try:

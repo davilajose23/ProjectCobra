@@ -5,6 +5,12 @@ class Stack(object):
 		super(Stack, self).__init__()
 		self.stack = []
 
+	def __str__(self):
+		ret = ""
+		for d in reversed(self.stack):
+			ret = ret + str(d) + '\n'
+		return str(ret)
+
 	"""
 	Length: returns amount of elements in the stack
 	"""
@@ -18,8 +24,8 @@ class Stack(object):
 	@property
 	def top(self):
 		if self.length > 0:
-			return self.stack[self.length - 1]
-		return -1
+			return self.stack[-1]
+		return ' '
 	
 	"""
 	Push: appends element at the top of the stack
@@ -27,9 +33,10 @@ class Stack(object):
 	def push(self, arg):
 		self.stack.append(arg)
 
+
 	"""
 	Pop: removes the top element of the stack
 	"""
 	def pop(self):
 		if self.length > 0:
-			self.stack.pop()
+			return self.stack.pop()
