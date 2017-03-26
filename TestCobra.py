@@ -1,13 +1,17 @@
 import os
 import glob
 import unittest
-from parser import parser as global_parser
+#from parser import parser as global_parser
 
 class TestC(unittest.TestCase):
 
 	path = ''
 	parser = None
-	parser_copy = global_parser
+	parser_copy = None
+
+	def init(self, global_parser):
+		self.parser_copy = global_parser
+		
 
 	def setUp(self):
 		self.parser = self.parser_copy
@@ -17,9 +21,9 @@ class TestC(unittest.TestCase):
 
 	def custom_test_file(self, filename):
 		try:
-			file = glob.glob(os.path.join(self.path, filename))
+			file = glob.glob(os.path.join(self.path, 'testcases/' + filename))
 			print('checking ' + str(file))
-			f = open(file, 'r')
+			f = open(str(file[0]), 'r')
 			data = f.read()
 			f.close()
 			#Se aplica la gramatica
@@ -69,7 +73,13 @@ class TestC(unittest.TestCase):
 	def test_while_fail(self):
 		self.custom_test_file('while_test_fail.co')
 
-# suite = unittest.TestLoader().loadTestsFromTestCase(TestC)
-# alltests = unittest.TestSuite(suite)
-def run_unit_test():
-	unittest.main()
+	def runIT(self):
+		unittest.main()
+
+	def runTest(self):
+		suite = unittest.TestLoader().loadTestsFromTestCase(TestC)
+		alltests = unittest.TestSuite(suite)
+		unittest.TextTestRunner().run(suite)
+
+suite = unittest.TestLoader().loadTestsFromTestCase(TestC)
+alltests = unittest.TestSuite(suite)

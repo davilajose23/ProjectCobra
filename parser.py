@@ -415,20 +415,21 @@ if __name__ == '__main__':
     if (len(sys.argv) > 1):
     # Obtiene el archivo
         if (sys.argv[1] == 'test'):
-            run_unit_test()
-        #     t = TestC()
-        #     t.set_up(parser)
-        # else:
-        #     file = sys.argv[1]
-        #     try:
-        #         f = open(file,'r')
-        #         data = f.read()
-        #         f.close()
-        #         #Se aplica la gramatica
-        #         parser.parse(data, tracking=True)
-        #         print('ok')
-        #     except EOFError:
-        #         print(EOFError)
+            t = TestC()
+            t.init(parser)
+            t.setUp()
+            t.run()
+        else:
+            file = sys.argv[1]
+            try:
+                f = open(file,'r')
+                data = f.read()
+                f.close()
+                #Se aplica la gramatica
+                parser.parse(data, tracking=True)
+                print('ok')
+            except EOFError:
+                print(EOFError)
     else:
         print(welcome)
         while True:
