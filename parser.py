@@ -397,7 +397,9 @@ if __name__ == '__main__':
     # Obtiene el archivo
         if (sys.argv[1] == 'test'):
             t = TestC()
-            t.set_up(parser)
+            t.init(parser)
+            t.setUp()
+            t.run()
         else:
             file = sys.argv[1]
             try:
