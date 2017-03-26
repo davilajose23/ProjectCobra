@@ -69,5 +69,7 @@ class TestC(unittest.TestCase):
 	def test_while_fail(self):
 		self.custom_test_file('while_test_fail.co')
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TestC)
-alltests = unittest.TestSuite(suite)
+# suite = unittest.TestLoader().loadTestsFromTestCase(TestC)
+# alltests = unittest.TestSuite(suite)
+def run_unit_test():
+	unittest.main()

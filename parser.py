@@ -1,11 +1,11 @@
 import ply.yacc as yacc
 from scanner import tokens
-from TestCobra import TestC
+from TestCobra import TestC, run_unit_test
 import sys
 from symbol_table import functions_dir
 from stack import Stack
 from cube import semantic_cube
-from quad_generator import *
+from quad_generator import Variable, Quadruple, QuadGenerator
 
 functions_directory = functions_dir()
 # Precedence rules for the arithmetic operators
@@ -396,19 +396,20 @@ if __name__ == '__main__':
     if (len(sys.argv) > 1):
     # Obtiene el archivo
         if (sys.argv[1] == 'test'):
-            t = TestC()
-            t.set_up(parser)
-        else:
-            file = sys.argv[1]
-            try:
-                f = open(file,'r')
-                data = f.read()
-                f.close()
-                #Se aplica la gramatica
-                parser.parse(data, tracking=True)
-                print('ok')
-            except EOFError:
-                print(EOFError)
+            run_unit_test()
+        #     t = TestC()
+        #     t.set_up(parser)
+        # else:
+        #     file = sys.argv[1]
+        #     try:
+        #         f = open(file,'r')
+        #         data = f.read()
+        #         f.close()
+        #         #Se aplica la gramatica
+        #         parser.parse(data, tracking=True)
+        #         print('ok')
+        #     except EOFError:
+        #         print(EOFError)
     else:
         print(welcome)
         while True:
