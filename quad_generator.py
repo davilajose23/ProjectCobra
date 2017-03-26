@@ -51,7 +51,7 @@ class QuadGenerator(object):
         # List of quadruples
         self.quadruples = []
         # Quadruple counter
-        self.cont = 1
+        self.cont = 0
 
     def read_operand(self, operand):
         # Push Variable
@@ -85,8 +85,21 @@ class QuadGenerator(object):
             raise TypeError('Type missmatch. Non bool variables in condition')
         else:
             quad = Quadruple(id=self.cont, op='GotoF', left_operand=last_operand, right_operand=None, res=None)
+            self.quadruples.append(quad)
             self.pjumps.push(self.cont)
             self.cont += 1
+
+    def generate_goto(self):
+        quad = Quadruple(id=self.cont, op='Goto', left_operand=None, right_operand=None, res=None)
+        self.quadruples.append(quad)
+        self.pjumps.push(self.cont)
+        self.cont += 1
+
+    def fill_goto(self):
+        # Obtiene indice de cuadruplo pendiente en la lista de cuadruplos
+        pending = self.pjumps.pop()
+        self.quadruples[pending].res = self.cont
+
 
     def export(self):
         f = open(self.file, 'w')
