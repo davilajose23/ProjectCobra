@@ -61,7 +61,7 @@ class functions_dir(object):
 		if self.functions[self.scope][self.variables_dict].get(variable_id, None) is None:
 			self.functions[self.scope][self.variables_dict][variable_id] = [value, var_type]
 		else:
-			raise KeyError('Variables already declared! Var: ' + str(variable_id))
+			raise KeyError('Variable already declared! Var: ' + str(variable_id))
 
 	# Validate variable exists
 	def validate_variable(self, variable_id):

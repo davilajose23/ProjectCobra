@@ -1,6 +1,5 @@
 import ply.yacc as yacc
 from scanner import tokens
-from TestCobra import TestC, run_unit_test
 import sys
 from symbol_table import functions_dir
 from stack import Stack
@@ -167,8 +166,6 @@ def p_parameters(p):
 def p_update_function_parameters(p):
     'update_function_parameters :'
     functions_directory.increase_expected_arguments()
-    # Registers the expected argument in the function variables directory
-    functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
 
 def p_post_parameters(p):
     '''post_parameters : COMMA parameters
