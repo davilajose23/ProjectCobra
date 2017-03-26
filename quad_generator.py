@@ -66,7 +66,6 @@ class QuadGenerator(object):
         self.popper.push(operator)     
 
     def generate_quad(self):
-        print(self.popper)
         op = self.popper.pop()
         # print(self.pile_o)
         right_operand = self.pile_o.pop()

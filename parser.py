@@ -236,7 +236,7 @@ def p_pop_relop(p):
         generator.generate_quad()
 
 def p_post_expression(p):
-    '''post_expression : relational_operator exp
+    '''post_expression : relational_operator expression
                         | empty'''
 
 def p_push_relop(p):
