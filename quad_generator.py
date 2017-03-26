@@ -23,8 +23,9 @@ class Variable(object):
 
 class Quadruple(object):
     """docstring for Quadruple"""
-    def __init__(self, op, left_operand, right_operand, res):
+    def __init__(self, id, op, left_operand, right_operand, res):
         super(Quadruple, self).__init__()
+        self.id = id
         self.op = op
         self.left_operand = left_operand
         self.right_operand = right_operand
@@ -41,12 +42,16 @@ class QuadGenerator(object):
         self.pile_o = Stack()
         # Operators pile
         self.popper = Stack()
+        # Pending jumps
+        self.pjumps = Stack()
         # File to write list of quadruples
         self.file = filename
         # Id of temporal vars
         self.temporal_id = 1
         # List of quadruples
         self.quadruples = []
+        # Quadruple counter
+        self.cont = 1
 
     def read_operand(self, operand):
         # Push Variable
@@ -67,11 +72,21 @@ class QuadGenerator(object):
             # Aumenta id de temporales
             self.temporal_id += 1
             # Genera cuadruplo
-            quad = Quadruple(op=op, left_operand=left_operand.get_name, right_operand=right_operand.get_name, res=temp.get_name)
+            quad = Quadruple(id=self.cont, op=op, left_operand=left_operand.get_name, right_operand=right_operand.get_name, res=temp.get_name)
             # Insert cuadruplo en la lista de cuadruplos
             self.quadruples.append(quad)
+            self.cont += 1
         else:
             raise TypeError('Type missmatch ' + str(type(left_operand)) + ' and ' + str(type(right_operand)) + ' for operator: ' + op)
+
+    def generate_gotoF(self):
+        last_operand = self.pile_o.pop()
+        if last_operand.get_type != 'bool':
+            raise TypeError('Type missmatch. Non bool variables in condition')
+        else:
+            quad = Quadruple(id=self.cont, op='GotoF', left_operand=last_operand, right_operand=None, res=None)
+            self.pjumps.push(self.cont)
+            self.cont += 1
 
     def export(self):
         f = open(self.file, 'w')

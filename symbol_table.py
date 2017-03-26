@@ -25,6 +25,7 @@ class functions_dir(object):
 		self.scope = 'global'
 		self.evaluating = False
 		self.last_type = None
+		self.cont = 1
 
 	# Add function to fuctions directory
 	def add_function(self, function_id):
