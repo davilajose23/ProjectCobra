@@ -80,6 +80,16 @@ class functions_dir(object):
 	def set_type(self, last_type):
 		self.last_type = last_type
 
+	def get_func_dir(self):
+		return self.functions
+
+	def get_var(self, variable_id):
+		if variable_id in self.functions[self.scope][variables_dict]:
+			return self.functions[self.scope][variables_dict].get(variable_id)
+		elif variable_id  in self.functions['global'][variables_dict]:
+			return self.functions['global'][variables_dict].get(variable_id)
+		return None
+
 	@property
 	def current_scope(self):
 		return self.scope

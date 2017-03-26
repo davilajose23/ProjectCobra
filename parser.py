@@ -310,6 +310,16 @@ def p_variable_constant(p):
                         | DOUBLE_CONSTANT
                         | STRING_CONSTANT
                         | BOOL_CONSTANT '''
+    p[0] = p[1]
+    if functions_directory.get_var(p[1]) is not None:
+        # A list with value and var_type is returned
+        res = functions_directory.get_var(p[1])
+        # Create variable
+        var = Variable(name=p[1], value=res[0], var_type=res[1])
+        generator.read_operand(var)
+    else:
+        var = Variable(name='constant', value=p[1], var_type=get_type(p[1]))
+        generator.read_operand(var)
 
 def p_process_variable(p):
     'process_variable :'
@@ -385,7 +395,16 @@ def p_error(p):
     print("Syntax error at '%s'" % repr(p)) #p.value)
     # While there are syntax errors, turn off the semantics reporting
     
-
+def get_type(symbol):
+  if symbol == 'TRUE' or symbol == 'FALSE':
+    return 'bool'
+  res = str(type(symbol))[7:10]
+  if res == 'int':
+    return 'int'
+  elif res == 'flo':
+    return 'double'
+  elif res == 'str':
+    return 'string'
 
 # Build the parser
 parser = yacc.yacc()
