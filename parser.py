@@ -405,7 +405,17 @@ def p_loop(p):
 
 # for
 def p_for(p):
-    'for : FOR identifier FROM exp TO exp post_cycle'
+    'for : FOR ID add_var FROM exp init_var TO exp push_cycle post_cycle create_pending_goto'
+
+def p_add_var(p):
+    'add_var :'
+    functions_directory.add_var(variable_id=p[-1], var_type='int')
+    var = Variable(name=p[-1], var_type='int')
+    generator.pile_o.push(var)
+
+def p_init_var(p):
+    'init_var :'
+    generator.generate_for_quad()
 
 # while
 def p_while(p):
