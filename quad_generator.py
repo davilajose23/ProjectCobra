@@ -67,7 +67,7 @@ class QuadGenerator(object):
 
     def generate_quad(self):
         # checa si el op es uno de los siguientes operadores
-        op = self.popper.top()
+        op = self.popper.top
         if op in ['+=', '-=', '*=', '/=']:
             self.generate_assignment_op_quad()
             return
