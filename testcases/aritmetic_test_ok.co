@@ -10,4 +10,8 @@ main
 		b = 2 + 3
 	end
 	print a
+	while b < 5:
+		b += 1
+		print b
+	end
 end_main
