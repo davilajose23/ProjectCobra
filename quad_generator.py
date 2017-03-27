@@ -98,11 +98,12 @@ class QuadGenerator(object):
                 quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand="", res=name_right)
             else:
                 quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand=name_right, res=temp.get_name())
+                # pushea temporal a pila de operandos
+                self.pile_o.push(temp)
             # Insert cuadruplo en la lista de cuadruplos
             self.quadruples.append(quad)
             self.cont += 1
-            # pushea temporal a pila de operandos
-            self.pile_o.push(temp)
+            
         else:
             raise TypeError('Type missmatch ' + str(type(left_operand)) + ' and ' + str(type(right_operand)) + ' for operator: ' + op)
 
