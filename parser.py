@@ -189,7 +189,26 @@ def p_statement(p):
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
-    'assignment : identifier assignment_operator cond pop_assignment'
+    'assignment : ID validate_var push_var array_notation assignment_operator cond pop_assignment'
+
+def p_validate_var(p):
+    'validate_var :'
+    functions_directory.validate_variable(p[-1])
+
+
+def p_push_var(p):
+    'push_var :'
+    if functions_directory.get_var(p[-2]) is not None:
+        # A list with value and var_type is returned
+        res = functions_directory.get_var(p[-2])
+        # Create variable
+        var = Variable(name=p[-2], value=res[0], var_type=res[1])
+        generator.pile_o.push(var)
+
+def p_array_notation(p):
+    '''array_notation : LEFT_BRACKET exp RIGHT_BRACKET
+                        | empty'''
+
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
