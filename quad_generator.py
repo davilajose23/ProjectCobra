@@ -82,10 +82,9 @@ class QuadGenerator(object):
         res = semantic_cube[right_operand.get_type()][left_operand.get_type()][op]
 
         if res != 'Error':
-            # Genera variable temporal
-            temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
-            # Aumenta id de temporales
-            self.temporal_id += 1
+            
+            
+            
             # Obtiene el nombre o valor de los operandoss
             name_left = left_operand.get_name()
             name_right = right_operand.get_name()
@@ -97,9 +96,14 @@ class QuadGenerator(object):
             if op == '=':
                 quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand="", res=name_right)
             else:
+                # Genera variable temporal
+                temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
+                # Aumenta id de temporales
+                self.temporal_id += 1
                 quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand=name_right, res=temp.get_name())
                 # pushea temporal a pila de operandos
                 self.pile_o.push(temp)
+                
             # Insert cuadruplo en la lista de cuadruplos
             self.quadruples.append(quad)
             self.cont += 1
@@ -136,6 +140,7 @@ class QuadGenerator(object):
         temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
          # Aumenta id de temporales
         self.temporal_id += 1
+
         quad = Quadruple(id=self.cont, op='Read', left_operand=last_operand, right_operand=None, res=temp.get_name())
         self.cont += 1
 
@@ -158,7 +163,10 @@ class QuadGenerator(object):
     def fill_goto(self):
         # Obtiene indice de cuadruplo pendiente en la lista de cuadruplos
         pending = self.pjumps.pop()
-        self.quadruples[pending].res = self.cont
+        if self.quadruples[pending].op == 'GotoF':
+            self.quadruples[pending].res = self.cont + 1
+        elif self.quadruples[pending].op == 'Goto':
+            self.quadruples[pending].res = self.cont
 
 
     def export(self):

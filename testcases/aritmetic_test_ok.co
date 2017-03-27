@@ -9,4 +9,5 @@ main
 	else:
 		b = 2 + 3
 	end
+	print a
 end_main
