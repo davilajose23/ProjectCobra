@@ -71,7 +71,6 @@ class QuadGenerator(object):
         if op in ['+=', '-=', '*=', '/=']:
             self.generate_assignment_op_quad()
             return
-        
         op = self.popper.pop()
         if op == '=':
             left_operand = self.pile_o.pop()
@@ -80,8 +79,8 @@ class QuadGenerator(object):
             right_operand = self.pile_o.pop()
             left_operand = self.pile_o.pop()
         
-        # print(self.pile_o)
-       
+        print(self.pile_o)
+        
         res = semantic_cube[right_operand.get_type()][left_operand.get_type()][op]
 
         if res != 'Error':
@@ -109,6 +108,7 @@ class QuadGenerator(object):
         else:
             raise TypeError('Type missmatch ' + str(type(left_operand)) + ' and ' + str(type(right_operand)) + ' for operator: ' + op)
 
+
     def generate_assignment_op_quad(self):
         op = self.popper.pop()
         if op in ['+=', '-=', '*=', '/=']:
@@ -126,6 +126,18 @@ class QuadGenerator(object):
             # genera el cuadruplo para el =
             self.generate_quad()
 
+    def generate_print(self):
+        pass
+        quad = Quadruple(id=self.cont, op='Print', left_operand=last_operand, right_operand=None, res=None)
+        self.cont += 1
+
+    def generate_read(self):
+        pass
+        temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
+         # Aumenta id de temporales
+        self.temporal_id += 1
+        quad = Quadruple(id=self.cont, op='Read', left_operand=last_operand, right_operand=None, res=temp.get_name())
+        self.cont += 1
 
     def generate_gotoF(self):
         last_operand = self.pile_o.pop()
