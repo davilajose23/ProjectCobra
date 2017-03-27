@@ -205,10 +205,9 @@ def p_push_assignment(p):
 
 def p_pop_assignment(p):
     'pop_assignment :'
-    if generator.popper.top == '=':
-        generator.generate_assign_quad()
-    else:
-        generator.generate_assignment_op_quad()
+    assignment_operators = ['=', '*=', '/=', '+=', '-=']
+    if generator.popper.top in assignment_operators:
+        generator.generate_quad()
 
 def p_start_evaluating(p):
     'start_evaluating :'
@@ -372,11 +371,15 @@ def p_push_goto(p):
 
 # ********************* Diagram print *********************
 def p_print(p):
-    'print : PRINT cond post_print '
+    'print : PRINT cond post_print'
 
 def p_post_print(p):
     '''post_print :  COMMA STRING_CONSTANT 
                     | empty'''
+
+def p_push_print(p):
+    'push_print :'
+    
 
 # ********************* Diagram read *********************
 def p_read(p):
