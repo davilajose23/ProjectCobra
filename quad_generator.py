@@ -97,7 +97,7 @@ class QuadGenerator(object):
 
     def generate_gotoF(self):
         last_operand = self.pile_o.pop()
-        if last_operand.get_type != 'bool':
+        if last_operand.get_type() != 'bool':
             raise TypeError('Type missmatch. Non bool variables in condition')
         else:
             quad = Quadruple(id=self.cont, op='GotoF', left_operand=last_operand, right_operand=None, res=None)
