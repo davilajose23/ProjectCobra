@@ -143,7 +143,7 @@ class QuadGenerator(object):
         if last_operand.get_type() != 'bool':
             raise TypeError('Type missmatch. Non bool variables in condition')
         else:
-            quad = Quadruple(id=self.cont, op='GotoF', left_operand=last_operand, right_operand=None, res=None)
+            quad = Quadruple(id=self.cont, op='GotoF', left_operand=last_operand.get_name(), right_operand=None, res=None)
             self.quadruples.append(quad)
             self.pjumps.push(self.cont)
             self.cont += 1
