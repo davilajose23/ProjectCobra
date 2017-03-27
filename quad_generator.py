@@ -33,7 +33,7 @@ class Quadruple(object):
         self.res = res
 
     def printeame(self):
-        return '({0}, {1}, {2}, {3})'.format(self.op, self.left_operand, self.right_operand, self.res)
+        return '{0}: ({1}, {2}, {3}, {4})'.format(self.id, self.op, self.left_operand, self.right_operand, self.res)
 
 class QuadGenerator(object):
     """docstring for QuadGenerator"""

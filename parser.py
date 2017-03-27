@@ -338,7 +338,7 @@ def p_pop_paren(p):
 
 # ********************* Diagram variable_constant *********************
 def p_variable_constant(p):
-    '''variable_constant : identifier
+    '''variable_constant : ID process_variable array_notation
                         | INT_CONSTANT
                         | DOUBLE_CONSTANT
                         | STRING_CONSTANT
