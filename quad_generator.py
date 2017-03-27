@@ -66,10 +66,22 @@ class QuadGenerator(object):
         self.popper.push(operator)     
 
     def generate_quad(self):
+        # checa si el op es uno de los siguientes operadores
+        op = self.popper.top()
+        if op in ['+=', '-=', '*=', '/=']:
+            self.generate_assignment_op_quad()
+            return
+        
         op = self.popper.pop()
+        if op == '=':
+            left_operand = self.pile_o.pop()
+            right_operand = self.pile_o.pop()
+        else:
+            right_operand = self.pile_o.pop()
+            left_operand = self.pile_o.pop()
+        
         # print(self.pile_o)
-        right_operand = self.pile_o.pop()
-        left_operand = self.pile_o.pop()
+       
         res = semantic_cube[right_operand.get_type()][left_operand.get_type()][op]
 
         if res != 'Error':
@@ -84,9 +96,11 @@ class QuadGenerator(object):
                 name_left = left_operand.get_value()
             if name_right == 'constant':
                 name_right = right_operand.get_value()
-
             # Genera cuadruplo
-            quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand=name_right, res=temp.get_name())
+            if op == '=':
+                quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand="", res=name_right)
+            else:
+                quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand=name_right, res=temp.get_name())
             # Insert cuadruplo en la lista de cuadruplos
             self.quadruples.append(quad)
             self.cont += 1
@@ -94,6 +108,24 @@ class QuadGenerator(object):
             self.pile_o.push(temp)
         else:
             raise TypeError('Type missmatch ' + str(type(left_operand)) + ' and ' + str(type(right_operand)) + ' for operator: ' + op)
+
+    def generate_assignment_op_quad(self):
+        op = self.popper.pop()
+        if op in ['+=', '-=', '*=', '/=']:
+            self.popper.push('=')
+            self.popper.push(op[0])
+            # Saca A y B de la pila para ponerlos en la siguiente forma
+            # a += b  -> a = a + b
+            b = self.pile_o.pop()
+            a = self.pile_o.pop()
+            self.pile_o.push(a)
+            self.pile_o.push(a)
+            self.pile_o.push(b)
+            # genera el cuadruplo para +, -, * o /
+            self.generate_quad()
+            # genera el cuadruplo para el =
+            self.generate_quad()
+
 
     def generate_gotoF(self):
         last_operand = self.pile_o.pop()

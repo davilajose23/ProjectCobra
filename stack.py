@@ -26,7 +26,11 @@ class Stack(object):
 		if self.length > 0:
 			return self.stack[-1]
 		return ' '
-	
+	@property
+	def top2(self):
+		if self.length > 1:
+			return self.stack[-2]
+		return ' '
 	"""
 	Push: appends element at the top of the stack
 	"""
