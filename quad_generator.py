@@ -79,8 +79,6 @@ class QuadGenerator(object):
             right_operand = self.pile_o.pop()
             left_operand = self.pile_o.pop()
         
-        print(self.pile_o)
-        
         res = semantic_cube[right_operand.get_type()][left_operand.get_type()][op]
 
         if res != 'Error':

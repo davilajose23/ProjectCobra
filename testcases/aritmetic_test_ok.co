@@ -1,4 +1,12 @@
 main
 	bool a
+	int b
+
 	a = (1 + 2) * 3 / 3 >= 3 and 4 > 3
+
+	if a == true:
+		b = 1 + 2
+	else
+		b = 2 + 3
+	end
 end_main
