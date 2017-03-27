@@ -126,9 +126,10 @@ class QuadGenerator(object):
             self.generate_quad()
 
     def generate_print(self):
-        pass
+        last_operand = self.pile_o.pop()
         quad = Quadruple(id=self.cont, op='Print', left_operand=last_operand, right_operand=None, res=None)
         self.cont += 1
+        print(last_operand)
 
     def generate_read(self):
         pass
