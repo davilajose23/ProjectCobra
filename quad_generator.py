@@ -45,6 +45,8 @@ class QuadGenerator(object):
         self.popper = Stack()
         # Pending jumps
         self.pjumps = Stack()
+        # Pending cycle returns
+        self.pcycles = Stack()
         # File to write list of quadruples
         self.file = filename
         # Id of temporal vars
@@ -82,9 +84,6 @@ class QuadGenerator(object):
         res = semantic_cube[right_operand.get_type()][left_operand.get_type()][op]
 
         if res != 'Error':
-            
-            
-            
             # Obtiene el nombre o valor de los operandoss
             name_left = left_operand.get_name()
             name_right = right_operand.get_name()
@@ -168,6 +167,11 @@ class QuadGenerator(object):
         elif self.quadruples[pending].op == 'Goto':
             self.quadruples[pending].res = self.cont
 
+    def generate_pending_goto(self):
+        pending = self.pcycles.pop()
+        quad = Quadruple(id=self.cont, op='Goto', left_operand=None, right_operand=None, res=pending)
+        self.quadruples.append(quad)
+        self.cont += 1
 
     def export(self):
         f = open(self.file, 'w')

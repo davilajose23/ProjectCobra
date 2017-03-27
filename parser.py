@@ -149,20 +149,6 @@ def p_value_return(p):
 def p_reset_scope(p):
     'reset_scope :'
     functions_directory.reset_scope()
-
-# ********* DEPRECATED (now all functions have a type and it is registered after get the ID of the function)
-#
-# # Adds to functions directory de return type of the function
-# # Resets the scope of functions directory after
-# def p_set_void_return(p):
-#     'set_void_return :'
-#     functions_directory.set_return_type('void')
-#     functions_directory.reset_scope()
-
-# def p_set_value_return(p):
-#     'set_value_return :'
-#     functions_directory.set_return_type('value')
-#     functions_directory.reset_scope()
                     
 # ********************* Diagram parameters *********************
 def p_parameters(p):
@@ -423,7 +409,15 @@ def p_for(p):
 
 # while
 def p_while(p):
-    'while : WHILE  cond  post_cycle'
+    'while : WHILE push_cycle cond push_gotoF post_cycle fill_goto create_pending_goto'
+
+def p_push_cycle(p):
+    'push_cycle :'
+    generator.pcycles.push(generator.cont)
+
+def p_create_pending_goto(p):
+    'create_pending_goto :'
+    generator.generate_pending_goto()
 
 # Cycle common grammar
 def p_post_cycle(p):
