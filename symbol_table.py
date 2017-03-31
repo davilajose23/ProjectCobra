@@ -1,3 +1,5 @@
+from stack import Stack
+
 class functions_dir(object):
 	'''docstring for functions_dir'''
 	def __init__(self):
@@ -23,9 +25,19 @@ class functions_dir(object):
 		self.expected_arguments = 2
 
 		self.scope = 'global'
+
+		# Define si se esta evaluando la existencia de variables o se estan agregando al directorio
 		self.evaluating = False
+
+		# Ultimo token de tipo que fue leido por el directorio de funciones
 		self.last_type = None
-		self.cont = 1
+
+		# Funcion que esta siendo llamada en el programa
+		self.call_function = Stack()
+
+		'''Cantidad de argumentos que estan siendo utilizados al llamar a una funcion
+		Se utiliza una pilla para llamadas nesteadas'''
+		self.call_arguments = Stack()
 
 	# Add function to fuctions directory
 	def add_function(self, function_id):
@@ -89,6 +101,34 @@ class functions_dir(object):
 		elif variable_id  in self.functions['global'][self.variables_dict]:
 			return self.functions['global'][self.variables_dict].get(variable_id)
 		return None
+
+	# Set del id de la funcion que esta siendo llamada una vez que se valido su existencia en el diccionario de funciones
+	def set_call_function(self, function_id):
+		self.call_function.push(function_id)
+		self.call_arguments.push(0)
+
+	# Incrementa la cantidad de argumentos que estan siendo usados para llamar una funcion
+	def increase_call_arguments(self):
+		# Obtiene el tope de la pila, aumenta y vuelve a insertar en la pila
+		curr = self.call_arguments.pop()
+		curr += 1
+		self.call_arguments.push()
+
+	# Funcion que valida que la cantidad de argumentos utilizados en una llamada a funcion sea igual a los parametros que espera recibir
+	def validate_call_arguments(self):
+		if self.functions[self.call_function.top][self.expected_arguments] != self.call_arguments.top:
+
+			if self.functions[self.call_function.top][self.expected_arguments] > self.call_arguments.top:
+				msg = 'Missing arguments in function call for function: ' + str(self.call_function)
+			elif self.functions[self.call_function.top][self.expected_arguments] < self.call_arguments.top:
+				msg = 'Too many arguments in function call for function: ' + str(self.call_function)
+			msg += '. Expected arguments: ' + str(self.functions[self.call_function.top][self.expected_arguments]) + '. Got: ' + str(self.call_arguments.top)
+			self.call_arguments.pop()
+			self.call_function.pop()
+			raise TypeError(msg)
+		else:
+			self.call_arguments.pop()
+			self.call_function.pop()
 
 	@property
 	def current_scope(self):

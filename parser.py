@@ -102,13 +102,25 @@ def p_validate_function_call(p):
     'validate_function_call :'
     functions_directory.validate_function(p[-1])
 
+    # Settea el id de la funcion que va a ser llamada
+    functions_directory.set_call_function(p[-1])
+
 def p_post_call_function(p):
-    ''' post_call_function : arguments RIGHT_PARENTHESIS
-                            | RIGHT_PARENTHESIS'''
+    ''' post_call_function : arguments RIGHT_PARENTHESIS validate_call_arguments
+                            | RIGHT_PARENTHESIS validate_call_arguments'''
+
+def p_validate_call_arguments(p):
+    'validate_call_arguments :'
+    functions_directory.validate_call_arguments()
                             
 # ********************* Diagram arguments *********************
 def p_arguments(p):
-    'arguments : cond post_arguments'
+    'arguments : cond increase_call_arguments post_arguments'
+
+# Funcion que incrementa la cantidad de argumentos con los que es llamada una funcion
+def p_increase_call_arguments(p):
+    'increase_call_arguments :'
+    functions_directory.increase_call_arguments()
 
 def p_post_arguments(p):
     '''post_arguments : COMMA arguments 
@@ -118,7 +130,6 @@ def p_post_arguments(p):
 def p_function(p):
 
     'function : FUNC func_types set_type ID register_function LEFT_PARENTHESIS post_function'
-
 
 def p_func_types(p):
     '''func_types : types
