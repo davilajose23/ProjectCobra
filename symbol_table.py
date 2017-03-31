@@ -133,3 +133,14 @@ class functions_dir(object):
 	@property
 	def current_scope(self):
 		return self.scope
+
+	def printeame(self):
+		print('************ Functions Directory ************\n')
+		for key,val in self.functions.iteritems():
+			pass
+			print(str(val[0]) + ' ' + str(key) + '()')
+			for k,v in val[1].iteritems():
+				pass
+				print('\t' + str(v[1]) + ' ' + str(k) + ' = ' + str(v[0]))
+			print('')
+		print('*********************************************')

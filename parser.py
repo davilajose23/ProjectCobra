@@ -27,7 +27,7 @@ def p_program(p):
                 | main'''
     p[0] = 'ok'
     debug(generator.printeame())
-    debug(functions_directory.functions)
+    debug(functions_directory.printeame())
 
 def p_pre_variables(p):
     'pre_variables : declaration post_variables'
