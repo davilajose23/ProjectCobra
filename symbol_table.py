@@ -13,16 +13,19 @@ class functions_dir(object):
 			Scope es el function_id de cada funcion.
 		'''
 		self.functions = {}
-		self.functions['global'] = [ None, {}, 0]
+		self.functions['global'] = [ None, 0, [], {}]
 
 		# 0 es el indice de la lista de una funcion para accesar su return type
 		self.return_type = 0
 
-		# 1 es el indice de la lista de una funcion para accesar a su diccionario de variables
-		self.variables_dict = 1
+		# 1 es el indide de la lista de una funcion para indicar la cantidad de argumentos que espera
+		self.expected_arguments = 1
 
-		# 2 es el indide de la lista de una funcion para indicar la cantidad de argumentos que espera
-		self.expected_arguments = 2
+		# 2 es el indice de la lista de una funcion para indicar la lista de especificacion de parametros
+		self.parameters_specification = 2
+
+		# 3 es el indice de la lista de una funcion para accesar a su diccionario de variables
+		self.variables_dict = 3
 
 		self.scope = 'global'
 
@@ -45,7 +48,7 @@ class functions_dir(object):
 		if self.functions.get(function_id, None) is not None:
 			raise NameError('Function already declared! Function: ' + str(function_id))
 		else:
-			self.functions[function_id] = [None, {}, 0]
+			self.functions[function_id] = [ None, 0, [], {}]
 
 	# Validate function exists
 	def validate_function(self, function_id):
@@ -102,6 +105,7 @@ class functions_dir(object):
 			return self.functions['global'][self.variables_dict].get(variable_id)
 		return None
 
+
 	# Set del id de la funcion que esta siendo llamada una vez que se valido su existencia en el diccionario de funciones
 	def set_call_function(self, function_id):
 		self.call_function.push(function_id)
@@ -138,8 +142,8 @@ class functions_dir(object):
 		print('************ Functions Directory ************\n')
 		for key,val in self.functions.iteritems():
 			pass
-			print(str(val[0]) + ' ' + str(key) + '()')
-			for k,v in val[1].iteritems():
+			print(str(val[self.return_type]) + ' ' + str(key) + '()')
+			for k,v in val[self.variables_dict].iteritems():
 				pass
 				print('\t' + str(v[1]) + ' ' + str(k) + ' = ' + str(v[0]))
 			print('')
