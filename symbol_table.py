@@ -11,13 +11,13 @@ class functions_dir(object):
 			Scope es el function_id de cada funcion.
 		'''
 		self.functions = {}
-		self.functions['global'] = [{}, None, 0]
+		self.functions['global'] = [ None, {}, 0]
 
-		# 0 es el indice de la lista de una funcion para accesar a su diccionario de variables
-		self.variables_dict = 0
+		# 0 es el indice de la lista de una funcion para accesar su return type
+		self.return_type = 0
 
-		# 1 es el indice de la lista de una funcion para accesar su return type
-		self.return_type = 1
+		# 1 es el indice de la lista de una funcion para accesar a su diccionario de variables
+		self.variables_dict = 1
 
 		# 2 es el indide de la lista de una funcion para indicar la cantidad de argumentos que espera
 		self.expected_arguments = 2
@@ -33,7 +33,7 @@ class functions_dir(object):
 		if self.functions.get(function_id, None) is not None:
 			raise NameError('Function already declared! Function: ' + str(function_id))
 		else:
-			self.functions[function_id] = [{}, None, 0]
+			self.functions[function_id] = [None, {}, 0]
 
 	# Validate function exists
 	def validate_function(self, function_id):

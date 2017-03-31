@@ -27,6 +27,7 @@ def p_program(p):
                 | main'''
     p[0] = 'ok'
     debug(generator.printeame())
+    debug(functions_directory.functions)
 
 def p_pre_variables(p):
     'pre_variables : declaration post_variables'
@@ -76,7 +77,13 @@ def p_post_functions(p):
     
 # ********************* Diagram main *********************
 def p_main(p):
-    'main : MAIN required_eol pre_variables block END_MAIN optional_eol'
+    'main : MAIN set_main_scope required_eol pre_variables block END_MAIN optional_eol'
+
+def p_set_main_scope(p):
+    'set_main_scope :'
+    functions_directory.add_function(p[-1])
+    functions_directory.set_scope(p[-1])
+    functions_directory.set_return_type('void')
     
 # ********************* Diagram block *********************
 def p_block(p):
