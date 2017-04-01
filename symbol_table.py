@@ -1,5 +1,5 @@
 '''Importa clase stack'''
-from ProjectCobra.stack import Stack
+from stack import Stack
 
 class Function(object):
     '''Function object'''
