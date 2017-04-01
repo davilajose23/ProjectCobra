@@ -1,12 +1,12 @@
 import ply.yacc as yacc
 from scanner import tokens
 import sys
-from symbol_table import functions_dir
+from symbol_table import FunctionsDir
 from stack import Stack
 from cube import semantic_cube
 from quad_generator import Variable, Quadruple, QuadGenerator
 
-functions_directory = functions_dir()
+functions_directory = FunctionsDir()
 # Precedence rules for the arithmetic operators
 precedence = (
     ('nonassoc', 'AND', 'OR'),  # Nonassociative operators
