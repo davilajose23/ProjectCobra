@@ -10,16 +10,19 @@ class Variable(object):
         self.type = var_type
 
     def __str__(self):
-       
+        '''Metodo para imprimir variables'''
         return 'VAR. NAME: {0}, VALUE: {1}, TYPE: {2}'.format(self.name, self.value, self.type)
 
     def get_type(self):
+        '''Regresa el tipo de la variable'''
         return self.type
 
     def get_name(self):
+        '''Regresa el nombre de la variable'''
         return self.name
 
     def get_value(self):
+        '''Regresa el valor asignado a una variable'''
         return self.value
 
 class Quadruple(object):
