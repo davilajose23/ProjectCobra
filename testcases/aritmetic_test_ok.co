@@ -19,7 +19,16 @@ main
 	else:
 		b = 2 + 3
 	end
+
+	if b < 5:
+		b = 3
+		if b < 3:
+			b = 2
+		end
+	end
+
 	print a
+	
 	while b < 5:
 		b += 1
 		print b
