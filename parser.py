@@ -128,7 +128,6 @@ def p_post_arguments(p):
 
 # ********************* Diagram function *********************
 def p_function(p):
-
     'function : FUNC func_types set_type ID register_function LEFT_PARENTHESIS post_function'
 
 def p_func_types(p):
