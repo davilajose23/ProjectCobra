@@ -1,10 +1,12 @@
+'''Modulo que define el funcionamiento de la clase QuadGenerator.
+Clase encargada de la generacion de cuadruplos.'''
+
 from stack import Stack
 from cube import semantic_cube
 
 class Variable(object):
-    """docstring for Variable"""
+    '''Clase Variable. Contiene nombre, tipo y valor'''
     def __init__(self, name, value, var_type):
-        super(Variable, self).__init__()
         self.name = name
         self.value = value
         self.type = var_type
@@ -26,9 +28,9 @@ class Variable(object):
         return self.value
 
 class Quadruple(object):
-    """docstring for Quadruple"""
+    '''Clase Qudruple. Contiene id, op(operator), left_operand, right_operand y result'''
     def __init__(self, id, op, left_operand, right_operand, res):
-        super(Quadruple, self).__init__()
+        '''Metodo de inicializacion'''
         self.id = id
         self.op = op
         self.left_operand = left_operand
@@ -36,12 +38,13 @@ class Quadruple(object):
         self.res = res
 
     def printeame(self):
+        '''Funcion auxiliar para imprimir contenidos del cuadruplo'''
         return '{0}: ({1}, {2}, {3}, {4})'.format(self.id, self.op, self.left_operand, self.right_operand, self.res)
 
 class QuadGenerator(object):
-    """docstring for QuadGenerator"""
+    '''Clase encargada de la generacion de cuadruplos'''
     def __init__(self, filename):
-        super(QuadGenerator, self).__init__()
+        '''Metodo de inicializacion de la clase'''
         # Operands pile
         self.pile_o = Stack()
         # Operators pile
@@ -60,23 +63,28 @@ class QuadGenerator(object):
         self.cont = 0
 
     def printeame(self):
+        '''Funcion auxiliar para imprimir contenidos de la clase'''
         for i in self.quadruples:
             print (i.printeame())
 
     def read_operand(self, operand):
-        # Push Variable
+        '''Push de una variable a la pila de operandos'''
         self.pile_o.push(operand)
 
     def read_operator(self, operator):
+        '''Push de operador a pila de operadores'''
         self.popper.push(operator)     
 
     def generate_quad(self):
-        # checa si el op es uno de los siguientes operadores
+        '''Metodo para genera cuadruplos'''
+        # Checa si el op es uno de los siguientes operadores'''
         op = self.popper.top
         if op in ['+=', '-=', '*=', '/=']:
             self.generate_assignment_op_quad()
             return
+
         op = self.popper.pop()
+        # Voltea operandos para un cuadruplo de asignacion simple
         if op == '=':
             left_operand = self.pile_o.pop()
             right_operand = self.pile_o.pop()
@@ -84,8 +92,10 @@ class QuadGenerator(object):
             right_operand = self.pile_o.pop()
             left_operand = self.pile_o.pop()
         
+        # Verfica la validez sematica
         res = semantic_cube[right_operand.get_type()][left_operand.get_type()][op]
 
+        # Si la sematica es valida
         if res != 'Error':
             # Obtiene el nombre o valor de los operandoss
             name_left = left_operand.get_name()
@@ -105,16 +115,17 @@ class QuadGenerator(object):
                 quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand=name_right, res=temp.get_name())
                 # pushea temporal a pila de operandos
                 self.pile_o.push(temp)
-                
+
             # Insert cuadruplo en la lista de cuadruplos
             self.quadruples.append(quad)
             self.cont += 1
-            
         else:
-            raise TypeError('Type missmatch ' + str(type(left_operand)) + ' and ' + str(type(right_operand)) + ' for operator: ' + op)
+            msg = 'Type missmatch ' + str(left_operand.get_type()) + ' and ' + str(right_operand.get_type()) + ' for operator: ' + str(op)
+            raise TypeError(msg)
 
 
     def generate_assignment_op_quad(self):
+        '''Funcion para generar dos cuadruplos con operadores de asignacion'''
         op = self.popper.pop()
         if op in ['+=', '-=', '*=', '/=']:
             self.popper.push('=')
@@ -132,21 +143,23 @@ class QuadGenerator(object):
             self.generate_quad()
 
     def generate_print(self):
+        '''Funcion para generar el cuadruplo de un print'''
         last_operand = self.pile_o.pop()
         quad = Quadruple(id=self.cont, op='Print', left_operand=last_operand, right_operand=None, res=None)
         self.cont += 1
         print(last_operand)
 
-    def generate_read(self):
-        pass
-        temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
-         # Aumenta id de temporales
-        self.temporal_id += 1
+    # def generate_read(self, res):
+    #     '''Funcion para generar cuadruplo de read'''
+    #     temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
+    #      # Aumenta id de temporales
+    #     self.temporal_id += 1
 
-        quad = Quadruple(id=self.cont, op='Read', left_operand=last_operand, right_operand=None, res=temp.get_name())
-        self.cont += 1
+    #     quad = Quadruple(id=self.cont, op='Read', left_operand=last_operand, right_operand=None, res=temp.get_name())
+    #     self.cont += 1
 
     def generate_gotoF(self):
+        '''Funcion para generar cuadruplos de gotoF'''
         last_operand = self.pile_o.pop()
         if last_operand.get_type() != 'bool':
             raise TypeError('Type missmatch. Non bool variables in condition')
@@ -157,26 +170,34 @@ class QuadGenerator(object):
             self.cont += 1
 
     def generate_goto(self):
+        '''Funcion para generar cuadruplos de goto'''
         quad = Quadruple(id=self.cont, op='Goto', left_operand=None, right_operand=None, res=None)
         self.quadruples.append(quad)
         self.pjumps.push(self.cont)
         self.cont += 1
 
     def fill_goto(self):
+        '''Funcion que llena los cuadruplos de goto pendientes'''
         # Obtiene indice de cuadruplo pendiente en la lista de cuadruplos
         pending = self.pjumps.pop()
-        if self.quadruples[pending].op == 'GotoF':
-            self.quadruples[pending].res = self.cont + 1
-        elif self.quadruples[pending].op == 'Goto':
-            self.quadruples[pending].res = self.cont
+        # Dependiendo de si es un cuadruplo de gotoF o goto llena con un valor de contador
+        self.quadruples[pending].res = self.cont
+
+    def fill_goto_else(self):
+        '''Funcion que llena los cuadruplos de goto pendiente cuando hay un else'''
+        pending = self.pjumps.pop()
+        # Dependiendo de si es un cuadruplo de gotoF o goto llena con un valor de contador
+        self.quadruples[pending].res = self.cont + 1
 
     def generate_pending_goto(self):
+        '''Genera cuadruplo pendiente de goto para ciclos'''
         pending = self.pcycles.pop()
         quad = Quadruple(id=self.cont, op='Goto', left_operand=None, right_operand=None, res=pending)
         self.quadruples.append(quad)
         self.cont += 1
 
     def export(self):
+        '''Funcion para exportar cuadruplos a un archivo al terminar de generar cuadruplos'''
         f = open(self.file, 'w')
         for q in self.quadruples:
             f.write(q.repr())
