@@ -1,46 +1,44 @@
+'''Este modulo contiene la definicion de la clase Stack'''
+
 class Stack(object):
-	"""docstring for Stack"""
+    '''Clase Pila, acepta objetos de cualquier tipo.'''
 
-	def __init__(self):
-		super(Stack, self).__init__()
-		self.stack = []
+    def __init__(self):
+        '''Metodo para inicializar un stack'''
+        super(Stack, self).__init__()
+        self.stack = []
 
-	def __str__(self):
-		ret = ""
-		for d in reversed(self.stack):
-			ret = ret + str(d) + '\n'
-		return str(ret)
+    def __str__(self):
+        '''Metodo de apoyo para visualizar contenidos del stack'''
+        ret = ""
+        for d in reversed(self.stack):
+            ret = ret + str(d) + '\n'
+        return str(ret)
 
-	"""
-	Length: returns amount of elements in the stack
-	"""
-	@property
-	def length(self):
-		return len(self.stack)
+    @property
+    def length(self):
+        '''Propiedad. Regresa la cantidad de elementos en el stack'''
+        return len(self.stack)
 
-	"""
-	Top: returns the top element of the stack
-	"""
-	@property
-	def top(self):
-		if self.length > 0:
-			return self.stack[-1]
-		return ' '
-	@property
-	def top2(self):
-		if self.length > 1:
-			return self.stack[-2]
-		return ' '
-	"""
-	Push: appends element at the top of the stack
-	"""
-	def push(self, arg):
-		self.stack.append(arg)
+    @property
+    def top(self):
+        '''Regresa el elemento en tope de la pila'''
+        if self.length > 0:
+            return self.stack[-1]
+        return ' '
 
+    @property
+    def top2(self):
+        '''Regresa siguiente elemento al tope de la pila'''
+        if self.length > 1:
+            return self.stack[-2]
+        return ' '
 
-	"""
-	Pop: removes the top element of the stack
-	"""
-	def pop(self):
-		if self.length > 0:
-			return self.stack.pop()
+    def push(self, arg):
+        '''Inserta elemento en el tope de la pila'''
+        self.stack.append(arg)
+
+    def pop(self):
+        '''Remueve el elemento del tope de la pila'''
+        if self.length > 0:
+            return self.stack.pop()
