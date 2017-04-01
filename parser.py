@@ -368,7 +368,7 @@ def p_process_variable(p):
 
 # ********************* Diagram condition *********************
 def p_condition(p):
-    'condition : IF cond COLON push_gotoF optional_eol block fill_goto post_condition END'
+    'condition : IF cond COLON push_gotoF optional_eol block post_condition END'
 
 def p_push_gotoF(p):
     'push_gotoF :'
@@ -381,11 +381,15 @@ def p_fill_goto(p):
 
 def p_post_condition(p):
     '''post_condition : else
-                        | empty'''
+                        | fill_goto empty'''
 
 # else
 def p_else(p):
-    'else : ELSE COLON push_goto optional_eol block fill_goto'
+    'else : ELSE fill_goto_else COLON push_goto optional_eol block fill_goto'
+
+def p_fill_goto_else(p):
+    'fill_goto_else :'
+    generator.fill_goto_else()
 
 def p_push_goto(p):
     'push_goto :'
