@@ -85,8 +85,12 @@ class FunctionsDir(object):
         self.functions[self.scope].increase_expected_arguments()
 
     def set_return_type(self, function_return_type):
-        '''Manda llamar el metodo set return type de la clase Funcion'''
+        '''Manda llamar el metodo set return type de la clase Function'''
         self.functions[self.scope].set_return_type(function_return_type)
+
+    def set_func_quad(self, func_quad):
+        '''Manda llamar el metodo set_func_quad de la clase Function'''
+        self.functions[self.scope].set_func_quad(func_quad)
 
     def set_scope(self, scope):
         '''Cambia el scope actual del directorio de funciones al scope que recibe'''
@@ -176,7 +180,7 @@ class FunctionsDir(object):
         '''Funcion auxiliar para imprimir el contenido del directorio de funciones'''
         print('************ Functions Directory ************\n')
         for key, val in self.functions.iteritems():
-            print(str(val.return_type) + ' ' + str(key) + '()')
+            print(str(val.return_type) + ' ' + str(key) + '(): quad_num ' + str(val.get_function_quad()))
             for k, vals in val.variables_dict.iteritems():
                 print('\t' + str(vals[1]) + ' ' + str(k) + ' = ' + str(vals[0]))
             print('')

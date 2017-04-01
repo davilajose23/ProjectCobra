@@ -133,7 +133,7 @@ def p_function(p):
 def p_func_types(p):
     '''func_types : types
             | VOID'''
-    
+
     if p[1] == 'void':
         functions_directory.set_type('void')
 
@@ -142,7 +142,8 @@ def p_register_function(p):
     functions_directory.add_function(p[-1])
     functions_directory.set_scope(p[-1])
     functions_directory.set_return_type(functions_directory.last_type)
-    
+    functions_directory.set_func_quad(generator.cont)
+
 
 def p_post_function(p):
     '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return
@@ -400,12 +401,11 @@ def p_print(p):
     'print : PRINT cond post_print'
 
 def p_post_print(p):
-    '''post_print :  COMMA STRING_CONSTANT 
+    '''post_print : COMMA STRING_CONSTANT
                     | empty'''
 
 def p_push_print(p):
     'push_print :'
-    
 
 # ********************* Diagram read *********************
 def p_read(p):
