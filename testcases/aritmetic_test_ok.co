@@ -1,3 +1,13 @@
+int x
+
+func void hola()
+	x += 1
+end
+
+func int test(int x)
+	return x + 1
+end
+
 main
 	bool a
 	int b
