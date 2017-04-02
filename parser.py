@@ -110,6 +110,7 @@ def p_post_call_function(p):
                             | RIGHT_PARENTHESIS validate_call_arguments'''
 
 def p_validate_call_arguments(p):
+    # Valida solamente que la cantidad de argumentos coincida con la cantidad que se espera recibir
     'validate_call_arguments :'
     functions_directory.validate_call_arguments()
                             
@@ -150,14 +151,14 @@ def p_post_function(p):
                           | RIGHT_PARENTHESIS required_eol post_variables func_return'''
 
 def p_func_return(p):
-    '''func_return : void_return 
+    '''func_return : void_return
                     | value_return'''
-                   
+
 def p_void_return(p):
     'void_return : block post_void_return'
 
 def p_post_void_return(p):
-    '''post_void_return : END reset_scope required_eol 
+    '''post_void_return : END reset_scope required_eol
                         | RETURN required_eol END reset_scope required_eol'''
 
 def p_value_return(p):
@@ -167,10 +168,18 @@ def p_value_return(p):
 def p_reset_scope(p):
     'reset_scope :'
     functions_directory.reset_scope()
-                    
+
 # ********************* Diagram parameters *********************
 def p_parameters(p):
-    'parameters : finish_evaluating types set_type identifier update_function_parameters post_parameters start_evaluating'
+    'parameters : finish_evaluating start_params types set_type identifier update_function_parameters post_parameters finish_params start_evaluating'
+
+def p_start_params(p):
+    'start_params :'
+    functions_directory.updating_params = True
+
+def p_finish_params(p):
+    'finish_params :'
+    functions_directory.updating_params = False
 
 # Increases the quantity of expected arguments by a function
 def p_update_function_parameters(p):
@@ -189,7 +198,7 @@ def p_statement(p):
                     | read required_eol
                     | loop required_eol
                     | call_function required_eol'''
-                    
+
 # ********************* Diagram assignment *********************
 
 def p_assignment(p):
@@ -283,9 +292,7 @@ def p_relational_operator(p):
                             | LESS_EQUALS push_relop
                             | EQUALS_EQUALS push_relop
                             | NOT_EQUALS push_relop'''
-    
-    
-    
+
 # ********************* Diagram exp *********************
 def p_exp(p):
     'exp : term pop_exp post_exp'
@@ -358,7 +365,6 @@ def p_variable_constant(p):
         var = Variable(name='constant', value=p[1], var_type=get_type(p[1]))
         generator.pile_o.push(var)
 
-    
 def p_process_variable(p):
     'process_variable :'
     # Checks if the variable to validate is in array notation
@@ -366,6 +372,8 @@ def p_process_variable(p):
         functions_directory.validate_variable(p[-1])
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
+        if functions_directory.updating_params:
+            functions_directory.update_function_params(var_id=p[-1], var_type=functions_directory.last_type)
 
 # ********************* Diagram condition *********************
 def p_condition(p):
