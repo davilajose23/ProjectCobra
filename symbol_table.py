@@ -27,9 +27,9 @@ class Function(object):
         '''Regresa la cantidad de argumentos que espera una funcion'''
         return self.expected_arguments
 
-    def update_params(self, var_type, var_id):
+    def update_params(self, var_id, var_type):
         '''Agrega tipo de variable y id a la lista de parametros'''
-        self.parameters_specification.append((var_type, var_id))
+        self.parameters_specification.append((var_id, var_type))
 
     def set_func_quad(self, quad_num):
         '''Establece el numero de cuadruplo en el que inicia la funcion'''
@@ -57,6 +57,9 @@ class FunctionsDir(object):
         # Define si se esta evaluando la existencia de variables o se estan agregando al directorio
         self.evaluating = False
 
+        # Indica si es necesario acutlaizar la lista de prametros de una funcion
+        self.updating_params = False
+
         # Ultimo token de tipo que fue leido por el directorio de funciones
         self.last_type = None
 
@@ -83,6 +86,10 @@ class FunctionsDir(object):
     def increase_expected_arguments(self):
         '''Manda llamar el metodo increase expected arguments de la clase Function'''
         self.functions[self.scope].increase_expected_arguments()
+
+    def update_function_params(self, var_id, var_type):
+        '''Manda llamar metodo update params de la clase Funcion'''
+        self.functions[self.scope].update_params(var_id, var_type)
 
     def set_return_type(self, function_return_type):
         '''Manda llamar el metodo set return type de la clase Function'''
@@ -180,7 +187,10 @@ class FunctionsDir(object):
         '''Funcion auxiliar para imprimir el contenido del directorio de funciones'''
         print('************ Functions Directory ************\n')
         for key, val in self.functions.iteritems():
-            print(str(val.return_type) + ' ' + str(key) + '(): quad_num ' + str(val.get_function_quad()))
+            print(str(val.return_type) + ' ' + str(key) + '('),
+            for var in val.parameters_specification:
+                print(str(var[1]) + ' ' + str(var[0]) + ', '),
+            print('): quad_num ' + str(val.get_function_quad()))
             for k, vals in val.variables_dict.iteritems():
                 print('\t' + str(vals[1]) + ' ' + str(k) + ' = ' + str(vals[0]))
             print('')
