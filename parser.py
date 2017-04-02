@@ -114,7 +114,7 @@ def p_validate_call_arguments(p):
     # Valida solamente que la cantidad de argumentos coincida con la cantidad que se espera recibir
     'validate_call_arguments :'
     functions_directory.validate_call_arguments()
-                            
+
 # ********************* Diagram arguments *********************
 def p_arguments(p):
     'arguments : cond increase_call_arguments post_arguments'
@@ -123,9 +123,11 @@ def p_arguments(p):
 def p_increase_call_arguments(p):
     'increase_call_arguments :'
     functions_directory.increase_call_arguments()
+    #argument = generator.pile_o.pop()
+    #functions_directory.validate_arg_type(argument.get_type())
 
 def p_post_arguments(p):
-    '''post_arguments : COMMA arguments 
+    '''post_arguments : COMMA arguments
                             | empty'''
 
 # ********************* Diagram function *********************

@@ -7,7 +7,7 @@ class Function(object):
         '''Metodo para inicializar un objeto funcion'''
         self.return_type = None
         self.expected_arguments = 0
-        self.parameters_specification = []
+        self.params = []
         self.variables_dict = {}
         self.function_quad_start = -1
 
@@ -29,7 +29,7 @@ class Function(object):
 
     def update_params(self, var_id, var_type):
         '''Agrega tipo de variable y id a la lista de parametros'''
-        self.parameters_specification.append((var_id, var_type))
+        self.params.append((var_id, var_type))
 
     def set_func_quad(self, quad_num):
         '''Establece el numero de cuadruplo en el que inicia la funcion'''
@@ -178,6 +178,14 @@ class FunctionsDir(object):
             self.call_arguments.pop()
             self.call_function.pop()
 
+    def validate_arg_type(self, var_type):
+        '''Funcion que valida que el tipo de argumento que se manda sea del tipo esperado'''
+        expected_type = self.functions[self.call_function.top].params[self.call_arguments.top - 1][1]
+        if var_type != expected_type:
+            msg = 'Expected type in function call ' + str(self.scope) + ': ' + expected_type
+            msg += '. Got: ' + var_type
+            raise TypeError(msg)
+
     @property
     def current_scope(self):
         '''Propiedad del directorio de funciones para obtener el scope actual'''
@@ -188,7 +196,7 @@ class FunctionsDir(object):
         print('************ Functions Directory ************\n')
         for key, val in self.functions.iteritems():
             print(str(val.return_type) + ' ' + str(key) + '('),
-            for var in val.parameters_specification:
+            for var in val.params:
                 print(str(var[1]) + ' ' + str(var[0]) + ', '),
             print('): quad_num ' + str(val.get_function_quad()))
             for k, vals in val.variables_dict.iteritems():
