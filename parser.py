@@ -11,13 +11,14 @@ functions_directory = FunctionsDir()
 precedence = (
     ('nonassoc', 'AND', 'OR'),  # Nonassociative operators
     ('nonassoc', 'LESS', 'GREATER', 'EQUALS_EQUALS', 'GREATER_EQUALS', 'LESS_EQUALS', 'NOT_EQUALS'),
-    ('left','PLUS','MINUS'),
-    ('left','TIMES','DIVIDE', 'MOD', 'PERCENTAGE'),
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE', 'MOD', 'PERCENTAGE'),
     # ('right','UMINUS'),
 )
 
 generator = QuadGenerator('output.txt')
 def debug(x):
+    '''Funcion de ayuda para debugging'''
     print(x)
 # ********************* Diagram program *********************
 def p_program(p):
