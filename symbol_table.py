@@ -185,6 +185,7 @@ class FunctionsDir(object):
             msg = 'Expected type in function call ' + str(self.scope) + ': ' + expected_type
             msg += '. Got: ' + var_type
             raise TypeError(msg)
+        return self.functions[self.call_function.top].params[self.call_arguments.top - 1]
 
     @property
     def current_scope(self):

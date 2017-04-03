@@ -124,9 +124,10 @@ def p_arguments(p):
 def p_increase_call_arguments(p):
     'increase_call_arguments :'
     functions_directory.increase_call_arguments()
-    generator.generate_param()
-    #argument = generator.pile_o.pop()
-    #functions_directory.validate_arg_type(argument.get_type())
+    argument = generator.pile_o.pop()
+    tmp_param = functions_directory.validate_arg_type(argument.get_type())
+    param = Variable(tmp_param[0], -1, tmp_param[1])
+    generator.generate_param(argument, param)
 
 def p_post_arguments(p):
     '''post_arguments : COMMA arguments

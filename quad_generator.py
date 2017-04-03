@@ -91,7 +91,7 @@ class QuadGenerator(object):
         else:
             right_operand = self.pile_o.pop()
             left_operand = self.pile_o.pop()
-        
+
         # Verfica la validez sematica
         res = semantic_cube[right_operand.get_type()][left_operand.get_type()][op]
 
@@ -176,14 +176,12 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         self.cont += 1
 
-    def generate_param(self):
-        argument = self.pile_o.pop()
+    def generate_param(self, argument, param):
         if argument.get_name() == 'constant':
             argument = argument.get_value()
         else:
             argument = argument.get_name()
-
-        quad = Quadruple(id=self.cont, op='Param', left_operand=argument, right_operand='', res='param')
+        quad = Quadruple(id=self.cont, op='Param', left_operand=argument, right_operand='', res=param.get_name())
         self.quadruples.append(quad)
         self.cont += 1
 
