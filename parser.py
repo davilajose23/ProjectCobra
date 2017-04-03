@@ -105,6 +105,7 @@ def p_validate_function_call(p):
 
     # Settea el id de la funcion que va a ser llamada
     functions_directory.set_call_function(p[-1])
+    generator.pile_o.push(p[-1])
 
 def p_post_call_function(p):
     ''' post_call_function : arguments RIGHT_PARENTHESIS validate_call_arguments
@@ -114,7 +115,7 @@ def p_validate_call_arguments(p):
     # Valida solamente que la cantidad de argumentos coincida con la cantidad que se espera recibir
     'validate_call_arguments :'
     functions_directory.validate_call_arguments()
-
+    generator.generate_gosub()
 # ********************* Diagram arguments *********************
 def p_arguments(p):
     'arguments : cond increase_call_arguments post_arguments'
@@ -123,6 +124,7 @@ def p_arguments(p):
 def p_increase_call_arguments(p):
     'increase_call_arguments :'
     functions_directory.increase_call_arguments()
+    generator.generate_param()
     #argument = generator.pile_o.pop()
     #functions_directory.validate_arg_type(argument.get_type())
 
@@ -147,12 +149,13 @@ def p_register_function(p):
     functions_directory.set_scope(p[-1])
     functions_directory.set_return_type(functions_directory.last_type)
     functions_directory.set_func_quad(generator.cont)
+    generator.generate_startproc(p[-1])
 
 
 def p_post_function(p):
     '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return
                           | RIGHT_PARENTHESIS required_eol post_variables func_return'''
-
+    generator.generate_endproc()
 def p_func_return(p):
     '''func_return : void_return
                     | value_return'''
@@ -183,6 +186,8 @@ def p_start_params(p):
 def p_finish_params(p):
     'finish_params :'
     functions_directory.updating_params = False
+
+
 
 # Increases the quantity of expected arguments by a function
 def p_update_function_parameters(p):

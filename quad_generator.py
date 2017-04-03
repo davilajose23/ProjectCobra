@@ -147,6 +147,7 @@ class QuadGenerator(object):
         last_operand = self.pile_o.pop()
         quad = Quadruple(id=self.cont, op='Print', left_operand=last_operand, right_operand=None, res=None)
         self.cont += 1
+        self.quadruples.append(quad)
         print(last_operand)
 
     # def generate_read(self, res):
@@ -157,6 +158,34 @@ class QuadGenerator(object):
 
     #     quad = Quadruple(id=self.cont, op='Read', left_operand=last_operand, right_operand=None, res=temp.get_name())
     #     self.cont += 1
+
+    # TODO: agregar a donde van a saltar la operacion gosub
+    def generate_gosub(self):
+        name = self.pile_o.pop()
+        quad = Quadruple(id=self.cont, op='Gosub', left_operand=name, right_operand='', res='')
+        self.quadruples.append(quad)
+        self.cont += 1
+
+    def generate_startproc(self, name=''):
+        quad = Quadruple(id=self.cont, op='StartProc', left_operand=name, right_operand='', res='')
+        self.quadruples.append(quad)
+        self.cont += 1
+
+    def generate_endproc(self):
+        quad = Quadruple(id=self.cont, op='EndProc', left_operand='', right_operand='', res='')
+        self.quadruples.append(quad)
+        self.cont += 1
+
+    def generate_param(self):
+        argument = self.pile_o.pop()
+        if argument.get_name() == 'constant':
+            argument = argument.get_value()
+        else:
+            argument = argument.get_name()
+
+        quad = Quadruple(id=self.cont, op='Param', left_operand=argument, right_operand='', res='param')
+        self.quadruples.append(quad)
+        self.cont += 1
 
     def generate_gotoF(self):
         '''Funcion para generar cuadruplos de gotoF'''
