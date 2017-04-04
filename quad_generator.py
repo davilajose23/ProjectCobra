@@ -160,14 +160,14 @@ class QuadGenerator(object):
     #     self.cont += 1
 
     # TODO: agregar a donde van a saltar la operacion gosub
-    def generate_gosub(self):
-        name = self.pile_o.pop()
-        quad = Quadruple(id=self.cont, op='Gosub', left_operand=name, right_operand='', res='')
+    def generate_era(self, function_id):
+        quad = Quadruple(self.cont, 'ERA', function_id, '', '')
         self.quadruples.append(quad)
         self.cont += 1
 
-    def generate_startproc(self, name=''):
-        quad = Quadruple(id=self.cont, op='StartProc', left_operand=name, right_operand='', res='')
+    def generate_gosub(self):
+        name = self.pile_o.pop()
+        quad = Quadruple(id=self.cont, op='Gosub', left_operand=name, right_operand='', res='')
         self.quadruples.append(quad)
         self.cont += 1
 

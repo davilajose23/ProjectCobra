@@ -102,7 +102,7 @@ def p_call_function(p):
 def p_validate_function_call(p):
     'validate_function_call :'
     functions_directory.validate_function(p[-1])
-
+    generator.generate_era(p[-1])
     # Settea el id de la funcion que va a ser llamada
     functions_directory.set_call_function(p[-1])
     generator.pile_o.push(p[-1])
@@ -150,7 +150,6 @@ def p_register_function(p):
     functions_directory.set_scope(p[-1])
     functions_directory.set_return_type(functions_directory.last_type)
     functions_directory.set_func_quad(generator.cont)
-    generator.generate_startproc(p[-1])
 
 
 def p_post_function(p):
