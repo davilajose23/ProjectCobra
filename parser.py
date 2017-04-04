@@ -174,6 +174,7 @@ def p_value_return(p):
 def p_reset_scope(p):
     'reset_scope :'
     functions_directory.reset_scope()
+    generator.reset_temporal_id()
 
 # ********************* Diagram parameters *********************
 def p_parameters(p):

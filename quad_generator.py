@@ -73,7 +73,11 @@ class QuadGenerator(object):
 
     def read_operator(self, operator):
         '''Push de operador a pila de operadores'''
-        self.popper.push(operator)     
+        self.popper.push(operator)
+
+    def reset_temporal_id(self):
+        '''Reset al contador de temporales para cuando sale de funciones'''
+        self.temporal_id = 1
 
     def generate_quad(self):
         '''Metodo para genera cuadruplos'''
