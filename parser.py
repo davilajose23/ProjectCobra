@@ -21,6 +21,9 @@ def debug(x):
     '''Funcion de ayuda para debugging'''
     print(x)
 # ********************* Diagram program *********************
+def p_init(p):
+    'init : push_goto program'
+
 def p_program(p):
     '''program : pre_variables functions main
                 | functions main
@@ -79,14 +82,18 @@ def p_post_functions(p):
     
 # ********************* Diagram main *********************
 def p_main(p):
-    'main : MAIN set_main_scope required_eol pre_variables block END_MAIN optional_eol'
+    'main : MAIN fill_goto set_main_scope required_eol pre_variables block END_MAIN push_end optional_eol'
+
+def p_push_end(p):
+    'push_end :'
+    generator.finish()
 
 def p_set_main_scope(p):
     'set_main_scope :'
     functions_directory.add_function(p[-1])
     functions_directory.set_scope(p[-1])
     functions_directory.set_return_type('void')
-    
+
 # ********************* Diagram block *********************
 def p_block(p):
     'block : statement post_block'

@@ -110,13 +110,13 @@ class QuadGenerator(object):
                 name_right = right_operand.get_value()
             # Genera cuadruplo
             if op == '=':
-                quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand="", res=name_right)
+                quad = Quadruple(self.cont, op, name_left, '', name_right)
             else:
                 # Genera variable temporal
                 temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
                 # Aumenta id de temporales
                 self.temporal_id += 1
-                quad = Quadruple(id=self.cont, op=op, left_operand=name_left, right_operand=name_right, res=temp.get_name())
+                quad = Quadruple(self.cont, op, name_left, name_right, temp.get_name())
                 # pushea temporal a pila de operandos
                 self.pile_o.push(temp)
 
@@ -171,12 +171,12 @@ class QuadGenerator(object):
 
     def generate_gosub(self):
         name = self.pile_o.pop()
-        quad = Quadruple(id=self.cont, op='Gosub', left_operand=name, right_operand='', res='')
+        quad = Quadruple(self.cont, 'Gosub', name, '', '')
         self.quadruples.append(quad)
         self.cont += 1
 
     def generate_endproc(self):
-        quad = Quadruple(id=self.cont, op='EndProc', left_operand='', right_operand='', res='')
+        quad = Quadruple(self.cont, 'EndProc', '', '', '')
         self.quadruples.append(quad)
         self.cont += 1
 
@@ -185,7 +185,7 @@ class QuadGenerator(object):
             argument = argument.get_value()
         else:
             argument = argument.get_name()
-        quad = Quadruple(id=self.cont, op='Param', left_operand=argument, right_operand='', res=param.get_name())
+        quad = Quadruple(self.cont, 'Param', argument, '', param.get_name())
         self.quadruples.append(quad)
         self.cont += 1
 
@@ -195,14 +195,14 @@ class QuadGenerator(object):
         if last_operand.get_type() != 'bool':
             raise TypeError('Type missmatch. Non bool variables in condition')
         else:
-            quad = Quadruple(id=self.cont, op='GotoF', left_operand=last_operand.get_name(), right_operand=None, res=None)
+            quad = Quadruple(self.cont, 'GotoF', last_operand.get_name(), None, None)
             self.quadruples.append(quad)
             self.pjumps.push(self.cont)
             self.cont += 1
 
     def generate_goto(self):
         '''Funcion para generar cuadruplos de goto'''
-        quad = Quadruple(id=self.cont, op='Goto', left_operand=None, right_operand=None, res=None)
+        quad = Quadruple(self.cont, 'Goto', None, None, None)
         self.quadruples.append(quad)
         self.pjumps.push(self.cont)
         self.cont += 1
@@ -223,9 +223,14 @@ class QuadGenerator(object):
     def generate_pending_goto(self):
         '''Genera cuadruplo pendiente de goto para ciclos'''
         pending = self.pcycles.pop()
-        quad = Quadruple(id=self.cont, op='Goto', left_operand=None, right_operand=None, res=pending)
+        quad = Quadruple(self.cont, 'Goto', None, None, pending)
         self.quadruples.append(quad)
         self.cont += 1
+
+    def finish(self):
+        '''Crea el ultimo cuadruplo del programa'''
+        quad = Quadruple(self.cont, 'END', '', '', '')
+        self.quadruples.append(quad)
 
     def export(self):
         '''Funcion para exportar cuadruplos a un archivo al terminar de generar cuadruplos'''
