@@ -31,6 +31,6 @@ main
 	
 	while b < 5:
 		b += 1
-		print b
+		print b,'-'
 	end
 end_main

@@ -146,10 +146,10 @@ class QuadGenerator(object):
             # genera el cuadruplo para el =
             self.generate_quad()
 
-    def generate_print(self):
+    def generate_print(self, modifier='\\n'):
         '''Funcion para generar el cuadruplo de un print'''
-        last_operand = self.pile_o.pop()
-        quad = Quadruple(id=self.cont, op='Print', left_operand=last_operand, right_operand=None, res=None)
+        last_operand = self.pile_o.pop().get_name()
+        quad = Quadruple(id=self.cont, op='Print', left_operand=last_operand, right_operand=modifier, res='')
         self.cont += 1
         self.quadruples.append(quad)
         print(last_operand)
