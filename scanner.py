@@ -126,7 +126,7 @@ def t_INT_CONSTANT(t):
 
 def t_STRING_CONSTANT(t):
     r'\'(\'\'|[^\n\t])*\''
-    t.value = str(t)
+    t.value = str(t.value)
     return t
 
 # Error handling rule

@@ -421,11 +421,20 @@ def p_print(p):
     'print : PRINT cond post_print'
 
 def p_post_print(p):
-    '''post_print : COMMA STRING_CONSTANT
-                    | empty'''
+    '''post_print : print_mod
+                    | print_default'''
 
-def p_push_print(p):
-    'push_print :'
+def p_print_mod(p):
+    '''print_mod : COMMA STRING_CONSTANT print_post_mod'''
+    
+
+def p_print_post_mod(p):
+    'print_post_mod :'
+    generator.generate_print(p[-1])
+
+def p_print_default(p):
+    'print_default : empty'
+    generator.generate_print()
 
 # ********************* Diagram read *********************
 def p_read(p):
