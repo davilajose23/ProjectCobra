@@ -73,12 +73,11 @@ def p_cycle_declaration(p):
 # ********************* Diagram functions *********************
 def p_functions(p):
     'functions : function post_functions'
-    
-    
+
 def p_post_functions(p):
     '''post_functions : functions
                     | empty'''
-    
+
 # ********************* Diagram main *********************
 def p_main(p):
     'main : MAIN fill_goto set_main_scope required_eol pre_variables block END_MAIN push_end optional_eol'
@@ -96,7 +95,7 @@ def p_set_main_scope(p):
 # ********************* Diagram block *********************
 def p_block(p):
     'block : statement post_block'
-    
+
 def p_post_block(p):
     '''post_block : block
                     | empty'''
@@ -195,8 +194,6 @@ def p_finish_params(p):
     'finish_params :'
     functions_directory.updating_params = False
 
-
-
 # Increases the quantity of expected arguments by a function
 def p_update_function_parameters(p):
     'update_function_parameters :'
@@ -224,7 +221,6 @@ def p_validate_var(p):
     'validate_var :'
     functions_directory.validate_variable(p[-1])
 
-
 def p_push_var(p):
     'push_var :'
     if functions_directory.get_var(p[-2]) is not None:
@@ -237,7 +233,6 @@ def p_push_var(p):
 def p_array_notation(p):
     '''array_notation : LEFT_BRACKET exp RIGHT_BRACKET
                         | empty'''
-
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):
@@ -300,6 +295,7 @@ def p_post_expression(p):
 def p_push_relop(p):
     'push_relop :'
     generator.popper.push(p[-1])
+
 # ********************* Diagram relational_operator *********************
 def p_relational_operator(p):
     '''relational_operator : LESS push_relop
