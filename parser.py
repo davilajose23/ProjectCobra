@@ -153,6 +153,8 @@ def p_func_types(p):
 def p_register_function(p):
     'register_function :'
     functions_directory.add_function(p[-1])
+    if functions_directory.last_type != 'void':
+        functions_directory.add_var(p[-1], functions_directory.last_type)
     functions_directory.set_scope(p[-1])
     functions_directory.set_return_type(functions_directory.last_type)
     functions_directory.set_func_quad(generator.cont)
