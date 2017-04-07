@@ -121,7 +121,12 @@ def p_validate_call_arguments(p):
     # Valida solamente que la cantidad de argumentos coincida con la cantidad que se espera recibir
     'validate_call_arguments :'
     functions_directory.validate_call_arguments()
-    generator.generate_gosub()
+    func_name = generator.generate_gosub()
+    func_type = functions_directory.functions[func_name].get_return_type()
+    if func_type != 'void':
+        val = functions_directory.functions['global'].variables_dict[func_name][0]
+        generator.generate_func_assign(func_name, func_type, val)
+
 # ********************* Diagram arguments *********************
 def p_arguments(p):
     'arguments : cond increase_call_arguments post_arguments'
@@ -176,8 +181,13 @@ def p_post_void_return(p):
                         | RETURN required_eol END reset_scope required_eol'''
 
 def p_value_return(p):
-    '''value_return : block RETURN cond required_eol END reset_scope required_eol
-                    | RETURN cond required_eol END reset_scope required_eol'''
+    '''value_return : block RETURN cond create_return required_eol END reset_scope required_eol
+                    | RETURN cond create_return required_eol END reset_scope required_eol'''
+
+def p_create_return(p):
+    'create_return :'
+    val = generator.generate_return()
+    functions_directory.functions['global'].variables_dict[functions_directory.current_scope][0] = val
 
 def p_reset_scope(p):
     'reset_scope :'
