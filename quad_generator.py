@@ -169,12 +169,10 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         self.cont += 1
 
-    def generate_gosub(self):
-        name = self.pile_o.pop()
+    def generate_gosub(self, name):
         quad = Quadruple(self.cont, 'Gosub', name, '', '')
         self.quadruples.append(quad)
         self.cont += 1
-        return name
 
     def generate_endproc(self):
         quad = Quadruple(self.cont, 'EndProc', '', '', '')

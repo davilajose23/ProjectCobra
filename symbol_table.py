@@ -176,7 +176,7 @@ class FunctionsDir(object):
             raise TypeError(msg)
         else:
             self.call_arguments.pop()
-            self.call_function.pop()
+            return self.call_function.pop()
 
     def validate_arg_type(self, var_type):
         '''Funcion que valida que el tipo de argumento que se manda sea del tipo esperado'''

@@ -111,7 +111,6 @@ def p_validate_function_call(p):
     generator.generate_era(p[-1])
     # Settea el id de la funcion que va a ser llamada
     functions_directory.set_call_function(p[-1])
-    generator.pile_o.push(p[-1])
 
 def p_post_call_function(p):
     ''' post_call_function : arguments RIGHT_PARENTHESIS validate_call_arguments
@@ -120,8 +119,8 @@ def p_post_call_function(p):
 def p_validate_call_arguments(p):
     # Valida solamente que la cantidad de argumentos coincida con la cantidad que se espera recibir
     'validate_call_arguments :'
-    functions_directory.validate_call_arguments()
-    func_name = generator.generate_gosub()
+    func_name = functions_directory.validate_call_arguments()
+    generator.generate_gosub(func_name)
     func_type = functions_directory.functions[func_name].get_return_type()
     if func_type != 'void':
         val = functions_directory.functions['global'].variables_dict[func_name][0]
