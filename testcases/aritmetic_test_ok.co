@@ -29,8 +29,5 @@ main
 
 	b = test(1 + b, 2)
 	
-	while b < 5:
-		b += 1
-		print b,'-'
-	end
+	print b
 end_main
