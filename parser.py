@@ -111,7 +111,6 @@ def p_validate_function_call(p):
     generator.generate_era(p[-1])
     # Settea el id de la funcion que va a ser llamada
     functions_directory.set_call_function(p[-1])
-    
 
 def p_post_call_function(p):
     ''' post_call_function : arguments RIGHT_PARENTHESIS pop_paren validate_call_arguments
@@ -394,6 +393,8 @@ def p_process_variable(p):
     # Checks if the variable to validate is in array notation
     if  functions_directory.evaluating:
         functions_directory.validate_variable(p[-1])
+        if functions_directory.reading:
+            functions_directory.last_id = p[-1]
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
         if functions_directory.updating_params:
@@ -438,7 +439,6 @@ def p_post_print(p):
 
 def p_print_mod(p):
     '''print_mod : COMMA STRING_CONSTANT print_post_mod'''
-    
 
 def p_print_post_mod(p):
     'print_post_mod :'
@@ -450,7 +450,20 @@ def p_print_default(p):
 
 # ********************* Diagram read *********************
 def p_read(p):
-    'read : READ LEFT_PARENTHESIS RIGHT_PARENTHESIS '
+    'read : READ start_read LEFT_PARENTHESIS identifier RIGHT_PARENTHESIS read_var'
+
+def p_start_read(p):
+    'start_read :'
+    functions_directory.reading = True
+
+def p_read_var(p):
+    'read_var :'
+    tmp = functions_directory.get_var(functions_directory.last_id)
+    var = Variable(functions_directory.last_id, tmp[0], tmp[1])
+    generator.generate_read(var)
+    functions_directory.reading = False
+    functions_directory.last_id = None
+
 
 # ********************* Diagram identifier *********************
 def p_identifier(p):
