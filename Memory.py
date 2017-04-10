@@ -6,25 +6,30 @@ class Chunk(object):
     def __init__(self, name):
         'Metodo para inicializar la clase Chunk'
         self.name = 'name'
-        self.local_variables = Stack()
+        # Diccionario de variables locales (main)
+        self.local_variables = {}
+        # Pila de diccionarios de variables temporales (funciones)
         self.temporal = Stack()
+        # Diccionario de variables globales
         self.global_variables = {}
+        # Diccionario de variables constantes
         self.constants = {}
-    
-    def getVal(direccion):
+
+    def get_val(self, direccion):
         segment = direccion[0]
         chunk = None
         if segment == 'l':
-            chunk = self.local_variables
+            chunk = self.local_variables[direccion[1]]
         elif segment == 't':
-            chunk = self.temporal
+            chunk = self.temporal.top[direccion[1]]
         elif segment == 'g':
-            chunk = self.global_variables
+            chunk = self.global_variables[direccion[1]]
         elif segment == 'c':
-            chunk = self.constants
+            chunk = self.constants[direccion[1]]
         else:
-            'ERROR'
-        return chunk.getVal(direccion[1:])
+            return 'ERROR'
+        return chunk
+        #return chunk.getVal(direccion[1:])
 
 
 class Memory(object):
@@ -37,7 +42,7 @@ class Memory(object):
         self.boolean = Chunk('bool')
 
     # direccion = TypeSegmentID
-    def getVal(direccion):
+    def get_val(self, direccion):
         tipo = direccion[0]
         chunk = None
         if tipo == 'i':
@@ -49,7 +54,7 @@ class Memory(object):
         elif tipo == 'b':
             chunk = self.boolean
         else:
-            'ERROR'
-        return chunk.getVal(direccion[1:])
+            return 'ERROR'
+        return chunk.get_val(direccion[1:])
 
 
