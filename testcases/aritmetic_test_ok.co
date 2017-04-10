@@ -33,4 +33,6 @@ main
 		b += 1
 		print b,'-'
 	end
+
+	read(b)
 end_main
