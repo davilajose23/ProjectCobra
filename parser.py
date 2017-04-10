@@ -485,12 +485,12 @@ def p_for(p):
 def p_add_var(p):
     'add_var :'
     functions_directory.add_var(variable_id=p[-1], var_type='int')
-    var = Variable(name=p[-1], var_type='int')
-    generator.pile_o.push(var)
+    var = Variable(name=p[-1], value=-1, var_type='int')
+    # generator.pile_o.push(var)
 
 def p_init_var(p):
     'init_var :'
-    generator.generate_for_quad()
+    # generator.generate_for_quad()
 
 # while
 def p_while(p):
@@ -564,7 +564,7 @@ if __name__ == '__main__':
         while True:
             try:
                 s = raw_input('>>> ')
-                print s
+                print(s)
             except EOFError:
                 break
             if not s:
