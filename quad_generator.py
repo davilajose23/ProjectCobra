@@ -154,14 +154,16 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         print(last_operand)
 
-    # def generate_read(self, res):
-    #     '''Funcion para generar cuadruplo de read'''
-    #     temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
-    #      # Aumenta id de temporales
-    #     self.temporal_id += 1
+    def generate_read(self, var):
+        '''Funcion para generar cuadruplo de read'''
+        if var.get_name() == 'constant':
+            name = var.get_value()
+        else:
+            name = var.get_name()
 
-    #     quad = Quadruple(id=self.cont, op='Read', left_operand=last_operand, right_operand=None, res=temp.get_name())
-    #     self.cont += 1
+        quad = Quadruple(self.cont, 'Read', None, None, name)
+        self.quadruples.append(quad)
+        self.cont += 1
 
     # TODO: agregar a donde van a saltar la operacion gosub
     def generate_era(self, function_id):
