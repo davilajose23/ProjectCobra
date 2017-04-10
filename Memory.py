@@ -31,6 +31,22 @@ class Chunk(object):
         return chunk
         #return chunk.getVal(direccion[1:])
 
+    def printeame(self):
+        print(' Global:')
+        for k, v in self.global_variables.iteritems():
+            print(k, v)
+        print(' Temporal:')
+        tmp = self.temporal
+        while tmp.length > 0:
+            d = tmp.pop()
+            for k, v in d.iteritems():
+                print(k, v)
+        print(' Local:')
+        for k, v in self.local_variables.iteritems():
+            print(k, v)
+        print(' Constants:')
+        for k, v in self.constants.iteritems():
+            print(k, v)
 
 class Memory(object):
     'Clase de memoria para la Maquina Virtual'
@@ -39,7 +55,7 @@ class Memory(object):
         self.integers = Chunk('int')
         self.doubles = Chunk('double')
         self.strings = Chunk('string')
-        self.boolean = Chunk('bool')
+        self.booleans = Chunk('bool')
 
     # direccion = TypeSegmentID
     def get_val(self, direccion):
@@ -52,9 +68,28 @@ class Memory(object):
         elif tipo == 's':
             chunk = self.strings
         elif tipo == 'b':
-            chunk = self.boolean
+            chunk = self.booleans
         else:
             return 'ERROR'
         return chunk.get_val(direccion[1:])
 
+    def printeame(self):
+        print('Integers')
+        self.integers.printeame()
+        print('Doubles')
+        self.doubles.printeame()
+        print('Strings')
+        self.strings.printeame()
+        print('Boolean')
+        self.booleans.printeame()
 
+def test():
+    memory = Memory()
+    memory.integers.constants[1] = 1
+    memory.integers.constants[2] = 2
+    memory.integers.local_variables['x'] = 23
+    memory.integers.global_variables['x'] = 81
+    memory.integers.temporal.push({'x': 25})
+    memory.printeame()
+
+# test()
