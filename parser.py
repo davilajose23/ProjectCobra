@@ -102,7 +102,7 @@ def p_post_block(p):
 
 # ********************* Diagram call_function *********************
 def p_call_function(p):
-    'call_function :  ID validate_function_call LEFT_PARENTHESIS post_call_function'
+    'call_function :  ID validate_function_call LEFT_PARENTHESIS push_paren post_call_function'
 
 # Validates call to a function
 def p_validate_function_call(p):
@@ -111,10 +111,11 @@ def p_validate_function_call(p):
     generator.generate_era(p[-1])
     # Settea el id de la funcion que va a ser llamada
     functions_directory.set_call_function(p[-1])
+    
 
 def p_post_call_function(p):
-    ''' post_call_function : arguments RIGHT_PARENTHESIS validate_call_arguments
-                            | RIGHT_PARENTHESIS validate_call_arguments'''
+    ''' post_call_function : arguments RIGHT_PARENTHESIS pop_paren validate_call_arguments
+                            | RIGHT_PARENTHESIS pop_paren validate_call_arguments'''
 
 def p_validate_call_arguments(p):
     # Valida solamente que la cantidad de argumentos coincida con la cantidad que se espera recibir

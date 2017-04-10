@@ -5,7 +5,7 @@ func void hola()
 end
 
 func int test(int x, int y)
-	return x + y
+	return test(x, y)
 end
 
 main
