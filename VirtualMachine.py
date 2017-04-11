@@ -123,14 +123,19 @@ class VirtualMachine():
         left_val = self.get_memory_val(left)
         right_val = self.get_memory_val(right)
 
-        if op == '+':
-            res = left_val + right_val
-        elif op == '-':
-            res = left_val - right_val
-        elif op == '*':
-            res = left_val * right_val
-        elif op == '/':
-            res = left_val / right_val
+        if left_val == 'ERROR get_val: 458':
+            raise ValueError('ERROR get_val: 458')
+        elif right_val == 'ERROR get_val: 458':
+            raise ValueError('ERROR get_val: 458')
+        else:
+            if op == '+':
+                res = left_val + right_val
+            elif op == '-':
+                res = left_val - right_val
+            elif op == '*':
+                res = left_val * right_val
+            elif op == '/':
+                res = left_val / right_val
 
         self.memory.set_val(quad.res.rstrip().lstrip(), res)
 

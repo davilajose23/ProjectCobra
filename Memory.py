@@ -19,15 +19,14 @@ class Chunk(object):
         segment = direccion[0]
         chunk = None
         if segment == 'l':
-            chunk = self.local_variables[direccion[1:]]
+            chunk = self.local_variables.get(direccion[1:], 'ERROR get_val: 458')
         elif segment == 't':
-            chunk = self.temporal.top[direccion[1:]]
+            chunk = self.temporal.top
+            chunk = chunk.get(direccion[1:], 'ERROR get_val: 458')
         elif segment == 'g':
-            chunk = self.global_variables[direccion[1:]]
+            chunk = self.global_variables.get(direccion[1:], 'ERROR get_val: 458')
         elif segment == 'c':
-            chunk = self.constants[direccion[1:]]
-        else:
-            return 'ERROR get_val: 458'
+            chunk = self.constants.get(direccion[1:], 'ERROR get_val: 458')
         return chunk
         #return chunk.getVal(direccion[1:])
 

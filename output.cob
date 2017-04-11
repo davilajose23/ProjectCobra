@@ -1,5 +1,4 @@
 (Goto, None, None, 1)
-(=, 5, , ila)
 (*, ila, 3, ilt1)
 (=, ilt1, , ilb)
 (Print, ilb, \n, )

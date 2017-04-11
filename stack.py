@@ -25,7 +25,6 @@ class Stack(object):
         '''Regresa el elemento en tope de la pila'''
         if self.length > 0:
             return self.stack[-1]
-        return ' '
 
     @property
     def top2(self):
