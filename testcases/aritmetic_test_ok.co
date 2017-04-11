@@ -1,5 +1,7 @@
 main
-	int b 
-	b = 6 * 5 + 10
+	int b
+	int a
+	a = 5
+	b = a * 3
 	print(b)
 end_main
