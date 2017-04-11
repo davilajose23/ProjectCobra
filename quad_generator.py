@@ -172,7 +172,6 @@ class QuadGenerator(object):
         quad = Quadruple(id=self.cont, op='Print', left_operand=last_operand, right_operand=modifier, res='')
         self.cont += 1
         self.quadruples.append(quad)
-        print(last_operand)
 
     def generate_read(self, var):
         '''Funcion para generar cuadruplo de read'''

@@ -1,12 +1,6 @@
 main
 	
 	int b 
-	int a 
-	int c
-	
-	b = 3
-	a = 2
-	c = 13
-	b = b + a * a + c
+	b = 6
 	print(b)
 end_main

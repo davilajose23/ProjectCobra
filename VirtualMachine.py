@@ -41,18 +41,14 @@ class VirtualMachine():
 
         while self.quadruples[self.pc].op != 'END':
             quad = self.quadruples[self.pc]
-            
             op = quad.op
             if op == 'Print':
-
-                dir = quad.left_operand[1:]
-                print(self.dir_func.get_var(dir)[0])
-                # print("{0}{1}").format(quad.left_operand, quad.right_operand[2:-1])
-
+                #TODO agregar el segundo parametro del print
+                val = self.memory.get_val(quad.left_operand)
+                print(val)
             #basic operations +, - , *, /
             elif op == '+':
                 pass
-                
             elif op == '-':
                 pass
             elif op == '*':
@@ -61,21 +57,29 @@ class VirtualMachine():
                 pass
             elif op == '=':
                 pass
-                
                 #constantes
-                left = quad.left_operand
+                # TODO: mover todo a una funcion: buscar si existe la constante y si no existe agregarla
+                left = quad.left_operand.rstrip().lstrip()
                 if RepresentsInt(left):
                     self.memory.integers.constants[left] = int(left)
+                    valor = int(left)
                 elif RepresentsDouble(left):
                     self.memory.doubles.constants[left] = float(left)
+                    valor = float(left) 
                 elif left[0] == "\"":
                     self.memory.strings.constants[left[1:-1]] = left[1:-1]
+                    valor = left[1:-1]
                 elif left == 'true':
                     self.memory.booleans.constants[left] = True
+                    valor = True
                 elif left == 'false':
                     self.memory.booleans.constants[left] = False
+                    valor = False
+                # si no es constante se busca el valor en la memoria
                 else:
-                    self.memory.
+                    valor = self.memory.get_val(left)
+                self.memory.set_val(quad.res.rstrip().lstrip(), valor)
+
 
             #logic operations
             elif op == 'and':
