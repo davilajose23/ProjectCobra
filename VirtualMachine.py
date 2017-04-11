@@ -82,13 +82,18 @@ class VirtualMachine():
                 self.pc = int(self.quadruples[self.pc].res)
                 continue
             elif op == 'GotoF':
-                dir = quad.left_operand
+                dir = quad.left_operand.lstrip().rstrip()
+                if not self.get_memory_val(dir):
+                    self.pc = int(quad.res)
+                    continue
+                
                 # if memory.getVal(dir) == 'false':
                 #     self.pc = quad.res
             elif op == 'GotoV':
-                dir = quad.left_operand
-                # if memory.getVal(dir) == 'true':
-                #     self.pc = quad.res
+                dir = quad.left_operand.lstrip().rstrip()
+                if self.get_memory_val(dir):
+                    self.pc = int(quad.res)
+                    continue
 
             # print self.quadruples[self.pc].printeame()
             self.pc += 1
