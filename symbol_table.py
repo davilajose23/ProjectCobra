@@ -117,7 +117,7 @@ class FunctionsDir(object):
     def add_var(self, variable_id, var_type, value=0):
         '''Agrega variable a el diccionario de variables de una Funcion'''
         if self.functions[self.scope].variables_dict.get(variable_id, None) is None:
-            self.functions[self.scope].variables_dict[variable_id] = [value, var_type]
+            self.functions[self.scope].variables_dict[variable_id] = [value, var_type, self.scope]
         else:
             msg = 'Variable already declared! VAR: ' + str(variable_id) + '. TYPE: ' + str(self.functions[self.scope].variables_dict[variable_id][1])
             raise KeyError(msg)

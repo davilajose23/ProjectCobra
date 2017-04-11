@@ -19,13 +19,13 @@ class Chunk(object):
         segment = direccion[0]
         chunk = None
         if segment == 'l':
-            chunk = self.local_variables[direccion[1]]
+            chunk = self.local_variables[direccion[1:]]
         elif segment == 't':
-            chunk = self.temporal.top[direccion[1]]
+            chunk = self.temporal.top[direccion[1:]]
         elif segment == 'g':
-            chunk = self.global_variables[direccion[1]]
+            chunk = self.global_variables[direccion[1:]]
         elif segment == 'c':
-            chunk = self.constants[direccion[1]]
+            chunk = self.constants[direccion[1:]]
         else:
             return 'ERROR'
         return chunk
@@ -38,6 +38,7 @@ class Chunk(object):
         print(' Temporal:')
         tmp = self.temporal
         while tmp.length > 0:
+            print('  Stack' + str(tmp.length))
             d = tmp.pop()
             for k, v in d.iteritems():
                 print(k, v)
@@ -92,4 +93,4 @@ def test():
     memory.integers.temporal.push({'x': 25})
     memory.printeame()
 
-# test()
+test()
