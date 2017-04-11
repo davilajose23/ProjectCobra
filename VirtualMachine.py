@@ -112,6 +112,5 @@ class VirtualMachine():
             # print self.quadruples[self.pc].printeame()
             self.pc += 1
 
-        def getVal(dir):
-            
-            return self.dir_func.get(dir, None)
+    def getVal(dir):
+        return self.dir_func.get(dir, None)
