@@ -60,26 +60,8 @@ class VirtualMachine():
                 #constantes
                 # TODO: mover todo a una funcion: buscar si existe la constante y si no existe agregarla
                 left = quad.left_operand.rstrip().lstrip()
-                if RepresentsInt(left):
-                    self.memory.integers.constants[left] = int(left)
-                    valor = int(left)
-                elif RepresentsDouble(left):
-                    self.memory.doubles.constants[left] = float(left)
-                    valor = float(left) 
-                elif left[0] == "\"":
-                    self.memory.strings.constants[left[1:-1]] = left[1:-1]
-                    valor = left[1:-1]
-                elif left == 'true':
-                    self.memory.booleans.constants[left] = True
-                    valor = True
-                elif left == 'false':
-                    self.memory.booleans.constants[left] = False
-                    valor = False
-                # si no es constante se busca el valor en la memoria
-                else:
-                    valor = self.memory.get_val(left)
+                valor = self.get_memory_val(left)
                 self.memory.set_val(quad.res.rstrip().lstrip(), valor)
-
 
             #logic operations
             elif op == 'and':
@@ -112,5 +94,23 @@ class VirtualMachine():
             # print self.quadruples[self.pc].printeame()
             self.pc += 1
 
-    def getVal(dir):
-        return self.dir_func.get(dir, None)
+    def get_memory_val(self, base):
+        if RepresentsInt(base):
+            self.memory.integers.constants[base] = int(base)
+            valor = int(base)
+        elif RepresentsDouble(base):
+            self.memory.doubles.constants[base] = float(base)
+            valor = float(base)
+        elif base[0] == "\"":
+            self.memory.strings.constants[base[1:-1]] = base[1:-1]
+            valor = base[1:-1]
+        elif base == 'true':
+            self.memory.booleans.constants[base] = True
+            valor = True
+        elif base == 'false':
+            self.memory.booleans.constants[base] = False
+            valor = False
+        # si no es constante se busca el valor en la memoria
+        else:
+            valor = self.memory.get_val(base)
+        return valor
