@@ -1,6 +1,5 @@
 main
-	
 	int b 
-	b = 6 + 5
+	b = 6 * 5 + 10
 	print(b)
 end_main

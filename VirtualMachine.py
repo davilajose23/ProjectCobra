@@ -52,9 +52,9 @@ class VirtualMachine():
             elif op == '-':
                 self.execute(quad, '-')
             elif op == '*':
-                pass
+                self.execute(quad, '*')
             elif op == '/':
-                pass
+                self.execute(quad, '/')
             elif op == '=':
                 left = quad.left_operand.rstrip().lstrip()
                 valor = self.get_memory_val(left)
@@ -127,6 +127,10 @@ class VirtualMachine():
             res = left_val + right_val
         elif op == '-':
             res = left_val - right_val
+        elif op == '*':
+            res = left_val * right_val
+        elif op == '/':
+            res = left_val / right_val
 
         self.memory.set_val(quad.res.rstrip().lstrip(), res)
 
