@@ -1,4 +1,5 @@
 (Goto, None, None, 1)
-(=, 6, , ilb)
+(+, 6, 5, ilt1)
+(=, ilt1, , ilb)
 (Print, ilb, \n, )
 (END, , , )

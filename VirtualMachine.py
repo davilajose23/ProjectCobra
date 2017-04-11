@@ -48,17 +48,14 @@ class VirtualMachine():
                 print(val)
             #basic operations +, - , *, /
             elif op == '+':
-                pass
+                self.execute(quad, '+')
             elif op == '-':
-                pass
+                self.execute(quad, '-')
             elif op == '*':
                 pass
             elif op == '/':
                 pass
             elif op == '=':
-                pass
-                #constantes
-                # TODO: mover todo a una funcion: buscar si existe la constante y si no existe agregarla
                 left = quad.left_operand.rstrip().lstrip()
                 valor = self.get_memory_val(left)
                 self.memory.set_val(quad.res.rstrip().lstrip(), valor)
@@ -119,3 +116,17 @@ class VirtualMachine():
         else:
             valor = self.memory.get_val(base)
         return valor
+
+    def execute(self, quad, op):
+        left = quad.left_operand.rstrip().lstrip()
+        right = quad.right_operand.rstrip().lstrip()
+        left_val = self.get_memory_val(left)
+        right_val = self.get_memory_val(right)
+
+        if op == '+':
+            res = left_val + right_val
+        elif op == '-':
+            res = left_val - right_val
+
+        self.memory.set_val(quad.res.rstrip().lstrip(), res)
+
