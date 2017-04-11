@@ -1,5 +1,4 @@
 int a
-a = 1
 
 func void increment(int n)
 	while a < n:

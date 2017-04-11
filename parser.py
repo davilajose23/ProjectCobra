@@ -325,7 +325,7 @@ def p_expression(p):
 
 def p_pop_relop(p):
     'pop_relop :'
-    relops = ['<', '>', '<=', '>=', '!=']
+    relops = ['<', '>', '<=', '>=', '!=', '==']
     if generator.popper.top in relops:
         generator.generate_quad()
 
@@ -336,7 +336,7 @@ def p_post_expression(p):
 def p_push_relop(p):
     'push_relop :'
     generator.popper.push(p[-1])
-
+    
 # ********************* Diagram relational_operator *********************
 def p_relational_operator(p):
     '''relational_operator : LESS push_relop
@@ -363,6 +363,7 @@ def p_post_exp(p):
 def p_push_exp(p):
     'push_exp :'
     generator.popper.push(p[-1])
+    
 
 # ********************* Diagram term *********************
 def p_term(p):
@@ -453,11 +454,11 @@ def p_post_condition(p):
 
 # else
 def p_else(p):
-    'else : ELSE fill_goto_else COLON push_goto optional_eol block fill_goto'
+    'else : ELSE fill_goto_plus COLON push_goto optional_eol block fill_goto'
 
-def p_fill_goto_else(p):
-    'fill_goto_else :'
-    generator.fill_goto_else()
+def p_fill_goto_plus(p):
+    'fill_goto_plus :'
+    generator.fill_goto_plus()
 
 def p_push_goto(p):
     'push_goto :'
@@ -531,7 +532,7 @@ def p_init_var(p):
 
 # while
 def p_while(p):
-    'while : WHILE push_cycle cond push_gotoF post_cycle fill_goto create_pending_goto'
+    'while : WHILE push_cycle cond push_gotoF post_cycle fill_goto_plus create_pending_goto'
 
 def p_push_cycle(p):
     'push_cycle :'

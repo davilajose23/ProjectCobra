@@ -256,7 +256,7 @@ class QuadGenerator(object):
         # Dependiendo de si es un cuadruplo de gotoF o goto llena con un valor de contador
         self.quadruples[pending].res = self.cont
 
-    def fill_goto_else(self):
+    def fill_goto_plus(self):
         '''Funcion que llena los cuadruplos de goto pendiente cuando hay un else'''
         pending = self.pjumps.pop()
         # Dependiendo de si es un cuadruplo de gotoF o goto llena con un valor de contador
