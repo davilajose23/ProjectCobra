@@ -5,6 +5,7 @@ from symbol_table import FunctionsDir
 from stack import Stack
 from cube import semantic_cube
 from quad_generator import Variable, Quadruple, QuadGenerator
+from VirtualMachine import VirtualMachine
 
 functions_directory = FunctionsDir()
 # Precedence rules for the arithmetic operators
@@ -16,7 +17,7 @@ precedence = (
     # ('right','UMINUS'),
 )
 
-generator = QuadGenerator('output.txt')
+generator = QuadGenerator('output.cob')
 def debug(x):
     '''Funcion de ayuda para debugging'''
     print(x)
@@ -30,8 +31,11 @@ def p_program(p):
                 | pre_variables main
                 | main'''
     p[0] = 'ok'
-    debug(generator.printeame())
-    debug(functions_directory.printeame())
+    generator.export()
+    # debug(generator.printeame())
+    # debug(functions_directory.printeame())
+    vm = VirtualMachine(functions_directory)
+    vm.run()
 
 def p_pre_variables(p):
     'pre_variables : declaration post_variables'
