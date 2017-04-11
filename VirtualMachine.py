@@ -96,20 +96,25 @@ class VirtualMachine():
 
     def get_memory_val(self, base):
         if RepresentsInt(base):
-            self.memory.integers.constants[base] = int(base)
-            valor = int(base)
+            if self.memory.integers.constants.get(base, None) is None:
+                self.memory.integers.constants[base] = int(base)
+            valor = self.memory.integers.constants[base]
         elif RepresentsDouble(base):
-            self.memory.doubles.constants[base] = float(base)
-            valor = float(base)
+            if self.memory.doubles.constants.get(base, None) is None:
+                self.memory.doubles.constants[base] = float(base)
+            valor = self.memory.doubles.constants[base]
         elif base[0] == "\"":
-            self.memory.strings.constants[base[1:-1]] = base[1:-1]
-            valor = base[1:-1]
+            if self.memory.strings.constants.get(base[1:-1], None) is None:
+                self.memory.strings.constants[base[1:-1]] = base[1:-1]
+            valor = self.memory.strings.constants[base[1:-1]]
         elif base == 'true':
-            self.memory.booleans.constants[base] = True
-            valor = True
+            if self.memory.booleans.constants.get(base, None) is None:
+                self.memory.booleans.constants[base] = True
+            valor = self.memory.booleans.constants[base]
         elif base == 'false':
-            self.memory.booleans.constants[base] = False
-            valor = False
+            if self.memory.booleans.constants.get(base, None) is None:
+                self.memory.booleans.constants[base] = False
+            valor = self.memory.booleans.constants[base]
         # si no es constante se busca el valor en la memoria
         else:
             valor = self.memory.get_val(base)
