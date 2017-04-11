@@ -136,6 +136,20 @@ class VirtualMachine():
                 res = left_val * right_val
             elif op == '/':
                 res = left_val / right_val
+            elif op == '<':
+                res = left_val < right_val
+            elif op == '>':
+                res = left_val > right_val
+            elif op == '==':
+                res = left_val == right_val
+            elif op == '<=':
+                res = left_val <= right_val
+            elif op == '>=':
+                res = left_val >= right_val
+            elif op == 'and':
+                res = left_val and right_val
+            elif op == 'or':
+                res = left_val or right_val
 
         self.memory.set_val(quad.res.rstrip().lstrip(), res)
 
