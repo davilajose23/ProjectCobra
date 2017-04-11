@@ -29,6 +29,14 @@ def get_var_type(var):
     elif var_type == 'bool':
         return 'b'
 
+def get_var_scope(scope):
+    if scope == 'global':
+        return 'g'
+    elif scope == 'main':
+        return 'l'
+    else:
+        return 't'
+
 def debug(x):
     '''Funcion de ayuda para debugging'''
     print(x)
@@ -102,6 +110,7 @@ def p_set_main_scope(p):
     'set_main_scope :'
     functions_directory.add_function(p[-2])
     functions_directory.set_scope(p[-2])
+    generator.scope = p[-2]
     functions_directory.set_return_type('void')
 
 # ********************* Diagram block *********************
@@ -172,6 +181,7 @@ def p_register_function(p):
     if functions_directory.last_type != 'void':
         functions_directory.add_var(p[-1], functions_directory.last_type)
     functions_directory.set_scope(p[-1])
+    generator.scope = p[-1]
     functions_directory.set_return_type(functions_directory.last_type)
     functions_directory.set_func_quad(generator.cont)
 
@@ -203,6 +213,7 @@ def p_create_return(p):
 def p_reset_scope(p):
     'reset_scope :'
     functions_directory.reset_scope()
+    generator.scope = 'global'
     generator.reset_temporal_id()
 
 # ********************* Diagram parameters *********************
@@ -251,12 +262,7 @@ def p_push_var(p):
         res = functions_directory.get_var(p[-2])
         var = Variable(name=p[-2], value=res[0], var_type=res[1])
         var_type = get_var_type(var)
-        if res[2] == 'global':
-            scope = 'g'
-        elif res[2] == 'main':
-            scope = 'l'
-        else:
-            scope = 't'
+        scope = get_var_scope(res[2])
         var.name = var_type + scope + var.name
         generator.pile_o.push(var)
 
@@ -404,13 +410,7 @@ def p_variable_constant(p):
         # Create variable
         var = Variable(name=p[1], value=res[0], var_type=res[1])
         var_type = get_var_type(var)
-        if res[2] == 'global':
-            scope = 'g'
-        elif res[2] == 'main':
-            scope = 'l'
-        else:
-            scope = 't'
-
+        scope = get_var_scope(res[2])
         var.name = var_type + scope + var.name
         generator.pile_o.push(var)
     else:
@@ -490,12 +490,7 @@ def p_read_var(p):
     res = functions_directory.get_var(functions_directory.last_id)
     var = Variable(functions_directory.last_id, res[0], res[1])
     var_type = get_var_type(var)
-    if res[2] == 'global':
-        scope = 'g'
-    elif res[2] == 'main':
-        scope = 'l'
-    else:
-        scope = 't'
+    scope = get_var_scope(res[2])
     var.name = var_type + scope + var.name
     generator.generate_read(var)
     functions_directory.reading = False
