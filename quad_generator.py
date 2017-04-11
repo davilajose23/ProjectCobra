@@ -154,14 +154,16 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         print(last_operand)
 
-    # def generate_read(self, res):
-    #     '''Funcion para generar cuadruplo de read'''
-    #     temp = Variable(name='t' + str(self.temporal_id), value=None, var_type=res)
-    #      # Aumenta id de temporales
-    #     self.temporal_id += 1
+    def generate_read(self, var):
+        '''Funcion para generar cuadruplo de read'''
+        if var.get_name() == 'constant':
+            name = var.get_value()
+        else:
+            name = var.get_name()
 
-    #     quad = Quadruple(id=self.cont, op='Read', left_operand=last_operand, right_operand=None, res=temp.get_name())
-    #     self.cont += 1
+        quad = Quadruple(self.cont, 'Read', None, None, name)
+        self.quadruples.append(quad)
+        self.cont += 1
 
     # TODO: agregar a donde van a saltar la operacion gosub
     def generate_era(self, function_id):
@@ -169,8 +171,7 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         self.cont += 1
 
-    def generate_gosub(self):
-        name = self.pile_o.pop()
+    def generate_gosub(self, name):
         quad = Quadruple(self.cont, 'Gosub', name, '', '')
         self.quadruples.append(quad)
         self.cont += 1
@@ -206,6 +207,26 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         self.pjumps.push(self.cont)
         self.cont += 1
+
+    def generate_func_assign(self, func_name, func_type, value):
+        func_var = Variable(func_name, value, func_type)
+        tmp_var = Variable('t' + str(self.temporal_id), None, func_type)
+        self.temporal_id += 1
+        quad = Quadruple(self.cont, '=', func_var.get_name(), None, tmp_var.get_name())
+        self.quadruples.append(quad)
+        self.pile_o.push(tmp_var)
+        self.cont += 1
+
+    def generate_return(self):
+        var = self.pile_o.pop()
+        if var.get_name() == 'constat':
+            name = var.get_value()
+        else:
+            name = var.get_name()
+        quad = Quadruple(self.cont, 'Return', name, None, None)
+        self.quadruples.append(quad)
+        self.cont += 1
+        return var.get_value()
 
     def fill_goto(self):
         '''Funcion que llena los cuadruplos de goto pendientes'''

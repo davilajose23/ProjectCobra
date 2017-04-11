@@ -103,7 +103,7 @@ def p_post_block(p):
 
 # ********************* Diagram call_function *********************
 def p_call_function(p):
-    'call_function :  ID validate_function_call LEFT_PARENTHESIS post_call_function'
+    'call_function :  ID validate_function_call LEFT_PARENTHESIS push_paren post_call_function'
 
 # Validates call to a function
 def p_validate_function_call(p):
@@ -112,17 +112,21 @@ def p_validate_function_call(p):
     generator.generate_era(p[-1])
     # Settea el id de la funcion que va a ser llamada
     functions_directory.set_call_function(p[-1])
-    generator.pile_o.push(p[-1])
 
 def p_post_call_function(p):
-    ''' post_call_function : arguments RIGHT_PARENTHESIS validate_call_arguments
-                            | RIGHT_PARENTHESIS validate_call_arguments'''
+    ''' post_call_function : arguments RIGHT_PARENTHESIS pop_paren validate_call_arguments
+                            | RIGHT_PARENTHESIS pop_paren validate_call_arguments'''
 
 def p_validate_call_arguments(p):
     # Valida solamente que la cantidad de argumentos coincida con la cantidad que se espera recibir
     'validate_call_arguments :'
-    functions_directory.validate_call_arguments()
-    generator.generate_gosub()
+    func_name = functions_directory.validate_call_arguments()
+    generator.generate_gosub(func_name)
+    func_type = functions_directory.functions[func_name].get_return_type()
+    if func_type != 'void':
+        val = functions_directory.functions['global'].variables_dict[func_name][0]
+        generator.generate_func_assign(func_name, func_type, val)
+
 # ********************* Diagram arguments *********************
 def p_arguments(p):
     'arguments : cond increase_call_arguments post_arguments'
@@ -154,6 +158,8 @@ def p_func_types(p):
 def p_register_function(p):
     'register_function :'
     functions_directory.add_function(p[-1])
+    if functions_directory.last_type != 'void':
+        functions_directory.add_var(p[-1], functions_directory.last_type)
     functions_directory.set_scope(p[-1])
     functions_directory.set_return_type(functions_directory.last_type)
     functions_directory.set_func_quad(generator.cont)
@@ -175,8 +181,13 @@ def p_post_void_return(p):
                         | RETURN required_eol END reset_scope required_eol'''
 
 def p_value_return(p):
-    '''value_return : block RETURN cond required_eol END reset_scope required_eol
-                    | RETURN cond required_eol END reset_scope required_eol'''
+    '''value_return : block RETURN cond create_return required_eol END reset_scope required_eol
+                    | RETURN cond create_return required_eol END reset_scope required_eol'''
+
+def p_create_return(p):
+    'create_return :'
+    val = generator.generate_return()
+    functions_directory.functions['global'].variables_dict[functions_directory.current_scope][0] = val
 
 def p_reset_scope(p):
     'reset_scope :'
@@ -383,6 +394,8 @@ def p_process_variable(p):
     # Checks if the variable to validate is in array notation
     if  functions_directory.evaluating:
         functions_directory.validate_variable(p[-1])
+        if functions_directory.reading:
+            functions_directory.last_id = p[-1]
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
         if functions_directory.updating_params:
@@ -427,7 +440,6 @@ def p_post_print(p):
 
 def p_print_mod(p):
     '''print_mod : COMMA STRING_CONSTANT print_post_mod'''
-    
 
 def p_print_post_mod(p):
     'print_post_mod :'
@@ -439,7 +451,20 @@ def p_print_default(p):
 
 # ********************* Diagram read *********************
 def p_read(p):
-    'read : READ LEFT_PARENTHESIS RIGHT_PARENTHESIS '
+    'read : READ start_read LEFT_PARENTHESIS identifier RIGHT_PARENTHESIS read_var'
+
+def p_start_read(p):
+    'start_read :'
+    functions_directory.reading = True
+
+def p_read_var(p):
+    'read_var :'
+    tmp = functions_directory.get_var(functions_directory.last_id)
+    var = Variable(functions_directory.last_id, tmp[0], tmp[1])
+    generator.generate_read(var)
+    functions_directory.reading = False
+    functions_directory.last_id = None
+
 
 # ********************* Diagram identifier *********************
 def p_identifier(p):
@@ -461,12 +486,12 @@ def p_for(p):
 def p_add_var(p):
     'add_var :'
     functions_directory.add_var(variable_id=p[-1], var_type='int')
-    var = Variable(name=p[-1], var_type='int')
-    generator.pile_o.push(var)
+    var = Variable(name=p[-1], value=-1, var_type='int')
+    # generator.pile_o.push(var)
 
 def p_init_var(p):
     'init_var :'
-    generator.generate_for_quad()
+    # generator.generate_for_quad()
 
 # while
 def p_while(p):
@@ -540,7 +565,7 @@ if __name__ == '__main__':
         while True:
             try:
                 s = raw_input('>>> ')
-                print s
+                print(s)
             except EOFError:
                 break
             if not s:

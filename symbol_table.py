@@ -60,6 +60,12 @@ class FunctionsDir(object):
         # Indica si es necesario acutlaizar la lista de prametros de una funcion
         self.updating_params = False
 
+        # Indica si se va a leer variable con funcion read
+        self.reading = False
+
+        # Ultimo token ID, usado para el read
+        self.last_id = None
+
         # Ultimo token de tipo que fue leido por el directorio de funciones
         self.last_type = None
 
@@ -144,7 +150,7 @@ class FunctionsDir(object):
         diccionario de funciones en el scope actual o el global'''
         if variable_id in self.functions[self.scope].variables_dict:
             return self.functions[self.scope].variables_dict.get(variable_id)
-        elif variable_id  in self.functions['global'].variables_dict:
+        elif variable_id in self.functions['global'].variables_dict:
             return self.functions['global'].variables_dict.get(variable_id)
         return None
 
@@ -176,7 +182,7 @@ class FunctionsDir(object):
             raise TypeError(msg)
         else:
             self.call_arguments.pop()
-            self.call_function.pop()
+            return self.call_function.pop()
 
     def validate_arg_type(self, var_type):
         '''Funcion que valida que el tipo de argumento que se manda sea del tipo esperado'''
