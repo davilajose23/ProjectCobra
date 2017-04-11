@@ -39,7 +39,7 @@ class Quadruple(object):
 
     def printeame(self):
         '''Funcion auxiliar para imprimir contenidos del cuadruplo'''
-        return '({0}, {1}, {2}, {3})'.format(self.op, self.left_operand, self.right_operand, self.res)
+        return '{0}: ({1}, {2}, {3}, {4})'.format(self.id, self.op, self.left_operand, self.right_operand, self.res)
 
 class QuadGenerator(object):
     '''Clase encargada de la generacion de cuadruplos'''
@@ -257,6 +257,5 @@ class QuadGenerator(object):
         '''Funcion para exportar cuadruplos a un archivo al terminar de generar cuadruplos'''
         f = open(self.file, 'w')
         for q in self.quadruples:
-            f.write(q.printeame())
-            f.write('\n')
+            f.write(q.repr())
         f.close()  # you can omit in most cases as the destructor will call it

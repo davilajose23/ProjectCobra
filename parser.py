@@ -16,7 +16,7 @@ precedence = (
     # ('right','UMINUS'),
 )
 
-generator = QuadGenerator('output.cob')
+generator = QuadGenerator('output.txt')
 def debug(x):
     '''Funcion de ayuda para debugging'''
     print(x)
@@ -32,8 +32,7 @@ def p_program(p):
     p[0] = 'ok'
     debug(generator.printeame())
     debug(functions_directory.printeame())
-    generator.export()
-    
+
 def p_pre_variables(p):
     'pre_variables : declaration post_variables'
 
