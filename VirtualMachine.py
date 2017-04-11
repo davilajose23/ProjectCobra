@@ -55,6 +55,8 @@ class VirtualMachine():
                 self.execute(quad, '*')
             elif op == '/':
                 self.execute(quad, '/')
+
+            #assignment
             elif op == '=':
                 left = quad.left_operand.rstrip().lstrip()
                 valor = self.get_memory_val(left)
@@ -62,19 +64,19 @@ class VirtualMachine():
 
             #logic operations
             elif op == 'and':
-                pass
+                self.execute(quad, 'and')
             elif op == 'or':
-                pass
+                self.execute(quad, 'or')
             elif op == '>=':
-                pass
+                self.execute(quad, '>=')
             elif op == '<=':
-                pass
+                self.execute(quad, '<=')
             elif op == '==':
-                pass
+                self.execute(quad, '==')
             elif op == '>':
-                pass
+                self.execute(quad, '>')
             elif op == '<':
-                pass
+                self.execute(quad, '<')
             # gotos
             elif op == 'Goto':
                 self.pc = int(self.quadruples[self.pc].res)
