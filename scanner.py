@@ -125,7 +125,7 @@ def t_INT_CONSTANT(t):
     return t
 
 def t_STRING_CONSTANT(t):
-    r'\'(\'\'|[^\n\t])*\''
+    r'(\'|\")(\'\'|[^\n\t])*(\'|\")'
     t.value = str(t.value)
     return t
 

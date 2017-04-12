@@ -44,8 +44,12 @@ class VirtualMachine():
             op = quad.op
             if op == 'Print':
                 #TODO agregar el segundo parametro del print
-                val = self.memory.get_val(quad.left_operand)
+                val = self.memory.get_val(quad.left_operand.rstrip().lstrip())
                 print(val)
+            elif op == 'Read':
+                temp = raw_input("")
+                valor = self.get_memory_val(int(temp))
+                self.memory.set_val(quad.res.rstrip().lstrip(), valor)
             #basic operations +, - , *, /
             elif op == '+':
                 self.execute(quad, '+')
@@ -59,7 +63,10 @@ class VirtualMachine():
             #assignment
             elif op == '=':
                 left = quad.left_operand.rstrip().lstrip()
-                valor = self.get_memory_val(left)
+                if left[0] == "\'" or left[0] == "\"":
+                    valor = left[1:-1]
+                else:
+                    valor = self.get_memory_val(left)
                 self.memory.set_val(quad.res.rstrip().lstrip(), valor)
 
             #logic operations
