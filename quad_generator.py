@@ -71,6 +71,8 @@ class QuadGenerator(object):
         self.pjumps = Stack()
         # Pending cycle returns
         self.pcycles = Stack()
+        # Pending loop vars stack
+        self.ploop_vars = Stack()
         # File to write list of quadruples
         self.file = filename
         # Id of temporal vars
