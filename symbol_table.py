@@ -119,8 +119,22 @@ class FunctionsDir(object):
         if self.functions[self.scope].variables_dict.get(variable_id, None) is None:
             self.functions[self.scope].variables_dict[variable_id] = [value, var_type, self.scope]
         else:
-            msg = 'Variable already declared! VAR: ' + str(variable_id) + '. TYPE: ' + str(self.functions[self.scope].variables_dict[variable_id][1])
+            variable_type = self.functions[self.scope].variables_dict[variable_id][1]
+            msg = 'Variable already declared! VAR: ' + str(variable_id) + '. TYPE: ' + variable_type
             raise KeyError(msg)
+
+    def add_for_var(self, variable_id, var_type):
+        '''Agrega variable al diccionario del current scope, si ya existe sobreescribe valor
+        Marca error si existe y no es tipo int'''
+        if self.functions[self.scope].variables_dict.get(variable_id, None) is None:
+            self.functions[self.scope].variables_dict[variable_id] = [-1, var_type, self.scope]
+        else:
+            variable_type = self.functions[self.scope].variables_dict[variable_id][1]
+            if variable_type != 'int':
+                msg = 'Variable already declared! VAR: ' + str(variable_id) + '. TYPE: ' + variable_type
+                raise KeyError(msg)
+            else:
+                self.functions[self.scope].variables_dict[variable_id][0] = -1
 
     def validate_variable(self, variable_id):
         '''Busca variable en el scope actual'''
