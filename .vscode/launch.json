@@ -18,7 +18,7 @@
                 "RedirectOutput"
             ],
             "args": [
-                "testcases/aritmetic_test_ok.co"
+                "testcases/for_i_from_to_ok.co"
             ]
         },
         {

@@ -53,10 +53,10 @@ def p_program(p):
                 | main'''
     p[0] = 'ok'
     generator.export()
-    # debug(generator.printeame())
+    debug(generator.printeame())
     # debug(functions_directory.printeame())
-    vm = VirtualMachine(functions_directory)
-    vm.run()
+    # vm = VirtualMachine(functions_directory)
+    # vm.run()
 
 def p_pre_variables(p):
     'pre_variables : declaration post_variables'
@@ -79,7 +79,7 @@ def p_types(p):
             | DOUBLE
             | STRING
             | BOOL'''
-   
+
     functions_directory.set_type(p[1])
 # ********************* Diagram delcaration *********************
 def p_declaration(p):
@@ -105,7 +105,7 @@ def p_post_functions(p):
 
 # ********************* Diagram main *********************
 def p_main(p):
-    'main : MAIN fill_goto set_main_scope required_eol pre_variables block END_MAIN push_end optional_eol'
+    'main : MAIN fill_goto set_main_scope required_eol post_variables block END_MAIN push_end optional_eol'
 
 def p_push_end(p):
     'push_end :'
@@ -363,7 +363,7 @@ def p_post_exp(p):
 def p_push_exp(p):
     'push_exp :'
     generator.popper.push(p[-1])
-    
+
 
 # ********************* Diagram term *********************
 def p_term(p):
@@ -527,6 +527,7 @@ def p_add_var(p):
     var_type = get_var_type(var)
     scope = get_var_scope(functions_directory.current_scope)
     var.name = var_type + scope + var.name
+    generator.pile_o.push(var)
     generator.pile_o.push(var)
     generator.ploop_vars.push(var)
 

@@ -55,7 +55,7 @@ class FunctionsDir(object):
         self.scope = 'global'
 
         # Define si se esta evaluando la existencia de variables o se estan agregando al directorio
-        self.evaluating = False
+        self.evaluating = True
 
         # Indica si es necesario acutlaizar la lista de prametros de una funcion
         self.updating_params = False
