@@ -53,10 +53,10 @@ def p_program(p):
                 | main'''
     p[0] = 'ok'
     generator.export()
-    debug(generator.printeame())
+    # debug(generator.printeame())
     # debug(functions_directory.printeame())
-    # vm = VirtualMachine(functions_directory)
-    # vm.run()
+    vm = VirtualMachine(functions_directory)
+    vm.run()
 
 def p_pre_variables(p):
     'pre_variables : declaration post_variables'

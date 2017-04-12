@@ -10,8 +10,10 @@ main
 	end
 	while a < 5:
 		a += 1 
-		
 		print(a)
 	end
-	
+
+	for i from 0 to 3:
+		print i
+	end
 end_main
