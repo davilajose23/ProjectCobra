@@ -1,7 +1,25 @@
 {
     "version": "0.2.0",
     "configurations": [
-
+{
+    "name": "ProjectCobra",
+    "type": "python",
+    "request": "launch",
+    "stopOnEntry": true,
+    "pythonPath": "${config.python.pythonPath}",
+    "program": "${file}",
+    "cwd": "${workspaceRoot}",
+    "env": null,
+    "envFile": "${workspaceRoot}/.env",
+    "debugOptions": [
+        "WaitOnAbnormalExit",
+        "WaitOnNormalExit",
+        "RedirectOutput"
+    ],
+    "args": [
+                "testcases/aritmetic_test_ok.co"
+            ]
+},
         {
             "name": "Python",
             "type": "python",
@@ -16,10 +34,8 @@
                 "WaitOnAbnormalExit",
                 "WaitOnNormalExit",
                 "RedirectOutput"
-            ],
-            "args": [
-                "testcases/for_i_from_to_ok.co"
             ]
+            
         },
         {
             "name": "PySpark",

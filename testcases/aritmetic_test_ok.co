@@ -1,9 +1,7 @@
 main
 	int b
 	double c
-	string s
-	s = "hola mundo"
-	print(s)
+	print("hola mundo")
 	c = 5.3
 	b = c+3
 	print(b+c)

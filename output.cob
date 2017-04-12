@@ -1,6 +1,5 @@
 (Goto, None, None, 1)
-(=, "hola mundo", , sls)
-(Print, sls, \n, )
+(Print, "hola mundo", \n, )
 (=, 5.3, , dlc)
 (+, dlc, 3, dlt1)
 (=, dlt1, , ilb)
