@@ -518,17 +518,40 @@ def p_loop(p):
 
 # for
 def p_for(p):
-    'for : FOR ID add_var FROM exp init_var TO exp push_cycle post_cycle create_pending_goto'
+    'for : FOR ID add_var FROM exp init_var TO exp push_for_cycle post_cycle end_for_loop'
 
 def p_add_var(p):
     'add_var :'
-    functions_directory.add_var(variable_id=p[-1], var_type='int')
+    functions_directory.add_for_var(variable_id=p[-1], var_type='int')
     var = Variable(name=p[-1], value=-1, var_type='int')
-    # generator.pile_o.push(var)
+    var_type = get_var_type(var)
+    scope = get_var_scope(functions_directory.current_scope)
+    var.name = var_type + scope + var.name
+    generator.pile_o.push(var)
+    generator.ploop_vars.push(var)
 
 def p_init_var(p):
     'init_var :'
-    # generator.generate_for_quad()
+    generator.popper.push('=')
+    generator.generate_quad()
+
+def p_push_for_cycle(p):
+    'push_for_cycle :'
+    generator.pcycles.push(generator.cont)
+    generator.popper.push('<')
+    generator.generate_quad()
+    generator.generate_gotoF()
+
+def p_end_for_loop(p):
+    'end_for_loop :'
+    var = generator.ploop_vars.pop()
+    generator.pile_o.push(var)
+    increment_var = Variable('constant', 1, 'int')
+    generator.pile_o.push(increment_var)
+    generator.popper.push('+=')
+    generator.generate_quad()
+    generator.generate_pending_goto()
+    generator.fill_goto()
 
 # while
 def p_while(p):
