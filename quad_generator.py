@@ -171,7 +171,8 @@ class QuadGenerator(object):
     def generate_print(self, modifier='\\n'):
         '''Funcion para generar el cuadruplo de un print'''
         last_operand = self.pile_o.pop()
-        if last_operand.get_type() == 'string':
+
+        if last_operand.get_name() == 'constant' and last_operand.get_type() == 'string':
             last_operand = last_operand.get_value()
         else:
             last_operand = last_operand.get_name()

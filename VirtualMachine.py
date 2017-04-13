@@ -70,6 +70,7 @@ class VirtualMachine():
 
             #assignment
             elif op == '=':
+                #TODO: parsear a int en caso de assignacion
                 left = quad.left_operand.rstrip().lstrip()
                 if left[0] == "\'" or left[0] == "\"":
                     valor = left[1:-1]
