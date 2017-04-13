@@ -5,5 +5,6 @@
 (=, 5.3, , dlc)
 (+, dlc, 3, dlt1)
 (=, dlt1, , ilb)
-(Print, ilb, \n, )
+(+, ilb, dlc, dlt2)
+(Print, dlt2, \n, )
 (END, , , )

@@ -70,12 +70,19 @@ class VirtualMachine():
 
             #assignment
             elif op == '=':
-                #TODO: parsear a int en caso de assignacion
+                #TODO: parsear a int en caso de assignacion y checar cubo semantico
                 left = quad.left_operand.rstrip().lstrip()
                 if left[0] == "\'" or left[0] == "\"":
                     valor = left[1:-1]
                 else:
                     valor = self.get_memory_val(left)
+                res = quad.res.rstrip().lstrip()
+
+                if res[0] == "d":
+                    valor = float(valor)
+                if res[0] == "i":
+                    valor = int(valor)
+
                 self.memory.set_val(quad.res.rstrip().lstrip(), valor)
 
             #logic operations

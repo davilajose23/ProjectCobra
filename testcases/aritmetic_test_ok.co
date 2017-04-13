@@ -7,5 +7,5 @@ main
 	print "hola mundo"
 	c = 5.3
 	b = c+3
-	print(b)
+	print(b+c)
 end_main
