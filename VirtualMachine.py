@@ -1,3 +1,4 @@
+from __future__ import print_function
 from quad_generator import QuadGenerator
 from variable import Variable
 from quadruple import Quadruple
@@ -19,6 +20,8 @@ def RepresentsDouble(s):
         return True
     except ValueError:
         return False
+def striptLR(s):
+    return s.rstrip().lstrip()
 
 class VirtualMachine():
     def __init__(self, dir_func):
@@ -30,69 +33,64 @@ class VirtualMachine():
         self.scope = 'main'
         self.last_func = None
         self.PCS = Stack()
-
+    
     def readFiles(self):
         cont = 0
         f = open('output.cob', 'r')
         for line in f:
             # print(line),
             q = line[1:-2].split(',')
-            quad = Quadruple(cont, q[0], q[1], q[2], q[3])
+            quad = Quadruple(cont, striptLR(q[0]), striptLR(q[1]), striptLR(q[2]), striptLR(q[3]))
             cont += 1
             self.quadruples.append(quad)
         f.close()
     
     def run(self):
+        ''' Function that start reading all the quadruples and executing them'''
+        # start reading the file
         self.readFiles()
 
+        #cycle until read the last quadruple 'END'
         while self.quadruples[self.pc].op != 'END':
+            # get the current quad according to Program Counter(pc)
             quad = self.quadruples[self.pc]
-            op = quad.op
-            
-            if op == 'ERA':
-                #create dict in temp
-                self.last_func = quad.left_operand.rstrip().lstrip()
+            operation = quad.op
+
+            # check all posible operations and do something according to
+
+            if operation == 'ERA':
+                # saves the name of the last function to use in Params and Gosub
+                self.last_func = quad.left_operand
+                # allocate memory for the function that is going to be called
                 self.memory.era()
 
-            elif op == 'EndProc':
+            elif operation == 'EndProc':
+                # release the memory used in the function
                 self.memory.endproc()
+                # stablish pc with the value that called the function
                 self.pc = self.PCS.pop()
-            
-            elif op == 'Return':
-                left = quad.left_operand.rstrip().lstrip()
-                if left[0] == "\'" or left[0] == "\"":
-                    valor = left[1:-1]
-                else:
-                    valor = self.get_memory_val(left)
-                res = quad.res.rstrip().lstrip()
 
-                if res[0] == "d":
-                    valor = float(valor)
-                if res[0] == "i":
-                    valor = int(valor)
+            elif operation == 'Return':
+                # set the value that is return to the last_func
+                self.assignment(quad, self.last_func)
 
-                self.memory.set_val( self.last_func, valor)
+            elif operation == 'Param':
+                # set the value for each param in a function
+                #TODO: validate correct type of param
+                self.assignment(quad, quad.res)
 
-            elif op == 'Param':
-                left = quad.left_operand.rstrip().lstrip()
-                if left[0] == "\'" or left[0] == "\"":
-                    valor = left[1:-1]
-                else:
-                    valor = self.get_memory_val(left)
-                res = quad.res.rstrip().lstrip()
-
-                if res[0] == "d":
-                    valor = float(valor)
-                if res[0] == "i":
-                    valor = int(valor)
-
-                self.memory.set_val(quad.res.rstrip().lstrip(), valor)
-            elif op == 'Print':
+            elif operation == 'Print':
                 #TODO agregar el segundo parametro del print
+                val = self.get_memory_val(quad.left_operand)
+                # obtiene como quiere terminar el print
+                endprint = quad.right_operand
+                
+                if endprint == '\\n':
+                    print(val)
+                else:
+                    print(val, end=endprint[1:-1])
 
-                val = self.get_memory_val(quad.left_operand.rstrip().lstrip())
-                print(val)
-            elif op == 'Read':
+            elif operation == 'Read':
                 temp = raw_input("")
                 # aqui no lo guardo en constante el valor que entra porque se va a guardar en una variable
                 if temp.isdigit():
@@ -101,54 +99,41 @@ class VirtualMachine():
                     temp = float(temp)
                 #TODO: checar cubo semantico
 
-                self.memory.set_val(quad.res.rstrip().lstrip(), temp)
+                self.memory.set_val(quad.res, temp)
             #basic operations +, - , *, /
-            elif op == '+':
+            elif operation == '+':
                 self.execute(quad, '+')
-            elif op == '-':
+            elif operation == '-':
                 self.execute(quad, '-')
-            elif op == '*':
+            elif operation == '*':
                 self.execute(quad, '*')
-            elif op == '/':
+            elif operation == '/':
                 self.execute(quad, '/')
 
             #assignment
-            elif op == '=':
-                #TODO: parsear a int en caso de assignacion y checar cubo semantico
-                left = quad.left_operand.rstrip().lstrip()
-                if left[0] == "\'" or left[0] == "\"":
-                    valor = left[1:-1]
-                else:
-                    valor = self.get_memory_val(left)
-                res = quad.res.rstrip().lstrip()
-
-                if res[0] == "d":
-                    valor = float(valor)
-                if res[0] == "i":
-                    valor = int(valor)
-
-                self.memory.set_val(quad.res.rstrip().lstrip(), valor)
+            elif operation == '=':
+                self.assignment(quad, quad.res)
 
             #logic operations
-            elif op == 'and':
+            elif operation == 'and':
                 self.execute(quad, 'and')
-            elif op == 'or':
+            elif operation == 'or':
                 self.execute(quad, 'or')
-            elif op == '>=':
+            elif operation == '>=':
                 self.execute(quad, '>=')
-            elif op == '<=':
+            elif operation == '<=':
                 self.execute(quad, '<=')
-            elif op == '==':
+            elif operation == '==':
                 self.execute(quad, '==')
-            elif op == '>':
+            elif operation == '>':
                 self.execute(quad, '>')
-            elif op == '<':
+            elif operation == '<':
                 self.execute(quad, '<')
             # gotos
-            elif op == 'Goto':
+            elif operation == 'Goto':
                 self.pc = int(self.quadruples[self.pc].res)
                 continue
-            elif op == 'GotoF':
+            elif operation == 'GotoF':
                 dir = quad.left_operand.lstrip().rstrip()
                 if not self.get_memory_val(dir):
                     self.pc = int(quad.res)
@@ -156,12 +141,12 @@ class VirtualMachine():
                 
                 # if memory.getVal(dir) == 'false':
                 #     self.pc = quad.res
-            elif op == 'GotoV':
+            elif operation == 'GotoV':
                 dir = quad.left_operand.lstrip().rstrip()
                 if self.get_memory_val(dir):
                     self.pc = int(quad.res)
                     continue
-            elif op == 'Gosub':
+            elif operation == 'Gosub':
                 self.PCS.push(self.pc)
                 self.pc = int(self.quadruples[self.pc].res)
                 continue
@@ -195,8 +180,8 @@ class VirtualMachine():
         return valor
 
     def execute(self, quad, op):
-        left = quad.left_operand.rstrip().lstrip()
-        right = quad.right_operand.rstrip().lstrip()
+        left = quad.left_operand
+        right = quad.right_operand
         left_val = self.get_memory_val(left)
         right_val = self.get_memory_val(right)
 
@@ -228,5 +213,25 @@ class VirtualMachine():
             elif op == 'or':
                 res = left_val or right_val
 
-        self.memory.set_val(quad.res.rstrip().lstrip(), res)
+        self.memory.set_val(quad.res, res)
 
+    def assignment(self, quad, where):
+        ''' function that assign a value to a variable'''
+        # get the value to be set
+        left = quad.left_operand
+        # check if the value is a string constant 
+        if left[0] == "\'" or left[0] == "\"":
+            # set value as string constant ignoring " or '
+            valor = left[1:-1]
+        else:
+            # if left is not a string constant try to get from memory
+            valor = self.get_memory_val(left)
+
+        #TODO: check semantic cube and type of assignment
+        if where[0] == "d":
+            valor = float(valor)
+        if where[0] == "i":
+            valor = int(valor)
+
+        # set the value in memory
+        self.memory.set_val(where, valor)

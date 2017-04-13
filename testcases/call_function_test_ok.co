@@ -1,13 +1,17 @@
 int a
 
 func int mas(int a, int b)
+	
 	return a + b
 end
 
 main
 	int b, x
+	double j
 	a = 1
-	b = 28
-	x = mas(a, b+2)
+	b = 4
+	j = 9 / 4
+	print j
+	x = mas(a, b+2) + mas(1,3) * 2
 	print x
 end_main
