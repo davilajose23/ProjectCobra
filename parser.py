@@ -1,10 +1,12 @@
 import ply.yacc as yacc
 from scanner import tokens
 import sys
-from symbol_table import FunctionsDir
+from functions_dir import FunctionsDir
 from stack import Stack
 from cube import semantic_cube
-from quad_generator import Variable, Quadruple, QuadGenerator
+from quad_generator import QuadGenerator
+from variable import Variable
+from quadruple import Quadruple
 from VirtualMachine import VirtualMachine
 
 functions_directory = FunctionsDir()

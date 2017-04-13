@@ -1,5 +1,7 @@
-from quad_generator import Variable, Quadruple, QuadGenerator
-from symbol_table import FunctionsDir
+from quad_generator import QuadGenerator
+from variable import Variable
+from quadruple import Quadruple
+from functions_dir import FunctionsDir
 from Memory import Memory
 from cube import semantic_cube
 
