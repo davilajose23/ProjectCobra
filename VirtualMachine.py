@@ -53,6 +53,7 @@ class VirtualMachine():
                 #create dict in temp
                 self.last_func = quad.left_operand.rstrip().lstrip()
                 self.memory.era()
+
             elif op == 'EndProc':
                 self.memory.endproc()
                 self.pc = self.PCS.pop()
@@ -70,7 +71,7 @@ class VirtualMachine():
                 if res[0] == "i":
                     valor = int(valor)
 
-                self.memory.set_val('ig' + self.last_func, valor)
+                self.memory.set_val( self.last_func, valor)
 
             elif op == 'Param':
                 left = quad.left_operand.rstrip().lstrip()

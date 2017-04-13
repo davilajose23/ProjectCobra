@@ -166,13 +166,15 @@ class QuadGenerator(object):
 
     # TODO: agregar a donde van a saltar la operacion gosub
     def generate_era(self, function_id):
-        quad = Quadruple(self.cont, 'ERA', function_id, '', '')
+        func_type = self.func_counter.get(function_id, 'void')[1]
+        res_type = get_var_type(func_type)
+        quad = Quadruple(self.cont, 'ERA', res_type + 'g' + function_id, '', '')
         self.quadruples.append(quad)
         self.cont += 1
 
     def generate_gosub(self, name, func_type):
         res_type = get_var_type(func_type)
-        initial_address = self.func_counter.get(name, '')
+        initial_address = self.func_counter.get(name, '')[0]
         quad = Quadruple(self.cont, 'Gosub', res_type + 'g' + name, '', initial_address)
         
         self.quadruples.append(quad)
@@ -264,7 +266,7 @@ class QuadGenerator(object):
             f.write(q.printeame() + '\n')
         f.close()  # you can omit in most cases as the destructor will call it
     
-    def add_function(self, name):
-        self.func_counter[name] = self.cont
+    def add_function(self, name, func_type):
+        self.func_counter[name] = (self.cont, func_type)
         
 

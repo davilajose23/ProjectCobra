@@ -194,7 +194,7 @@ def p_register_function(p):
     functions_directory.set_func_quad(generator.cont)
 
     # guarda el quadruplo en donde empieza
-    generator.add_function(p[-1])
+    generator.add_function(p[-1], functions_directory.last_type)
 
 def p_post_function(p):
     '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return
