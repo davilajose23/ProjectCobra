@@ -1,6 +1,7 @@
 from quad_generator import Variable, Quadruple, QuadGenerator
 from symbol_table import FunctionsDir
 from Memory import Memory
+from cube import semantic_cube
 
 def RepresentsInt(s):
     try: 
@@ -49,13 +50,14 @@ class VirtualMachine():
                 print(val)
             elif op == 'Read':
                 temp = raw_input("")
-                if RepresentsInt(temp):
+                # aqui no lo guardo en constante el valor que entra porque se va a guardar en una variable
+                if temp.isdigit():
                     temp = int(temp)
                 elif RepresentsDouble(temp):
                     temp = float(temp)
-                    
-                valor = self.get_memory_val(temp)
-                self.memory.set_val(quad.res.rstrip().lstrip(), valor)
+                #TODO: checar cubo semantico
+
+                self.memory.set_val(quad.res.rstrip().lstrip(), temp)
             #basic operations +, - , *, /
             elif op == '+':
                 self.execute(quad, '+')
