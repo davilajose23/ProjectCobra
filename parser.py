@@ -148,12 +148,13 @@ def p_validate_call_arguments(p):
     # Valida solamente que la cantidad de argumentos coincida con la cantidad que se espera recibir
     'validate_call_arguments :'
     func_name = functions_directory.validate_call_arguments()
-    generator.generate_gosub(func_name)
     func_type = functions_directory.functions[func_name].get_return_type()
+    generator.generate_gosub(func_name, func_type)
     if func_type != 'void':
         val = functions_directory.functions['global'].variables_dict[func_name][0]
         generator.generate_func_assign(func_name, func_type, val)
-
+    
+    
 # ********************* Diagram arguments *********************
 def p_arguments(p):
     'arguments : cond increase_call_arguments post_arguments'
@@ -192,6 +193,8 @@ def p_register_function(p):
     functions_directory.set_return_type(functions_directory.last_type)
     functions_directory.set_func_quad(generator.cont)
 
+    # guarda el quadruplo en donde empieza
+    generator.add_function(p[-1])
 
 def p_post_function(p):
     '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return

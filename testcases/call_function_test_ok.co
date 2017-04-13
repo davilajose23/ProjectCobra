@@ -1,10 +1,5 @@
 int a
 
-func void hola()
-	a = 2
-	print 'Hola'
-end
-
 func int mas(int a, int b)
 	return a + b
 end
@@ -13,8 +8,6 @@ main
 	int b, x
 	a = 1
 	b = 2
-	x = a + b
-	hola()
-	mas(a, b)
-	mas(a + 1, b - 1)
+	x = mas(a, b)
+	print x
 end_main

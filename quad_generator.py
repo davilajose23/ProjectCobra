@@ -24,6 +24,11 @@ def get_var_scope(scope):
     else:
         return 't'
 
+def createParam(param):
+    res = ''
+    res = get_var_type(param.get_type())+ 't' + param.get_name() 
+    return res
+
 class QuadGenerator(object):
     '''Clase encargada de la generacion de cuadruplos'''
     def __init__(self, filename):
@@ -48,6 +53,8 @@ class QuadGenerator(object):
         self.cont = 0
         # Scope for quads
         self.scope = 'global'
+        # Diccionary for initial quadruple of each function
+        self.func_counter = {}
 
     def printeame(self):
         '''Funcion auxiliar para imprimir contenidos de la clase'''
@@ -137,7 +144,7 @@ class QuadGenerator(object):
         '''Funcion para generar el cuadruplo de un print'''
         last_operand = self.pile_o.pop()
 
-        if last_operand.get_name() == 'constant' and last_operand.get_type() == 'string':
+        if last_operand.get_name() == 'constant':
             last_operand = last_operand.get_value()
         else:
             last_operand = last_operand.get_name()
@@ -163,8 +170,11 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         self.cont += 1
 
-    def generate_gosub(self, name):
-        quad = Quadruple(self.cont, 'Gosub', name, '', '')
+    def generate_gosub(self, name, func_type):
+        res_type = get_var_type(func_type)
+        initial_address = self.func_counter.get(name, '')
+        quad = Quadruple(self.cont, 'Gosub', res_type + 'g' + name, '', initial_address)
+        
         self.quadruples.append(quad)
         self.cont += 1
 
@@ -178,7 +188,7 @@ class QuadGenerator(object):
             argument = argument.get_value()
         else:
             argument = argument.get_name()
-        quad = Quadruple(self.cont, 'Param', argument, '', param.get_name())
+        quad = Quadruple(self.cont, 'Param', argument, '', createParam(param))
         self.quadruples.append(quad)
         self.cont += 1
 
@@ -253,3 +263,8 @@ class QuadGenerator(object):
         for q in self.quadruples:
             f.write(q.printeame() + '\n')
         f.close()  # you can omit in most cases as the destructor will call it
+    
+    def add_function(self, name):
+        self.func_counter[name] = self.cont
+        
+

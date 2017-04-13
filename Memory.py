@@ -10,6 +10,7 @@ class Chunk(object):
         self.local_variables = {}
         # Pila de diccionarios de variables temporales (funciones)
         self.temporal = Stack()
+        self.temporal.push({})
         # Diccionario de variables globales
         self.global_variables = {}
         # Diccionario de variables constantes
@@ -29,6 +30,7 @@ class Chunk(object):
             chunk = self.constants.get(direccion[1:], 'ERROR get_val: 458')
         return chunk
         #return chunk.getVal(direccion[1:])
+    
 
     def set_val(self, direccion, val):
         segment = direccion[0]
@@ -62,6 +64,12 @@ class Chunk(object):
         print(' Constants:')
         for k, v in self.constants.iteritems():
             print(k, v)
+        
+    def Era(self):
+        self.temporal.push({})
+
+    def EndProc(self):
+        self.temporal.pop()
 
 class Memory(object):
     'Clase de memoria para la Maquina Virtual'
@@ -113,7 +121,18 @@ class Memory(object):
         self.strings.printeame()
         print('Boolean')
         self.booleans.printeame()
-
+    
+    def era(self):
+        self.integers.Era()
+        self.doubles.Era()
+        self.strings.Era()
+        self.booleans.Era()
+    
+    def endproc(self):
+        self.integers.EndProc()
+        self.doubles.EndProc()
+        self.strings.EndProc()
+        self.booleans.EndProc()
 # def test():
 #     memory = Memory()
 #     memory.integers.constants[1] = 1
