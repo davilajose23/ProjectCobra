@@ -3,6 +3,8 @@ Clase encargada de la generacion de cuadruplos.'''
 
 from stack import Stack
 from cube import semantic_cube
+from variable import Variable
+from quadruple import Quadruple
 
 def get_var_type(var_type):
     if var_type == 'int':
@@ -21,43 +23,6 @@ def get_var_scope(scope):
         return 'l'
     else:
         return 't'
-
-class Variable(object):
-    '''Clase Variable. Contiene nombre, tipo y valor'''
-    def __init__(self, name, value, var_type):
-        self.name = name
-        self.value = value
-        self.type = var_type
-
-    def __str__(self):
-        '''Metodo para imprimir variables'''
-        return 'VAR. NAME: {0}, VALUE: {1}, TYPE: {2}'.format(self.name, self.value, self.type)
-
-    def get_type(self):
-        '''Regresa el tipo de la variable'''
-        return self.type
-
-    def get_name(self):
-        '''Regresa el nombre de la variable'''
-        return self.name
-
-    def get_value(self):
-        '''Regresa el valor asignado a una variable'''
-        return self.value
-
-class Quadruple(object):
-    '''Clase Qudruple. Contiene id, op(operator), left_operand, right_operand y result'''
-    def __init__(self, id, op, left_operand, right_operand, res):
-        '''Metodo de inicializacion'''
-        self.id = id
-        self.op = op
-        self.left_operand = left_operand
-        self.right_operand = right_operand
-        self.res = res
-
-    def printeame(self):
-        '''Funcion auxiliar para imprimir contenidos del cuadruplo'''
-        return '({0}, {1}, {2}, {3})'.format(self.op, self.left_operand, self.right_operand, self.res)
 
 class QuadGenerator(object):
     '''Clase encargada de la generacion de cuadruplos'''
