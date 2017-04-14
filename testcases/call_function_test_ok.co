@@ -8,6 +8,13 @@ main
 	int b, x
 	a = 1
 	b = 28
-	x = mas(a, b+2)
+	# Prueba llamada simple
+	x = mas(a, b + 2)
+	print x
+	# Prueba doble llamada
+	x = mas(a, b + 2) + mas(a, b + 2)
+	print x
+	# Prueba llamada nesteada
+	x = mas(mas(a, b+2), b + 2)
 	print x
 end_main

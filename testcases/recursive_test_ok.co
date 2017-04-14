@@ -1,0 +1,17 @@
+func int sumaRecursiva(int x, int acum)
+	int res
+	if x == 0:
+		res = acum
+	else:
+		acum += x
+		x -= 1
+		res = sumaRecursiva(x, acum)
+	end
+	return res
+end
+
+main
+    int x
+    x = sumaRecursiva(3, 0)
+    print x
+end_main
