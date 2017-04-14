@@ -7,14 +7,14 @@ from cube import semantic_cube
 from stack import Stack
 
 def RepresentsInt(s):
-    try: 
+    try:
         int(s)
         return True
     except ValueError:
         return False
 
 def RepresentsDouble(s):
-    try: 
+    try:
         float(s)
         return True
     except ValueError:
@@ -41,14 +41,14 @@ class VirtualMachine():
             cont += 1
             self.quadruples.append(quad)
         f.close()
-    
+
     def run(self):
         self.readFiles()
 
         while self.quadruples[self.pc].op != 'END':
             quad = self.quadruples[self.pc]
             op = quad.op
-            
+
             if op == 'ERA':
                 #create dict in temp
                 self.last_func = quad.left_operand.rstrip().lstrip()
@@ -57,36 +57,13 @@ class VirtualMachine():
             elif op == 'EndProc':
                 self.memory.endproc()
                 self.pc = self.PCS.pop()
-            
+
             elif op == 'Return':
-                left = quad.left_operand.rstrip().lstrip()
-                if left[0] == "\'" or left[0] == "\"":
-                    valor = left[1:-1]
-                else:
-                    valor = self.get_memory_val(left)
-                res = quad.res.rstrip().lstrip()
-
-                if res[0] == "d":
-                    valor = float(valor)
-                if res[0] == "i":
-                    valor = int(valor)
-
-                self.memory.set_val( self.last_func, valor)
+                self.get_final_value(quad, 'Return')
 
             elif op == 'Param':
-                left = quad.left_operand.rstrip().lstrip()
-                if left[0] == "\'" or left[0] == "\"":
-                    valor = left[1:-1]
-                else:
-                    valor = self.get_memory_val(left)
-                res = quad.res.rstrip().lstrip()
+                self.get_final_value(quad, 'Param')
 
-                if res[0] == "d":
-                    valor = float(valor)
-                if res[0] == "i":
-                    valor = int(valor)
-
-                self.memory.set_val(quad.res.rstrip().lstrip(), valor)
             elif op == 'Print':
                 #TODO agregar el segundo parametro del print
 
@@ -115,19 +92,7 @@ class VirtualMachine():
             #assignment
             elif op == '=':
                 #TODO: parsear a int en caso de assignacion y checar cubo semantico
-                left = quad.left_operand.rstrip().lstrip()
-                if left[0] == "\'" or left[0] == "\"":
-                    valor = left[1:-1]
-                else:
-                    valor = self.get_memory_val(left)
-                res = quad.res.rstrip().lstrip()
-
-                if res[0] == "d":
-                    valor = float(valor)
-                if res[0] == "i":
-                    valor = int(valor)
-
-                self.memory.set_val(quad.res.rstrip().lstrip(), valor)
+                self.get_final_value(quad, '=')
 
             #logic operations
             elif op == 'and':
@@ -153,7 +118,7 @@ class VirtualMachine():
                 if not self.get_memory_val(dir):
                     self.pc = int(quad.res)
                     continue
-                
+
                 # if memory.getVal(dir) == 'false':
                 #     self.pc = quad.res
             elif op == 'GotoV':
@@ -167,6 +132,24 @@ class VirtualMachine():
                 continue
             # print self.quadruples[self.pc].printeame()
             self.pc += 1
+
+    def get_final_value(self, quad, op):
+        left = quad.left_operand.rstrip().lstrip()
+        if left[0] == "\'" or left[0] == "\"":
+            valor = left[1:-1]
+        else:
+            valor = self.get_memory_val(left)
+        res = quad.res.rstrip().lstrip()
+
+        if res[0] == "d":
+            valor = float(valor)
+        if res[0] == "i":
+            valor = int(valor)
+
+        if op == 'Return':
+            self.memory.set_val(self.last_func, valor)
+        elif op == 'Param' or op == '=':
+            self.memory.set_val(quad.res.rstrip().lstrip(), valor)
 
     def get_memory_val(self, base):
         if RepresentsInt(base):
