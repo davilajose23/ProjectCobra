@@ -22,25 +22,6 @@ precedence = (
 
 generator = QuadGenerator('output.cob')
 
-def get_var_type(var):
-    var_type = var.get_type()
-    if var_type == 'int':
-        return 'i'
-    elif var_type == 'double':
-        return 'd'
-    elif var_type == 'string':
-        return 's'
-    elif var_type == 'bool':
-        return 'b'
-
-def get_var_scope(scope):
-    if scope == 'global':
-        return 'g'
-    elif scope == 'main':
-        return 'l'
-    else:
-        return 't'
-
 def debug(x):
     '''Funcion de ayuda para debugging'''
     print(x)
@@ -151,10 +132,9 @@ def p_validate_call_arguments(p):
     func_type = functions_directory.functions[func_name].get_return_type()
     generator.generate_gosub(func_name, func_type)
     if func_type != 'void':
-        val = functions_directory.functions['global'].variables_dict[func_name][0]
+        val = functions_directory.functions['global'].variables_dict[func_name].get_value()
         generator.generate_func_assign(func_name, func_type, val)
-    
-    
+
 # ********************* Diagram arguments *********************
 def p_arguments(p):
     'arguments : cond increase_call_arguments post_arguments'
@@ -165,7 +145,7 @@ def p_increase_call_arguments(p):
     functions_directory.increase_call_arguments()
     argument = generator.pile_o.pop()
     tmp_param = functions_directory.validate_arg_type(argument.get_type())
-    param = Variable(tmp_param[0], -1, tmp_param[1])
+    param = Variable(tmp_param[0], -1, tmp_param[1], functions_directory.current_scope, 1)
     generator.generate_param(argument, param)
 
 def p_post_arguments(p):
@@ -187,13 +167,11 @@ def p_register_function(p):
     'register_function :'
     functions_directory.add_function(p[-1])
     if functions_directory.last_type != 'void':
-        functions_directory.add_var(p[-1], functions_directory.last_type)
+        functions_directory.add_var(p[-1], functions_directory.last_type, 0, 1)
     functions_directory.set_scope(p[-1])
     generator.scope = p[-1]
     functions_directory.set_return_type(functions_directory.last_type)
     functions_directory.set_func_quad(generator.cont)
-
-    # guarda el quadruplo en donde empieza
     generator.add_function(p[-1], functions_directory.last_type)
 
 def p_post_function(p):
@@ -218,7 +196,7 @@ def p_value_return(p):
 def p_create_return(p):
     'create_return :'
     val = generator.generate_return()
-    functions_directory.functions['global'].variables_dict[functions_directory.current_scope][0] = val
+    functions_directory.functions['global'].variables_dict[functions_directory.current_scope].value = val
 
 def p_reset_scope(p):
     'reset_scope :'
@@ -269,11 +247,7 @@ def p_push_var(p):
     'push_var :'
     if functions_directory.get_var(p[-2]) is not None:
         # A list with value and var_type is returned
-        res = functions_directory.get_var(p[-2])
-        var = Variable(name=p[-2], value=res[0], var_type=res[1])
-        var_type = get_var_type(var)
-        scope = get_var_scope(res[2])
-        var.name = var_type + scope + var.name
+        var = functions_directory.get_var(p[-2])
         generator.pile_o.push(var)
 
 def p_array_notation(p):
@@ -417,15 +391,10 @@ def p_variable_constant(p):
 
     if functions_directory.get_var(p[1]) is not None:
         # A list with value and var_type is returned
-        res = functions_directory.get_var(p[1])
-        # Create variable
-        var = Variable(name=p[1], value=res[0], var_type=res[1])
-        var_type = get_var_type(var)
-        scope = get_var_scope(res[2])
-        var.name = var_type + scope + var.name
+        var = functions_directory.get_var(p[1])
         generator.pile_o.push(var)
     else:
-        var = Variable(name='constant', value=p[1], var_type=get_type(p[1]))
+        var = Variable('constant', p[1], get_type(p[1]), functions_directory.current_scope, 1)
         generator.pile_o.push(var)
 
 def p_process_variable(p):
@@ -498,11 +467,7 @@ def p_start_read(p):
 
 def p_read_var(p):
     'read_var :'
-    res = functions_directory.get_var(functions_directory.last_id)
-    var = Variable(functions_directory.last_id, res[0], res[1])
-    var_type = get_var_type(var)
-    scope = get_var_scope(res[2])
-    var.name = var_type + scope + var.name
+    var = functions_directory.get_var(functions_directory.last_id)
     generator.generate_read(var)
     functions_directory.reading = False
     functions_directory.last_id = None
@@ -528,10 +493,7 @@ def p_for(p):
 def p_add_var(p):
     'add_var :'
     functions_directory.add_for_var(variable_id=p[-1], var_type='int')
-    var = Variable(name=p[-1], value=-1, var_type='int')
-    var_type = get_var_type(var)
-    scope = get_var_scope(functions_directory.current_scope)
-    var.name = var_type + scope + var.name
+    var = functions_directory.get_var(p[-1])
     generator.pile_o.push(var)
     generator.pile_o.push(var)
     generator.ploop_vars.push(var)
@@ -552,7 +514,7 @@ def p_end_for_loop(p):
     'end_for_loop :'
     var = generator.ploop_vars.pop()
     generator.pile_o.push(var)
-    increment_var = Variable('constant', 1, 'int')
+    increment_var = Variable('constant', 1, 'int', functions_directory.current_scope, 1)
     generator.pile_o.push(increment_var)
     generator.popper.push('+=')
     generator.generate_quad()
