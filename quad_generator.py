@@ -26,7 +26,7 @@ def get_var_scope(scope):
 
 def createParam(param):
     res = ''
-    res = get_var_type(param.get_type())+ 't' + param.get_name() 
+    res = get_var_type(param.get_type())+ 't' + param.get_name()
     return res
 
 class QuadGenerator(object):
@@ -107,7 +107,8 @@ class QuadGenerator(object):
                 quad = Quadruple(self.cont, op, name_left, '', name_right)
             else:
                 # Genera variable temporal
-                temp = Variable(get_var_type(res) + get_var_scope(self.scope) + 't' + str(self.temporal_id), None, var_type=res)
+                temp_name = get_var_type(res) + get_var_scope(self.scope) + 't' + str(self.temporal_id)
+                temp = Variable(temp_name, None, res, self.scope, 1)
                 # Aumenta id de temporales
                 self.temporal_id += 1
                 quad = Quadruple(self.cont, op, name_left, name_right, temp.get_name())
@@ -118,7 +119,9 @@ class QuadGenerator(object):
             self.quadruples.append(quad)
             self.cont += 1
         else:
-            msg = 'Type missmatch ' + str(left_operand.get_type()) + ' and ' + str(right_operand.get_type()) + ' for operator: ' + str(op)
+            left_type = left_operand.get_type()
+            right_type = right_operand.get_type()
+            msg = 'Type missmatch ' + left_type + ' and ' + right_type + ' for operator: ' + str(op)
             raise TypeError(msg)
 
 
@@ -176,7 +179,7 @@ class QuadGenerator(object):
         res_type = get_var_type(func_type)
         initial_address = self.func_counter.get(name, '')[0]
         quad = Quadruple(self.cont, 'Gosub', res_type + 'g' + name, '', initial_address)
-        
+
         self.quadruples.append(quad)
         self.cont += 1
 
@@ -215,8 +218,9 @@ class QuadGenerator(object):
     def generate_func_assign(self, func_name, func_type, value):
         res_type = get_var_type(func_type)
         curr_scope = get_var_scope(self.scope)
-        func_var = Variable(res_type + 'g' + func_name, value, func_type)
-        tmp_var = Variable(res_type + curr_scope + 't' + str(self.temporal_id), None, func_type)
+        temp_name = res_type + curr_scope + 't' + str(self.temporal_id)
+        func_var = Variable(res_type + 'g' + func_name, value, func_type, 'global', 1)
+        tmp_var = Variable(temp_name, None, func_type, self.scope, 1)
         self.temporal_id += 1
         quad = Quadruple(self.cont, '=', func_var.get_name(), None, tmp_var.get_name())
         self.quadruples.append(quad)
@@ -265,8 +269,8 @@ class QuadGenerator(object):
         for q in self.quadruples:
             f.write(q.printeame() + '\n')
         f.close()  # you can omit in most cases as the destructor will call it
-    
+
     def add_function(self, name, func_type):
         self.func_counter[name] = (self.cont, func_type)
-        
+
 

@@ -1,6 +1,31 @@
 '''Modulo que contiene la clase directorio de funciones'''
 from stack import Stack
 from function import Function
+from variable import Variable
+
+def get_var_type(var_type):
+    if var_type == 'int':
+        return 'i'
+    elif var_type == 'double':
+        return 'd'
+    elif var_type == 'string':
+        return 's'
+    elif var_type == 'bool':
+        return 'b'
+
+def get_var_scope(scope):
+    if scope == 'global':
+        return 'g'
+    elif scope == 'main':
+        return 'l'
+    else:
+        return 't'
+
+def get_var_name(var_type, scope, var_name):
+    name_type = get_var_type(var_type)
+    name_scope = get_var_scope(scope)
+    name = name_type + name_scope + var_name
+    return name
 
 class FunctionsDir(object):
     '''
@@ -80,9 +105,10 @@ class FunctionsDir(object):
     def add_var(self, variable_id, var_type, value=0, size=1):
         '''Agrega variable a el diccionario de variables de una Funcion'''
         if self.functions[self.scope].variables_dict.get(variable_id, None) is None:
-            self.functions[self.scope].variables_dict[variable_id] = [value, var_type, self.scope, size]
+            var_name = get_var_name(var_type, self.scope, variable_id)
+            self.functions[self.scope].variables_dict[variable_id] = Variable(var_name, value, var_type, self.scope, size)
         else:
-            variable_type = self.functions[self.scope].variables_dict[variable_id][1]
+            variable_type = self.functions[self.scope].variables_dict[variable_id].get_type()
             msg = 'Variable already declared! VAR: ' + str(variable_id) + '. TYPE: ' + variable_type
             raise KeyError(msg)
 
@@ -90,21 +116,22 @@ class FunctionsDir(object):
         '''Agrega variable al diccionario del current scope, si ya existe sobreescribe valor
         Marca error si existe y no es tipo int'''
         if self.functions[self.scope].variables_dict.get(variable_id, None) is None:
-            self.functions[self.scope].variables_dict[variable_id] = [-1, var_type, self.scope]
+            var_name = get_var_name(var_type, self.scope, variable_id)
+            self.functions[self.scope].variables_dict[variable_id] = Variable(var_name, -1, var_type, self.scope, 1)
         else:
-            variable_type = self.functions[self.scope].variables_dict[variable_id][1]
+            variable_type = self.functions[self.scope].variables_dict[variable_id].get_type()
             if variable_type != 'int':
                 msg = 'Variable already declared! VAR: ' + str(variable_id) + '. TYPE: ' + variable_type
                 raise KeyError(msg)
             else:
-                self.functions[self.scope].variables_dict[variable_id][0] = -1
+                self.functions[self.scope].variables_dict[variable_id].value = -1
 
     def validate_variable(self, variable_id):
         '''Busca variable en el scope actual'''
         if self.functions[self.scope].variables_dict.get(variable_id, None) is None:
             # Busca variable en el scope global
             if self.functions['global'].variables_dict.get(variable_id, None) is None:
-                raise ValueError('Variable not declared! VAR: ' + str(variable_id))
+                raise ValueError('Variable not declared! VAR: ' + variable_id)
 
     def start_evaluating(self):
         '''Indica que el directorio de funciones esta evaluando la existencia de variables'''

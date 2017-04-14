@@ -5,7 +5,7 @@ class Chunk(object):
     'clase chunk para los pedazos de memoria'
     def __init__(self, name):
         'Metodo para inicializar la clase Chunk'
-        self.name = 'name'
+        self.name = name
         # Diccionario de variables locales (main)
         self.local_variables = {}
         # Pila de diccionarios de variables temporales (funciones)
@@ -30,7 +30,6 @@ class Chunk(object):
             chunk = self.constants.get(direccion[1:], 'ERROR get_val: 458')
         return chunk
         #return chunk.getVal(direccion[1:])
-    
 
     def set_val(self, direccion, val):
         segment = direccion[0]
@@ -64,7 +63,7 @@ class Chunk(object):
         print(' Constants:')
         for k, v in self.constants.iteritems():
             print(k, v)
-        
+
     def Era(self):
         self.temporal.push({})
 
@@ -121,25 +120,15 @@ class Memory(object):
         self.strings.printeame()
         print('Boolean')
         self.booleans.printeame()
-    
+
     def era(self):
         self.integers.Era()
         self.doubles.Era()
         self.strings.Era()
         self.booleans.Era()
-    
+
     def endproc(self):
         self.integers.EndProc()
         self.doubles.EndProc()
         self.strings.EndProc()
         self.booleans.EndProc()
-# def test():
-#     memory = Memory()
-#     memory.integers.constants[1] = 1
-#     memory.integers.constants[2] = 2
-#     memory.integers.local_variables['x'] = 23
-#     memory.integers.global_variables['x'] = 81
-#     memory.integers.temporal.push({'x': 25})
-#     memory.printeame()
-
-# test()
