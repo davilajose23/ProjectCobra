@@ -1,0 +1,28 @@
+''' This file is for Error handling '''
+
+# 1000 Functions
+1001 Function already declared! Function: NAME
+1002 Function not declared! Name: NAME 
+
+# 2000 Variables
+2001 Variable already declared! VAR: NAME Type: TYPE
+2002 Variable not declared! VAR: NAME 
+
+# 3000 Functions
+3001 Missing arguments in function call for function: NAME  Expected arguments: ARGS Got: ARGS
+3002 Too many arguments in function call for function: NAME Expected arguments: ARGS Got: ARGS
+3003 Expected type in function call
+
+# 4000 Operations
+4001 Type missmatch TYPE and TYPE for operator: OPERATOR
+4002 Type missmatch. Non bool variables in condition
+
+#5000 Memory
+5001 Error getting Value
+5002 Error setting Value
+5003 Incorrect type of Value. Expected: i(integer), d(double), s(string) or b(boolean). Got TYPE
+
+#6000 VirtualMachine
+6001 Quadruple not valid
+6002 Quadruple is Incomplete
+
