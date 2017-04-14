@@ -406,6 +406,7 @@ def p_process_variable(p):
             functions_directory.last_id = p[-1]
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
+        functions_directory.last_id = p[-1]
         if functions_directory.updating_params:
             functions_directory.update_function_params(var_id=p[-1], var_type=functions_directory.last_type)
 
@@ -480,11 +481,12 @@ def p_identifier(p):
 def p_post_identifier(p):
     '''post_identifier : LEFT_BRACKET exp update_var_size RIGHT_BRACKET
                         | empty'''
-    if not functions_directory.evaluating:
-        functions_directory.last_id = p[-2]
 
 def p_update_var_size(p):
     'update_var_size :'
+    var = functions_directory.get_var(functions_directory.last_id)
+    generator.pile_o.push(var)
+    generator.generate_set_dim()
 
 # ********************* Diagram loop *********************
 def p_loop(p):
@@ -557,17 +559,17 @@ def p_empty(p):
 def p_error(p):
     print("Syntax error at '%s'" % repr(p)) #p.value)
     # While there are syntax errors, turn off the semantics reporting
-    
+
 def get_type(symbol):
-  if symbol == 'TRUE' or symbol == 'FALSE':
-    return 'bool'
-  res = str(type(symbol))[7:10]
-  if res == 'int':
-    return 'int'
-  elif res == 'flo':
-    return 'double'
-  elif res == 'str':
-    return 'string'
+    if symbol == 'TRUE' or symbol == 'FALSE':
+        return 'bool'
+    res = str(type(symbol))[7:10]
+    if res == 'int':
+        return 'int'
+    elif res == 'flo':
+        return 'double'
+    elif res == 'str':
+        return 'string'
 
 # Build the parser
 parser = yacc.yacc()
