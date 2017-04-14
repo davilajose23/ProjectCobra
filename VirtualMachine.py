@@ -186,7 +186,7 @@ class VirtualMachine():
             if self.memory.doubles.constants.get(base, None) is None:
                 self.memory.doubles.constants[base] = float(base)
             valor = self.memory.doubles.constants[base]
-        elif base[0] == "\"":
+        elif base[0] == "\"" or base[0] == "\'":
             if self.memory.strings.constants.get(base[1:-1], None) is None:
                 self.memory.strings.constants[base[1:-1]] = base[1:-1]
             valor = self.memory.strings.constants[base[1:-1]]
