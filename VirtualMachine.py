@@ -157,12 +157,15 @@ class VirtualMachine():
             self.pc += 1
 
     def get_final_value(self, quad, op):
-        left = quad.left_operand.rstrip().lstrip()
+        left = quad.left_operand
         if left[0] == "\'" or left[0] == "\"":
             valor = left[1:-1]
         else:
-            valor = self.get_memory_val(left)
-        res = quad.res.rstrip().lstrip()
+            if op == 'Param':
+                valor = self.get_memory_val(left, True)
+            else:
+                valor = self.get_memory_val(left)
+        res = quad.res
 
         if res[0] == "d":
             valor = float(valor)
@@ -172,9 +175,9 @@ class VirtualMachine():
         if op == 'Return':
             self.memory.set_val(self.last_func, valor)
         elif op == 'Param' or op == '=':
-            self.memory.set_val(quad.res.rstrip().lstrip(), valor)
+            self.memory.set_val(quad.res, valor)
 
-    def get_memory_val(self, base):
+    def get_memory_val(self, base, param=False):
         if RepresentsInt(base):
             if self.memory.integers.constants.get(base, None) is None:
                 self.memory.integers.constants[base] = int(base)
@@ -197,7 +200,7 @@ class VirtualMachine():
             valor = self.memory.booleans.constants[base]
         # si no es constante se busca el valor en la memoria
         else:
-            valor = self.memory.get_val(base)
+            valor = self.memory.get_val(base, param)
         return valor
 
     def execute(self, quad, op):

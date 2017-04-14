@@ -16,13 +16,16 @@ class Chunk(object):
         # Diccionario de variables constantes
         self.constants = {}
 
-    def get_val(self, direccion):
+    def get_val(self, direccion, param=False):
         segment = direccion[0]
         chunk = None
         if segment == 'l':
             chunk = self.local_variables.get(direccion[1:], 'ERROR get_val: 458')
         elif segment == 't':
-            chunk = self.temporal.top
+            if param:
+                chunk = self.temporal.top2 
+            else:
+                chunk = self.temporal.top
             chunk = chunk.get(direccion[1:], 'ERROR get_val: 458')
         elif segment == 'g':
             chunk = self.global_variables.get(direccion[1:], 'ERROR get_val: 458')
@@ -80,7 +83,7 @@ class Memory(object):
         self.booleans = Chunk('bool')
 
     # direccion = TypeSegmentID
-    def get_val(self, direccion):
+    def get_val(self, direccion, param=False):
         direccion = direccion.rstrip().lstrip()
         tipo = direccion[0]
         chunk = None
@@ -94,7 +97,7 @@ class Memory(object):
             chunk = self.booleans
         else:
             return 'ERROR get_val:458'
-        return chunk.get_val(direccion[1:])
+        return chunk.get_val(direccion[1:], param)
 
     def set_val(self, direccion, val):
         tipo = direccion[0].rstrip().lstrip()
