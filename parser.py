@@ -315,7 +315,7 @@ def p_post_expression(p):
 def p_push_relop(p):
     'push_relop :'
     generator.popper.push(p[-1])
-    
+
 # ********************* Diagram relational_operator *********************
 def p_relational_operator(p):
     '''relational_operator : LESS push_relop
@@ -478,8 +478,13 @@ def p_identifier(p):
     'identifier : ID process_variable post_identifier'
 
 def p_post_identifier(p):
-    '''post_identifier : LEFT_BRACKET exp RIGHT_BRACKET
+    '''post_identifier : LEFT_BRACKET exp update_var_size RIGHT_BRACKET
                         | empty'''
+    if not functions_directory.evaluating:
+        functions_directory.last_id = p[-2]
+
+def p_update_var_size(p):
+    'update_var_size :'
 
 # ********************* Diagram loop *********************
 def p_loop(p):

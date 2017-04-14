@@ -1,3 +1,4 @@
+int a[1 + 2 + 2]
 main
     print 'Hola'
 end_main

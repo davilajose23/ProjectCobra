@@ -1,3 +1,5 @@
-(Goto, None, None, 1)
+(Goto, None, None, 3)
+(+, 1, 2, igt1)
+(+, igt1, 2, igt2)
 (Print, 'Hola', \n, )
 (END, , , )

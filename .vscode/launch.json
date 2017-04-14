@@ -17,7 +17,7 @@
         "RedirectOutput"
     ],
     "args": [
-                "testcases/call_function_test_ok.co"
+                "testcases/array_test_ok.co"
             ]
 },
         {
