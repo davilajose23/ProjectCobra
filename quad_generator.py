@@ -242,11 +242,19 @@ class QuadGenerator(object):
 
     def generate_verify(self):
         var = self.pdim.top[1]
-        quad = Quadruple(self.cont, 'Verify', self.pile_o.top, 0, var.size)
+        tmp = self.pile_o.pop()
+
+        if tmp.get_name() == 'constant':
+            tmp_name = tmp.get_value()
+        else:
+            tmp_name = tmp.get_name()
+
+        quad = Quadruple(self.cont, 'Verify', tmp_name, 0, var.size)
         self.quadruples.append(quad)
         self.cont += 1
-        aux = self.pile_o.pop()
-        
+        # Concatena el nombre de la variable junto con la temporal o constante de resultado para acceso al arreglo
+        var.name = var.name + '.' + tmp_name
+        self.pile_o.push(var)
         self.popper.pop()
         self.pdim.pop()
 
