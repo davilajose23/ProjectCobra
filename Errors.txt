@@ -26,3 +26,8 @@
 6001 Quadruple not valid
 6002 Quadruple is Incomplete
 
+#7000 Arrays
+7001 Index expected to be integer. Got: TYPE
+7002 Index out of range
+7003 Variable is not array
+7004 Expected index for array variable

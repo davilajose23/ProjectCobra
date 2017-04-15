@@ -7,6 +7,17 @@ from Memory import Memory
 from cube import semantic_cube
 from stack import Stack
 
+def get_type(symbol):
+    if symbol == 'true' or symbol == 'false':
+        return 'bool'
+    res = str(type(symbol))[7:10]
+    if res == 'int':
+        return 'int'
+    elif res == 'flo':
+        return 'double'
+    elif res == 'str':
+        return 'string'
+
 def RepresentsInt(s):
     try:
         int(s)
@@ -33,7 +44,7 @@ class VirtualMachine():
         self.scope = 'main'
         self.last_func = None
         self.PCS = Stack()
-    
+
     def readFiles(self):
         cont = 0
         f = open('output.cob', 'r')
@@ -54,11 +65,9 @@ class VirtualMachine():
         while self.quadruples[self.pc].op != 'END':
             # get the current quad according to Program Counter(pc)
             quad = self.quadruples[self.pc]
-
             operation = quad.op
 
             # check all posible operations and do something according to
-
             if operation == 'ERA':
                 # saves the name of the last function to use in Params and Gosub
                 self.last_func = quad.left_operand
@@ -73,18 +82,17 @@ class VirtualMachine():
                 self.pc = self.PCS.pop()
 
             elif operation == 'Return':
-                self.get_final_value(quad, 'Return')
+                self.set_memory_val(quad, 'Return')
 
             elif operation == 'Param':
-                self.get_final_value(quad, 'Param')
+                self.set_memory_val(quad, 'Param')
 
             elif operation == 'Print':
-
                 #TODO agregar el segundo parametro del print
                 val = self.get_memory_val(quad.left_operand)
                 # obtiene como quiere terminar el print
                 endprint = quad.right_operand
-                
+
                 if endprint == '\\n':
                     print(val)
                 else:
@@ -98,8 +106,8 @@ class VirtualMachine():
                 elif RepresentsDouble(temp):
                     temp = float(temp)
                 #TODO: checar cubo semantico
-
                 self.memory.set_val(quad.res, temp)
+
             #basic operations +, - , *, /
             elif operation == '+':
                 self.execute(quad, '+')
@@ -111,11 +119,9 @@ class VirtualMachine():
                 self.execute(quad, '/')
 
             #assignment
-
             elif operation == '=':
                 #TODO: parsear a int en caso de assignacion y checar cubo semantico
-                self.get_final_value(quad, '=')
-
+                self.set_memory_val(quad, '=')
 
             #logic operations
             elif operation == 'and':
@@ -132,6 +138,7 @@ class VirtualMachine():
                 self.execute(quad, '>')
             elif operation == '<':
                 self.execute(quad, '<')
+
             # gotos
             elif operation == 'Goto':
                 self.pc = int(self.quadruples[self.pc].res)
@@ -156,15 +163,12 @@ class VirtualMachine():
             # print self.quadruples[self.pc].printeame()
             self.pc += 1
 
-    def get_final_value(self, quad, op):
+    def set_memory_val(self, quad, op):
         left = quad.left_operand
-        if left[0] == "\'" or left[0] == "\"":
-            valor = left[1:-1]
+        if op == 'Param':
+            valor = self.get_memory_val(left, True)
         else:
-            if op == 'Param':
-                valor = self.get_memory_val(left, True)
-            else:
-                valor = self.get_memory_val(left)
+            valor = self.get_memory_val(left)
         res = quad.res
 
         if res[0] == "d":
@@ -178,6 +182,7 @@ class VirtualMachine():
             self.memory.set_val(quad.res, valor)
 
     def get_memory_val(self, base, param=False):
+        # TODO: verificar de mejor manera cuando es int o float, un float puede ser int y viceversa
         if RepresentsInt(base):
             if self.memory.integers.constants.get(base, None) is None:
                 self.memory.integers.constants[base] = int(base)

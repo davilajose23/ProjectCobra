@@ -238,17 +238,6 @@ class QuadGenerator(object):
         self.cont += 1
         return var.get_value()
 
-    def generate_set_dim(self):
-        res = self.pile_o.pop()
-        dim = self.pile_o.pop()
-        if dim.get_name() == 'constant':
-            dim_name = dim.get_value()
-        else:
-            dim_name = dim.get_name()
-        quad = Quadruple(self.cont, 'SetDim', dim_name, None, res.get_name())
-        self.quadruples.append(quad)
-        self.cont += 1
-
     def fill_goto(self):
         '''Funcion que llena los cuadruplos de goto pendientes'''
         # Obtiene indice de cuadruplo pendiente en la lista de cuadruplos

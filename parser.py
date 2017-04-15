@@ -406,7 +406,6 @@ def p_process_variable(p):
             functions_directory.last_id = p[-1]
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
-        functions_directory.last_id = p[-1]
         if functions_directory.updating_params:
             functions_directory.update_function_params(var_id=p[-1], var_type=functions_directory.last_type)
 
@@ -479,14 +478,8 @@ def p_identifier(p):
     'identifier : ID process_variable post_identifier'
 
 def p_post_identifier(p):
-    '''post_identifier : LEFT_BRACKET exp update_var_size RIGHT_BRACKET
+    '''post_identifier : LEFT_BRACKET exp RIGHT_BRACKET
                         | empty'''
-
-def p_update_var_size(p):
-    'update_var_size :'
-    var = functions_directory.get_var(functions_directory.last_id)
-    generator.pile_o.push(var)
-    generator.generate_set_dim()
 
 # ********************* Diagram loop *********************
 def p_loop(p):
