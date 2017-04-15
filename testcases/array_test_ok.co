@@ -1,4 +1,4 @@
-int a['hola']
+int a[5]
 main
     print 'Hola'
 end_main

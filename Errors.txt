@@ -31,3 +31,4 @@
 7002 Index out of range
 7003 Variable is not array
 7004 Expected index for array variable
+7005 Array size must be a positive integer

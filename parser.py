@@ -37,7 +37,7 @@ def p_program(p):
     p[0] = 'ok'
     generator.export()
     # debug(generator.printeame())
-    # debug(functions_directory.printeame())
+    debug(functions_directory.printeame())
     vm = VirtualMachine(functions_directory)
     vm.run()
 
@@ -72,7 +72,15 @@ def p_set_type(p):
     'set_type :'
 
 def p_inter_declaration(p):
-    'inter_declaration : identifier cycle_declaration'
+    'inter_declaration : ID process_variable array_declaration cycle_declaration'
+
+def p_array_declaration(p):
+    '''array_declaration : LEFT_BRACKET INT_CONSTANT update_var_size RIGHT_BRACKET
+                            | empty'''
+
+def p_update_var_size(p):
+    'update_var_size :'
+    functions_directory.update_var_size(p[-1])
 
 def p_cycle_declaration(p):
     '''cycle_declaration : COMMA inter_declaration
@@ -406,6 +414,7 @@ def p_process_variable(p):
             functions_directory.last_id = p[-1]
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
+        functions_directory.last_id = p[-1]
         if functions_directory.updating_params:
             functions_directory.update_function_params(var_id=p[-1], var_type=functions_directory.last_type)
 

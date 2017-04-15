@@ -171,6 +171,13 @@ class FunctionsDir(object):
         curr += 1
         self.call_arguments.push(curr)
 
+    def update_var_size(self, size):
+        '''Actualiza el size de una variable en caso de ser dimensionada'''
+        if size <= 0:
+            raise ValueError('Array size must be a positive integer')
+        else:
+            self.functions[self.scope].variables_dict[self.last_id].size = size
+
     def validate_call_arguments(self):
         '''Funcion que valida que la cantidad de argumentos utilizados en una llamada a funcion
          sea igual a los parametros que espera recibir'''
@@ -211,6 +218,6 @@ class FunctionsDir(object):
                 print(str(var[1]) + ' ' + str(var[0]) + ', '),
             print('): quad_num ' + str(val.get_function_quad()))
             for k, vals in val.variables_dict.iteritems():
-                print('\t' + str(vals[1]) + ' ' + str(k) + ' = ' + str(vals[0]))
+                print('\t' + vals.get_type() + ' ' + k + ' = ' + str(vals.get_value()) + ' size: ' + str(vals.get_size()))
             print('')
         print('*********************************************')
