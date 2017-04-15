@@ -52,7 +52,7 @@ class FunctionsDir(object):
         self.reading = False
 
         # Ultimo token ID, usado para el read
-        self.last_id = None
+        self.last_id = Stack()
 
         # Ultimo token de tipo que fue leido por el directorio de funciones
         self.last_type = None
@@ -176,7 +176,7 @@ class FunctionsDir(object):
         if size <= 0:
             raise ValueError('Array size must be a positive integer')
         else:
-            self.functions[self.scope].variables_dict[self.last_id].size = size
+            self.functions[self.scope].variables_dict[self.last_id.pop()].size = size
 
     def validate_call_arguments(self):
         '''Funcion que valida que la cantidad de argumentos utilizados en una llamada a funcion

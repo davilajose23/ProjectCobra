@@ -250,6 +250,7 @@ def p_assignment(p):
 def p_validate_var(p):
     'validate_var :'
     functions_directory.validate_variable(p[-1])
+    functions_directory.last_id.push(p[-1])
 
 def p_push_var(p):
     'push_var :'
@@ -411,10 +412,10 @@ def p_process_variable(p):
     if  functions_directory.evaluating:
         functions_directory.validate_variable(p[-1])
         if functions_directory.reading:
-            functions_directory.last_id = p[-1]
+            functions_directory.last_id.push(p[-1])
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
-        functions_directory.last_id = p[-1]
+        functions_directory.last_id.push(p[-1])
         if functions_directory.updating_params:
             functions_directory.update_function_params(var_id=p[-1], var_type=functions_directory.last_type)
 
@@ -476,10 +477,9 @@ def p_start_read(p):
 
 def p_read_var(p):
     'read_var :'
-    var = functions_directory.get_var(functions_directory.last_id)
+    var = functions_directory.get_var(functions_directory.last_id.pop())
     generator.generate_read(var)
     functions_directory.reading = False
-    functions_directory.last_id = None
 
 
 # ********************* Diagram identifier *********************
