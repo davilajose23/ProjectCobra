@@ -37,7 +37,7 @@ def p_program(p):
     p[0] = 'ok'
     generator.export()
     # debug(generator.printeame())
-    debug(functions_directory.printeame())
+    # debug(functions_directory.printeame())
     vm = VirtualMachine(functions_directory)
     vm.run()
 
