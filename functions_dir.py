@@ -176,7 +176,8 @@ class FunctionsDir(object):
         if size <= 0:
             raise ValueError('Array size must be a positive integer')
         else:
-            self.functions[self.scope].variables_dict[self.last_id.pop()].size = size
+            self.functions[self.scope].variables_dict[self.last_id.top].size = size
+            self.functions[self.scope].variables_dict[self.last_id.top].is_dim = True
 
     def validate_call_arguments(self):
         '''Funcion que valida que la cantidad de argumentos utilizados en una llamada a funcion
@@ -203,6 +204,12 @@ class FunctionsDir(object):
             msg += '. Got: ' + var_type
             raise TypeError(msg)
         return self.functions[self.call_function.top].params[self.call_arguments.top - 1]
+
+    def verify_var_dim(self):
+        '''Verifica que el id de una variable sea dimensionada'''
+        var_dim = self.functions[self.scope].variables_dict[self.last_id.top].is_dim
+        if not var_dim:
+            raise ValueError('Variable is not array')
 
     @property
     def current_scope(self):

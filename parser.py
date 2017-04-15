@@ -260,8 +260,21 @@ def p_push_var(p):
         generator.pile_o.push(var)
 
 def p_array_notation(p):
-    '''array_notation : LEFT_BRACKET exp RIGHT_BRACKET
+    '''array_notation : LEFT_BRACKET verify_var_dim exp RIGHT_BRACKET end_array
                         | empty'''
+
+def p_verify_var_dim(p):
+    'verify_var_dim :'
+    generator.pile_o.pop()
+    functions_directory.verify_var_dim()
+    var = functions_directory.get_var(functions_directory.last_id.top)
+    dim = 1
+    generator.pdim.push((functions_directory.last_id.pop(), var, dim))
+    generator.popper.push('(')
+
+def p_end_array(p):
+    'end_array :'
+    generator.generate_verify()
 
 # ********************* Diagram assignment_operator *********************
 def p_assignment_operator(p):

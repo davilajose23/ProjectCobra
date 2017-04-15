@@ -43,6 +43,8 @@ class QuadGenerator(object):
         self.pcycles = Stack()
         # Pending loop vars stack
         self.ploop_vars = Stack()
+        # Pila dimensionada
+        self.pdim = Stack()
         # File to write list of quadruples
         self.file = filename
         # Id of temporal vars
@@ -237,6 +239,16 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         self.cont += 1
         return var.get_value()
+
+    def generate_verify(self):
+        var = self.pdim.top[1]
+        quad = Quadruple(self.cont, 'Verify', self.pile_o.top, 0, var.size)
+        self.quadruples.append(quad)
+        self.cont += 1
+        aux = self.pile_o.pop()
+        
+        self.popper.pop()
+        self.pdim.pop()
 
     def fill_goto(self):
         '''Funcion que llena los cuadruplos de goto pendientes'''

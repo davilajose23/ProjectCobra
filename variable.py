@@ -1,12 +1,13 @@
 '''Modulo que define la clase variable'''
 class Variable(object):
     '''Clase Variable. Contiene nombre, tipo y valor'''
-    def __init__(self, name, value, var_type, scope, size):
+    def __init__(self, name, value, var_type, scope, size, is_dim=False):
         self.name = name
         self.value = value
         self.type = var_type
         self.scope = scope
         self.size = size
+        self.is_dim = is_dim
 
     def __str__(self):
         '''Metodo para imprimir variables'''
