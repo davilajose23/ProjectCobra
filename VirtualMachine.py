@@ -87,6 +87,11 @@ class VirtualMachine():
             elif operation == 'Param':
                 self.set_memory_val(quad, 'Param')
 
+            elif operation == 'Verify':
+                valor = self.get_memory_val(quad.left_operand)
+                if valor < int(quad.right_operand) or valor >= int(quad.res):
+                    raise ValueError('Index out of range')
+
             elif operation == 'Print':
                 #TODO agregar el segundo parametro del print
                 val = self.get_memory_val(quad.left_operand)
