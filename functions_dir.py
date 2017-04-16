@@ -207,8 +207,8 @@ class FunctionsDir(object):
 
     def verify_var_dim(self):
         '''Verifica que el id de una variable sea dimensionada'''
-        var_dim = self.functions[self.scope].variables_dict[self.last_id.top].is_dim
-        if not var_dim:
+        var = self.get_var(self.last_id.top)
+        if not var.is_dim:
             raise ValueError('Variable is not array')
 
     @property

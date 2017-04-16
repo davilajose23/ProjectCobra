@@ -253,8 +253,9 @@ class QuadGenerator(object):
         self.quadruples.append(quad)
         self.cont += 1
         # Concatena el nombre de la variable junto con la temporal o constante de resultado para acceso al arreglo
-        var.name = var.name + '.' + tmp_name
-        self.pile_o.push(var)
+        aux = Variable(var.name, var.value, var.type, var.scope, var.size, var.is_dim)
+        aux.name = var.name + '.' + str(tmp_name)
+        self.pile_o.push(aux)
         self.popper.pop()
         self.pdim.pop()
 
