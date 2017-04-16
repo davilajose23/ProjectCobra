@@ -405,19 +405,15 @@ def p_pop_paren(p):
 # ********************* Diagram variable_constant *********************
 def p_variable_constant(p):
     '''variable_constant : ID process_variable array_notation
-                        | INT_CONSTANT
-                        | DOUBLE_CONSTANT
-                        | STRING_CONSTANT
-                        | BOOL_CONSTANT '''
-    p[0] = p[1]
+                        | INT_CONSTANT push_constant
+                        | DOUBLE_CONSTANT push_constant
+                        | STRING_CONSTANT push_constant
+                        | BOOL_CONSTANT push_constant'''
 
-    if functions_directory.get_var(p[1]) is not None:
-        # A list with value and var_type is returned
-        var = functions_directory.get_var(p[1])
-        generator.pile_o.push(var)
-    else:
-        var = Variable('constant', p[1], get_type(p[1]), functions_directory.current_scope, 1)
-        generator.pile_o.push(var)
+def p_push_constant(p):
+    'push_constant :'
+    var = Variable('constant', p[-1], get_type(p[-1]), functions_directory.current_scope, 1)
+    generator.pile_o.push(var)
 
 def p_process_variable(p):
     'process_variable :'
@@ -426,6 +422,8 @@ def p_process_variable(p):
         functions_directory.validate_variable(p[-1])
         if functions_directory.reading:
             functions_directory.last_id.push(p[-1])
+        var = functions_directory.get_var(p[-1])
+        generator.pile_o.push(var)
     else:
         functions_directory.add_var(variable_id=p[-1], var_type=functions_directory.last_type)
         functions_directory.last_id.push(p[-1])

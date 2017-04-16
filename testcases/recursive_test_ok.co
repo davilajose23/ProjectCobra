@@ -3,9 +3,7 @@ func int sumaRecursiva(int x, int acum)
 	if x == 0:
 		res = acum
 	else:
-		acum += x
-		x -= 1
-		res = sumaRecursiva(x, acum)
+		res = sumaRecursiva(x - 1, acum + x)
 	end
 	return res
 end

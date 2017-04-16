@@ -1,6 +1,5 @@
 int a[5]
 main
     a[0] = 1
-    a[0 + 1] = 2
-    print 'Hola'
+    a[1] = 1 + a[0]
 end_main
