@@ -191,8 +191,10 @@ class VirtualMachine():
                 res = quad.res.split('.')
                 var = res[0]
                 index = self.get_memory_val(res[1], is_param)
-                quad.res = var + '.' + str(index)
-            self.memory.set_val(quad.res, valor)
+                helper = var + '.' + str(index)
+                self.memory.set_val(helper, valor)
+            else:
+                self.memory.set_val(quad.res, valor)
 
     def get_memory_val(self, base, param=False):
         # TODO: verificar de mejor manera cuando es int o float, un float puede ser int y viceversa
