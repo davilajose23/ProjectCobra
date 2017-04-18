@@ -184,6 +184,14 @@ class VirtualMachine():
         if op == 'Return':
             self.memory.set_val(self.last_func, valor)
         elif op == 'Param' or op == '=':
+            is_param = False
+            if op == 'Param':
+                is_param = True
+            if '.' in quad.res:
+                res = quad.res.split('.')
+                var = res[0]
+                index = self.get_memory_val(res[1], is_param)
+                quad.res = var + '.' + str(index)
             self.memory.set_val(quad.res, valor)
 
     def get_memory_val(self, base, param=False):
@@ -210,6 +218,11 @@ class VirtualMachine():
             valor = self.memory.booleans.constants[base]
         # si no es constante se busca el valor en la memoria
         else:
+            if '.' in base:
+                res = base.split('.')
+                var = res[0]
+                index = self.get_memory_val(res[1], param)
+                base = var + '.' + str(index)
             valor = self.memory.get_val(base, param)
         return valor
 

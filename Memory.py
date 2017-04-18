@@ -18,33 +18,89 @@ class Chunk(object):
 
     def get_val(self, direccion, param=False):
         segment = direccion[0]
+        direccion = direccion[1:]
+        is_dim = False
         chunk = None
+
+        if '.' in direccion:
+            res = direccion.split('.')
+            var = res[0]
+            index = res[1]
+            is_dim = True
+
         if segment == 'l':
-            chunk = self.local_variables.get(direccion[1:], 'ERROR get_val: 458')
+            if is_dim:
+                chunk = self.local_variables.get(var, 'ERROR get_val: 458')
+            else:
+                chunk = self.local_variables.get(direccion, 'ERROR get_val: 458')
+
         elif segment == 't':
             if param:
-                chunk = self.temporal.top2 
+                chunk = self.temporal.top2
             else:
                 chunk = self.temporal.top
-            chunk = chunk.get(direccion[1:], 'ERROR get_val: 458')
+
+            if is_dim:
+                chunk = chunk.get(var, 'ERROR get_val: 458')
+            else:
+                chunk = chunk.get(direccion, 'ERROR get_val: 458')
+
         elif segment == 'g':
-            chunk = self.global_variables.get(direccion[1:], 'ERROR get_val: 458')
+            if is_dim:
+                chunk = self.global_variables.get(var, 'ERROR get_val: 458')
+            else:
+                chunk = self.global_variables.get(direccion, 'ERROR get_val: 458')
+
         elif segment == 'c':
-            chunk = self.constants.get(direccion[1:], 'ERROR get_val: 458')
-        return chunk
+            if is_dim:
+                chunk = self.constants.get(var, 'ERROR get_val: 458')
+            else:
+                chunk = self.constants.get(direccion, 'ERROR get_val: 458')
+
+        if not is_dim:
+            return chunk
+        else:
+            return chunk.get(index, 'ERROR get_val: 459')
         #return chunk.getVal(direccion[1:])
 
     def set_val(self, direccion, val):
         segment = direccion[0]
-        chunk = None
+        direccion = direccion[1:]
+        is_dim = False
+
+        if '.' in direccion:
+            res = direccion.split('.')
+            var = res[0]
+            index = res[1]
+            is_dim = True
+
         if segment == 'l':
-            self.local_variables[direccion[1:]] = val
+            if is_dim:
+                if self.local_variables.get(var, None) is None:
+                    self.local_variables[var] = {}
+                self.local_variables[var][index] = val
+            self.local_variables[direccion] = val
+
         elif segment == 't':
-            self.temporal.top[direccion[1:]] = val
+            if is_dim:
+                if self.temporal.top.get(var, None) is None:
+                    self.temporal.top[var] = {}
+                self.temporal.top[var][index] = val
+            self.temporal.top[direccion] = val
+
         elif segment == 'g':
-            self.global_variables[direccion[1:]] = val
+            if is_dim:
+                if self.global_variables.get(var, None) is None:
+                    self.global_variables[var] = {}
+                self.global_variables[var][index] = val
+            self.global_variables[direccion] = val
+
         elif segment == 'c':
-            self.constants[direccion[1:]] = val
+            if is_dim:
+                if self.constants.get(var, None) is None:
+                    self.constants[var] = {}
+                self.constants[var][index] = val
+            self.constants[direccion] = val
         else:
             print('ERROR in chunk 1248')
         #return chunk.getVal(direccion[1:])
