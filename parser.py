@@ -420,8 +420,7 @@ def p_process_variable(p):
     # Checks if the variable to validate is in array notation
     if  functions_directory.evaluating:
         functions_directory.validate_variable(p[-1])
-        if functions_directory.reading:
-            functions_directory.last_id.push(p[-1])
+        functions_directory.last_id.push(p[-1])
         var = functions_directory.get_var(p[-1])
         generator.pile_o.push(var)
     else:
