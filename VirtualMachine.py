@@ -8,6 +8,7 @@ from cube import semantic_cube
 from stack import Stack
 
 def get_type(symbol):
+    '''Retorna el tipo que python identifica de un simbolo'''
     if symbol == 'true' or symbol == 'false':
         return 'bool'
     res = str(type(symbol))[7:10]
