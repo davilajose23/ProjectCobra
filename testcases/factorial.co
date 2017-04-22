@@ -1,0 +1,15 @@
+func int fact(int x)
+    int res
+    if x == 0:
+        res = 1
+    else:
+        res = x * fact(x - 1)
+    end
+    return res
+end
+
+main
+    int a
+    a = 5
+    print fact(a)
+end_main

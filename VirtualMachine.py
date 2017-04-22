@@ -45,6 +45,7 @@ class VirtualMachine():
         self.scope = 'main'
         self.last_func = None
         self.PCS = Stack()
+        self.pibool = False
     
     def orderParams(self):
 
@@ -84,8 +85,8 @@ class VirtualMachine():
         # start reading the file
         self.readFiles()
         self.orderParams()
-        for i in self.quadruples:
-            print(i.printeame())
+        # for i in self.quadruples:
+        #     print(i.printeame())
         #cycle until read the last quadruple 'END'
         while self.quadruples[self.pc].op != 'END':
             # get the current quad according to Program Counter(pc)
@@ -96,9 +97,7 @@ class VirtualMachine():
             if operation == 'ERA':
                 # saves the name of the last function to use in Params and Gosub
                 self.last_func = quad.left_operand
-                # allocate memory for the function that is going to be called
-
-                self.memory.era()
+                
 
             elif operation == 'EndProc':
                 # release the memory used in the function
@@ -110,6 +109,12 @@ class VirtualMachine():
                 self.set_memory_val(quad, 'Return')
 
             elif operation == 'Param':
+
+                if self.pibool == False:
+                    # allocate memory for the function that is going to be called
+                    self.memory.era()
+                    self.pibool = True
+
                 self.set_memory_val(quad, 'Param')
 
             elif operation == 'Verify':
@@ -187,6 +192,7 @@ class VirtualMachine():
                     self.pc = int(quad.res)
                     continue
             elif operation == 'Gosub':
+                self.pibool = False
                 self.PCS.push(self.pc)
                 self.pc = int(self.quadruples[self.pc].res)
                 continue
