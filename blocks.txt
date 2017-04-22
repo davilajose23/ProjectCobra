@@ -1,10 +1,30 @@
 # Bloque de programa
 https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr4s6t
 
-# Variable Types
-https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xuteij
-
-# Var Identifier
+# Var identifier
 https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3u2jkr
+
+# Var identifier with comma
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2e2353
+
+# Declare variable
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#w8ie5a
+
+# Declare global variable
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#vsff5x
+
+# Var array
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#fa93pr
+
+# Var array with comma
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#8txoh4
+
+
+# Assignment
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wf5nz2
+
+# Assignment array
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#vwy3jo
+
 
 
