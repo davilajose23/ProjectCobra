@@ -45,7 +45,29 @@ class VirtualMachine():
         self.scope = 'main'
         self.last_func = None
         self.PCS = Stack()
+    
+    def orderParams(self):
 
+        aux = Stack()
+        pc = 0
+        while self.quadruples[pc].op != 'END':
+            quad = self.quadruples[pc]
+            
+            if quad.op == 'Param':
+                aux.top.append(quad)
+                del self.quadruples[pc]
+                
+            elif quad.op == 'Gosub':
+            
+                self.quadruples = self.quadruples[:pc] + aux.top + self.quadruples[pc:]
+                pc = pc + 1 + len(aux.top )
+                aux.pop()
+            elif quad.op == 'ERA':
+                aux.push([])
+                pc += 1
+            else:
+                pc += 1
+        
     def readFiles(self):
         cont = 0
         f = open('output.cob', 'r')
@@ -61,7 +83,9 @@ class VirtualMachine():
         ''' Function that start reading all the quadruples and executing them'''
         # start reading the file
         self.readFiles()
-
+        self.orderParams()
+        for i in self.quadruples:
+            print(i.printeame())
         #cycle until read the last quadruple 'END'
         while self.quadruples[self.pc].op != 'END':
             # get the current quad according to Program Counter(pc)

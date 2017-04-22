@@ -10,6 +10,6 @@ end
 
 main
     int x
-    x = sumaRecursiva(3, 0)
+    x = sumaRecursiva(sumaRecursiva(1 + 1, 0), 0)
     print x
 end_main
