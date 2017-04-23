@@ -26,5 +26,19 @@ https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#wf5nz2
 # Assignment array
 https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#vwy3jo
 
+# If condition
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qrg6az
+
+# If else condition
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#io4tzq
+
+# Cond and or
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#qhoyzf
+
+# Expression logic compare
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#ha3uc5
+
+# Exp plus minus
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#w7mrwe
 
 
