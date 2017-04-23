@@ -152,6 +152,8 @@ class VirtualMachine():
                 self.execute(quad, '*')
             elif operation == '/':
                 self.execute(quad, '/')
+            elif operation == '%' or operation == 'mod':
+                self.execute(quad, '%')
 
             #assignment
             elif operation == '=':
@@ -278,6 +280,8 @@ class VirtualMachine():
                 res = left_val * right_val
             elif op == '/':
                 res = left_val / right_val
+            elif op == '%':
+                res = left_val % right_val
             elif op == '<':
                 res = left_val < right_val
             elif op == '>':
