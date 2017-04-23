@@ -8,10 +8,10 @@ https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#3u2jkr
 https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#2e2353
 
 # Declare variable
-https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#w8ie5a
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#q9wgv9
 
 # Declare global variable
-https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#vsff5x
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#f5cet8
 
 # Var array
 https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#fa93pr
@@ -61,3 +61,8 @@ https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#6caiz2
 # Bool constant
 https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#st2jcd
 
+# Function
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#ssmm4w
+
+# Param
+https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#dp9vh5
