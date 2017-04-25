@@ -46,29 +46,27 @@ class VirtualMachine():
         self.last_func = None
         self.PCS = Stack()
         self.pibool = False
-    
+
     def orderParams(self):
 
         aux = Stack()
         pc = 0
         while self.quadruples[pc].op != 'END':
             quad = self.quadruples[pc]
-            
+
             if quad.op == 'Param':
                 aux.top.append(quad)
                 del self.quadruples[pc]
-                
             elif quad.op == 'Gosub':
-            
                 self.quadruples = self.quadruples[:pc] + aux.top + self.quadruples[pc:]
-                pc = pc + 1 + len(aux.top )
+                pc = pc + 1 + len(aux.top)
                 aux.pop()
             elif quad.op == 'ERA':
                 aux.push([])
                 pc += 1
             else:
                 pc += 1
-        
+
     def readFiles(self):
         cont = 0
         f = open('output.cob', 'r')
@@ -97,7 +95,6 @@ class VirtualMachine():
             if operation == 'ERA':
                 # saves the name of the last function to use in Params and Gosub
                 self.last_func = quad.left_operand
-                
 
             elif operation == 'EndProc':
                 # release the memory used in the function
@@ -221,10 +218,22 @@ class VirtualMachine():
             if op == 'Param':
                 is_param = True
             if '.' in quad.res:
-                res = quad.res.split('.')
-                var = res[0]
-                index = self.get_memory_val(res[1], is_param)
-                helper = var + '.' + str(index)
+                if quad.res.count('.') > 1:
+                    components = quad.res.split('.')
+                    while len(components) > 2:
+                        index = components.pop()
+                        index = self.get_memory_val(index, is_param)
+                        var = components.pop()
+                        aux = var + '.' + str(index)
+                        val = self.memory.get_val(aux, is_param)
+                        components.append(str(val))
+                    index = self.get_memory_val(components[1], is_param)
+                    helper = components[0] + '.' + str(index)
+                else:
+                    res = quad.res.split('.')
+                    var = res[0]
+                    index = self.get_memory_val(res[1], is_param)
+                    helper = var + '.' + str(index)
                 self.memory.set_val(helper, valor)
             else:
                 self.memory.set_val(quad.res, valor)
@@ -254,10 +263,22 @@ class VirtualMachine():
         # si no es constante se busca el valor en la memoria
         else:
             if '.' in base:
-                res = base.split('.')
-                var = res[0]
-                index = self.get_memory_val(res[1], param)
-                base = var + '.' + str(index)
+                if base.count('.') > 1:
+                    components = base.split('.')
+                    while len(components) > 2:
+                        index = components.pop()
+                        index = self.get_memory_val(index, param)
+                        var = components.pop()
+                        aux = var + '.' + str(index)
+                        val = self.memory.get_val(aux, param)
+                        components.append(str(val))
+                    index = self.get_memory_val(components[1], param)
+                    base = components[0] + '.' + str(index)
+                else:
+                    res = base.split('.')
+                    var = res[0]
+                    index = self.get_memory_val(res[1], param)
+                    base = var + '.' + str(index)
             valor = self.memory.get_val(base, param)
         return valor
 

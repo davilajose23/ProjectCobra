@@ -1,7 +1,11 @@
 int a[5]
 main
+    int b[1]
+    b[0] = 1
     for i from 0 to 5:
         a[i] = i
         print a[i]
     end
+    a[b[0]] = 50
+    print a[b[0]]
 end_main

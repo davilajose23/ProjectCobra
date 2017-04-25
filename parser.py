@@ -27,14 +27,49 @@ def debug(x):
     print(x)
 # ********************* Diagram program *********************
 def p_init(p):
-    'init : push_goto program'
+    'init : push_goto initialize program'
+
+def p_initialize(p):
+    'initialize :'
+    functions_directory.add_function('drawText')
+    functions_directory.set_scope('drawText')
+    functions_directory.set_return_type('void')
+
+    functions_directory.add_function('drawLine')
+    functions_directory.set_scope('drawLine')
+    functions_directory.set_return_type('void')
+
+    functions_directory.add_function('drawCircle')
+    functions_directory.set_scope('drawCircle')
+    functions_directory.set_return_type('void')
+
+    functions_directory.add_function('drawOval')
+    functions_directory.set_scope('drawOval')
+    functions_directory.set_return_type('void')
+
+    functions_directory.add_function('drawTriangle')
+    functions_directory.set_scope('drawTriangle')
+    functions_directory.set_return_type('void')
+
+    functions_directory.add_function('drawRectangle')
+    functions_directory.set_scope('drawRectangle')
+    functions_directory.set_return_type('void')
+
+    functions_directory.add_function('drawDot')
+    functions_directory.set_scope('drawDot')
+    functions_directory.set_return_type('void')
+
+    functions_directory.add_function('drawCurve')
+    functions_directory.set_scope('drawCurve')
+    functions_directory.set_return_type('void')
+
+    functions_directory.reset_scope()
 
 def p_program(p):
     '''program : pre_variables functions main
                 | functions main
                 | pre_variables main
                 | main'''
-    p[0] = 'ok'
     generator.export()
     # debug(generator.printeame())
     # debug(functions_directory.printeame())
