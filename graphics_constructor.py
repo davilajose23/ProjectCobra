@@ -49,11 +49,39 @@ class GraphicsConstructor(object):
             triangle.draw(self.window)
 
         elif name == 'vgdrawRectangle':
-            pass
+            a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
+            b = Point(float(arguments.get('bx')), float(arguments.get('by')))
+            rectangle = Rectangle(a, b)
+            rectangle.setFill(arguments.get('fill'))
+            rectangle.setOutline(arguments.get('line'))
+            rectangle.setWidth(str(arguments.get('size')))
+            rectangle.draw(self.window)          
+
         elif name == 'vgdrawDot':
-            pass
+            dot = Point(float(arguments.get('x')), float(arguments.get('y')))
+            dot.setFill(str(arguments.get('fill')))
+            dot.draw(self.window)
+
         elif name == 'vgdrawCurve':
-            pass
+            c1 = Point(float(arguments.get('ax')), float(arguments.get('ay')))
+            c1x = c1.getX()
+            c1y = c1.getY()
+            c2 = Point(float(arguments.get('bx')), float(arguments.get('by')))
+            c2x = c2.getX()
+            c2y = c2.getY()
+
+            curvx = 300
+            curvy = 400
+
+            cont = 0.0
+            while cont < 1:
+                aux = 1 - cont
+                x = aux**2 * c1x + 2 * aux * cont * curvx + cont**2 * c2x
+                y = aux**2 * c1y + 2 * aux * cont * curvy + cont**2 * c2y
+                point = Point(x, y)
+                point.setOutline(arguments.get('fill'))
+                point.draw(self.win)	
+                cont += 0.001
     
     def display():
 
