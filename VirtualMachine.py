@@ -209,7 +209,7 @@ class VirtualMachine():
                     params_dict = self.memory.doubles.temporal.top.copy()
                     params_dict.update(self.memory.strings.temporal.top.copy())
                     params_dict.update(self.memory.integers.temporal.top.copy())
-                    
+
                     self.memory.endproc()
                 else:
                     self.PCS.push(self.pc)
