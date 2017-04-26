@@ -19,7 +19,7 @@ class GraphicsConstructor(object):
             line = Line(a, b)
             line.setWidth(str(arguments.get('size')))
             line.setFill(arguments.get('fill'))
-            line.draw(self.window)           
+            line.draw(self.window)
 
         elif name == 'vgdrawCircle':
             point = Point(float(arguments.get('x')), float(arguments.get('y')))
@@ -27,7 +27,7 @@ class GraphicsConstructor(object):
             circle.setFill(arguments.get('fill'))
             circle.setOutline(arguments.get('line'))
             circle.setWidth(str(arguments.get('size')))
-            circle.draw(self.window)          
+            circle.draw(self.window)
 
         elif name == 'vgdrawOval':
             a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
@@ -55,7 +55,7 @@ class GraphicsConstructor(object):
             rectangle.setFill(arguments.get('fill'))
             rectangle.setOutline(arguments.get('line'))
             rectangle.setWidth(str(arguments.get('size')))
-            rectangle.draw(self.window)          
+            rectangle.draw(self.window)
 
         elif name == 'vgdrawDot':
             dot = Point(float(arguments.get('x')), float(arguments.get('y')))
