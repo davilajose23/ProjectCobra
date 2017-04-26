@@ -63,26 +63,26 @@ class GraphicsConstructor(object):
             dot.draw(self.window)
 
         elif name == 'vgdrawCurve':
-            c1 = Point(float(arguments.get('ax')), float(arguments.get('ay')))
-            c1x = c1.getX()
-            c1y = c1.getY()
-            c2 = Point(float(arguments.get('bx')), float(arguments.get('by')))
-            c2x = c2.getX()
-            c2y = c2.getY()
+            a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
+            ax = a.getX()
+            ay = a.getY()
+            b = Point(float(arguments.get('bx')), float(arguments.get('by')))
+            bx = b.getX()
+            by = b.getY()
 
-            curvx = 300
-            curvy = 400
+            curvx = 400
+            curvy = 500
 
             cont = 0.0
             while cont < 1:
                 aux = 1 - cont
-                x = aux**2 * c1x + 2 * aux * cont * curvx + cont**2 * c2x
-                y = aux**2 * c1y + 2 * aux * cont * curvy + cont**2 * c2y
+                x = aux**2 * ax + 2 * aux * cont * curvx + cont**2 * bx
+                y = aux**2 * ay + 2 * aux * cont * curvy + cont**2 * by
                 point = Point(x, y)
                 point.setOutline(arguments.get('fill'))
-                point.draw(self.win)	
+                point.draw(self.window)
                 cont += 0.001
-    
+
     def display(self):
         self.window.getMouse() # pause for click in window
         self.window.close()
