@@ -2,9 +2,9 @@ from graphics import *
 
 class GraphicsConstructor(object):
     def __init__(self):
-        self.window = GraphWin('ProjectCobra', 900, 900)
+        self.window = GraphWin('ProjectCobra', 900, 600)
 
-    def construct(name, arguments):
+    def construct(self, name, arguments):
         if name == 'vgdrawText':
             point = Point(float(arguments.get('x')), float(arguments.get('y')))
             text = Text(point, arguments.get('text'))
@@ -17,8 +17,8 @@ class GraphicsConstructor(object):
             a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
             b = Point(float(arguments.get('bx')), float(arguments.get('by')))
             line = Line(a, b)
+            line.setWidth(str(arguments.get('size')))
             line.setFill(arguments.get('fill'))
-            line.setWidth(str(argumens.get('size')))
             line.draw(self.window)           
 
         elif name == 'vgdrawCircle':
@@ -55,5 +55,7 @@ class GraphicsConstructor(object):
         elif name == 'vgdrawCurve':
             pass
     
-    def display():
-
+    def display(self):
+        self.window.getMouse() # pause for click in window
+        self.window.close()
+        print 'display'

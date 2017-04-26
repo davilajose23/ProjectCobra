@@ -1,3 +1,4 @@
 main
-    drawDot(2.5, 2.5, 'yellow')
+    drawLine(20.5, 50.5, 500.1, 500.1, 2, 'black')
+    drawLine(20.5, 330.5, 500.1, 300.1, 2, 'blue')
 end_main

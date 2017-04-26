@@ -6,7 +6,7 @@ from functions_dir import FunctionsDir
 from Memory import Memory
 from cube import semantic_cube
 from stack import Stack
-
+from graphics_constructor import GraphicsConstructor
 custom_functions = [
     'vgdrawText',
     'vgdrawLine',
@@ -59,7 +59,7 @@ class VirtualMachine():
         self.PCS = Stack()
         self.pibool = False
         self.called_graphics = False
-
+        self.window = GraphicsConstructor()
     def orderParams(self):
         aux = Stack()
         pc = 0
@@ -99,6 +99,7 @@ class VirtualMachine():
         #     print(i.printeame())
         #cycle until read the last quadruple 'END'
         while self.quadruples[self.pc].op != 'END':
+
             # get the current quad according to Program Counter(pc)
             quad = self.quadruples[self.pc]
             operation = quad.op
@@ -209,7 +210,7 @@ class VirtualMachine():
                     params_dict = self.memory.doubles.temporal.top.copy()
                     params_dict.update(self.memory.strings.temporal.top.copy())
                     params_dict.update(self.memory.integers.temporal.top.copy())
-
+                    self.window.construct(quad.left_operand, params_dict)
                     self.memory.endproc()
                 else:
                     self.PCS.push(self.pc)
@@ -217,7 +218,10 @@ class VirtualMachine():
                     continue
             # print self.quadruples[self.pc].printeame()
             self.pc += 1
-
+        
+        if self.called_graphics:
+            self.window.display()
+                
     def set_memory_val(self, quad, op):
         left = quad.left_operand
         if op == 'Param':
