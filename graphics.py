@@ -319,7 +319,13 @@ class GraphWin(tk.Canvas):
         self.mouseX = None
         self.mouseY = None
         return Point(x,y)
-
+    
+    def wait(self):
+        self.update()
+        while True:
+            self.update()
+            time.sleep(.1)
+        
     def checkMouse(self):
         """Return last mouse click or None if mouse has
         not been clicked since last call"""
