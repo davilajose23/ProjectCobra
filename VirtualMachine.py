@@ -58,6 +58,7 @@ class VirtualMachine():
         self.last_func = None
         self.PCS = Stack()
         self.pibool = False
+        self.called_graphics = False
 
     def orderParams(self):
         aux = Stack()
@@ -204,6 +205,11 @@ class VirtualMachine():
             elif operation == 'Gosub':
                 self.pibool = False
                 if quad.left_operand in custom_functions:
+                    self.called_graphics = True
+                    params_dict = self.memory.doubles.temporal.top.copy()
+                    params_dict.update(self.memory.strings.temporal.top.copy())
+                    params_dict.update(self.memory.integers.temporal.top.copy())
+                    
                     self.memory.endproc()
                 else:
                     self.PCS.push(self.pc)
