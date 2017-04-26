@@ -7,6 +7,17 @@ from Memory import Memory
 from cube import semantic_cube
 from stack import Stack
 
+custom_functions = [
+    'vgdrawText',
+    'vgdrawLine',
+    'vgdrawCircle',
+    'vgdrawOval',
+    'vgdrawTriangle',
+    'vgdrawRectangle',
+    'vgdrawDot',
+    'vgdrawCurve'
+]
+
 def get_type(symbol):
     '''Retorna el tipo que python identifica de un simbolo'''
     if symbol == 'true' or symbol == 'false':
@@ -32,6 +43,7 @@ def RepresentsDouble(s):
         return True
     except ValueError:
         return False
+
 def striptLR(s):
     return s.rstrip().lstrip()
 
@@ -48,7 +60,6 @@ class VirtualMachine():
         self.pibool = False
 
     def orderParams(self):
-
         aux = Stack()
         pc = 0
         while self.quadruples[pc].op != 'END':
@@ -192,9 +203,12 @@ class VirtualMachine():
                     continue
             elif operation == 'Gosub':
                 self.pibool = False
-                self.PCS.push(self.pc)
-                self.pc = int(self.quadruples[self.pc].res)
-                continue
+                if quad.left_operand in custom_functions:
+                    self.memory.endproc()
+                else:
+                    self.PCS.push(self.pc)
+                    self.pc = int(self.quadruples[self.pc].res)
+                    continue
             # print self.quadruples[self.pc].printeame()
             self.pc += 1
 

@@ -1,0 +1,3 @@
+main
+    drawDot(2.5, 2.5, 'yellow')
+end_main

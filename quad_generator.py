@@ -15,6 +15,8 @@ def get_var_type(var_type):
         return 's'
     elif var_type == 'bool':
         return 'b'
+    else:
+        return 'v'
 
 def get_var_scope(scope):
     if scope == 'global':
@@ -179,7 +181,7 @@ class QuadGenerator(object):
 
     def generate_gosub(self, name, func_type):
         res_type = get_var_type(func_type)
-        initial_address = self.func_counter.get(name, '')[0]
+        initial_address = self.func_counter.get(name, '_')[0]
         quad = Quadruple(self.cont, 'Gosub', res_type + 'g' + name, '', initial_address)
 
         self.quadruples.append(quad)
