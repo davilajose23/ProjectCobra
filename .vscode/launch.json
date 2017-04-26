@@ -17,7 +17,7 @@
         "RedirectOutput"
     ],
     "args": [
-                "testcases/recursive_test_ok.co"
+                "testcases/graphics_test_ok.co"
             ]
 },
         {

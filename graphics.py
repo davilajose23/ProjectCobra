@@ -325,6 +325,8 @@ class GraphWin(tk.Canvas):
         while True:
             self.update()
             time.sleep(.1)
+            if self.isClosed():
+                break
         
     def checkMouse(self):
         """Return last mouse click or None if mouse has

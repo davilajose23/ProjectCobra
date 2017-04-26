@@ -84,6 +84,5 @@ class GraphicsConstructor(object):
                 cont += 0.001
 
     def display(self):
-        self.window.getMouse() # pause for click in window
+        self.window.wait() # pause for click in window
         self.window.close()
-        print 'display'
