@@ -49,12 +49,40 @@ class GraphicsConstructor(object):
             triangle.draw(self.window)
 
         elif name == 'vgdrawRectangle':
-            pass
+            a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
+            b = Point(float(arguments.get('bx')), float(arguments.get('by')))
+            rectangle = Rectangle(a, b)
+            rectangle.setFill(arguments.get('fill'))
+            rectangle.setOutline(arguments.get('line'))
+            rectangle.setWidth(str(arguments.get('size')))
+            rectangle.draw(self.window)          
+
         elif name == 'vgdrawDot':
-            pass
+            dot = Point(float(arguments.get('x')), float(arguments.get('y')))
+            dot.setFill(str(arguments.get('fill')))
+            dot.draw(self.window)
+
         elif name == 'vgdrawCurve':
-            pass
-    
+            a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
+            ax = a.getX()
+            ay = a.getY()
+            b = Point(float(arguments.get('bx')), float(arguments.get('by')))
+            bx = b.getX()
+            by = b.getY()
+
+            curvx = 400
+            curvy = 500
+
+            cont = 0.0
+            while cont < 1:
+                aux = 1 - cont
+                x = aux**2 * ax + 2 * aux * cont * curvx + cont**2 * bx
+                y = aux**2 * ay + 2 * aux * cont * curvy + cont**2 * by
+                point = Point(x, y)
+                point.setOutline(arguments.get('fill'))
+                point.draw(self.window)
+                cont += 0.001
+
     def display(self):
         self.window.getMouse() # pause for click in window
         self.window.close()
