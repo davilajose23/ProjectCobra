@@ -1,0 +1,18 @@
+func int fibo(int x)
+    int ret
+    if x < 2:
+        ret = x
+    else:
+        ret = fibo(x - 1) + fibo(x - 2)
+
+    end
+    return ret
+end
+
+main
+    int sol
+    read(sol)
+    sol = fibo(sol)
+    print sol
+
+end_main

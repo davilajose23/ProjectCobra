@@ -232,7 +232,8 @@ class GraphWin(tk.Canvas):
         master.lift()
         self.lastKey = ""
         if autoflush: _root.update()
-
+        scrollbar = tk.Scrollbar(master)
+        scrollbar.pack( side = tk.RIGHT, fill=tk.Y)
     def __repr__(self):
         if self.isClosed():
             return "<Closed GraphWin>"
