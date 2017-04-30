@@ -4,13 +4,10 @@ main
     string color1
 
     base = 300.0
-    color1 = "blue"
-    color2 = "red"
 
-    drawCircle(0.0, 0.0, 50.0, 2, color1, color2)
-    for i from 0 to 100:
+    for i from 0 to 5:
+        drawCircle(200.0 , 50.0 * i, 50.0, 2, '', 'green')
         #drawCircle(x,y,radio, grosor, relleno, contorno)
-        drawCircle(200.0 + i, 50.0 + i, 50.0, 2, color1, color2)
-        drawLine(base + i, 200.0, 50.1 * i, 600.0, i, 'yellow')
+        drawLine(base * i - 2, 200.0, 50.1 * i, 600.0, i, 'yellow')
     end
 end_main
