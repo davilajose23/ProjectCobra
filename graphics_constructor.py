@@ -1,5 +1,4 @@
 from graphics import *
-
 class GraphicsConstructor(object):
     def __init__(self):
         self.window = GraphWin('ProjectCobra', 900, 600)

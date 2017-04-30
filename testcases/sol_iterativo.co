@@ -7,7 +7,7 @@ func void dibujaSol(double radio)
 
 end
 func void dibujaPasto()
-    drawRectangle(0.0,300.0, 900.0, 900.0, 0, 'green', '')
+    drawRectangle(0.0, 300.0, 900.0, 900.0, 0, 'green', '')
 end
 main
    

@@ -143,7 +143,7 @@ def add_custom_functions(fd):
     fd.update_function_params('ax', 'double')
     fd.update_function_params('ay', 'double')
     fd.update_function_params('filename', 'string')
-    fd.functions['insertImage'].expected_arguments = 5
+    fd.functions['insertImage'].expected_arguments = 3
     fd.set_return_type('void')
 
     fd.reset_scope()
