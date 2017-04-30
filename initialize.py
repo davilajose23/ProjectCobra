@@ -135,5 +135,16 @@ def add_custom_functions(fd):
     fd.functions['drawCurve'].expected_arguments = 5
     fd.set_return_type('void')
 
+    fd.add_function('insertImage')
+    fd.set_scope('insertImage')
+    fd.add_var('ax', 'double', 0.0, 1)
+    fd.add_var('ay', 'double', 0.0, 1)
+    fd.add_var('filename', 'string', '', 1)
+    fd.update_function_params('ax', 'double')
+    fd.update_function_params('ay', 'double')
+    fd.update_function_params('filename', 'string')
+    fd.functions['insertImage'].expected_arguments = 5
+    fd.set_return_type('void')
+
     fd.reset_scope()
     return fd

@@ -83,6 +83,11 @@ class GraphicsConstructor(object):
                 point.draw(self.window)
                 cont += 0.001
 
+        elif name == 'vginsertImage':
+            a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
+            image = Image(a, str(arguments.get('filename')))
+            image.draw(self.window)
+
     def display(self):
         self.window.wait() # pause for click in window
         self.window.close()
