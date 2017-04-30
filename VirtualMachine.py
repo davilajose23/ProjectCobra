@@ -16,7 +16,8 @@ custom_functions = [
     'vgdrawRectangle',
     'vgdrawDot',
     'vgdrawCurve',
-    'vginsertImage'
+    'vginsertImage',
+    'sgRGB'
 ]
 
 def get_type(symbol):
@@ -219,7 +220,7 @@ class VirtualMachine():
                     continue
             # print self.quadruples[self.pc].printeame()
             self.pc += 1
-        
+
         if self.called_graphics:
             self.window.display()
                 
