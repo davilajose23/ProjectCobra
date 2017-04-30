@@ -1,0 +1,26 @@
+main
+    int a[10], b, aux
+    int flag
+    b = 10
+    flag = 1
+
+    for i from 0 to 10:
+        a[i] = b
+        b -= 1
+    end
+
+    while flag == 1:
+        flag = 0
+        for i from 0 to 9:
+            if a[i] > a[i + 1]:
+                aux = a[i]
+                a[i] = a[i + 1]
+                a[i + 1] = aux
+                flag = 1
+            end
+        end
+    end
+    for i from 0 to 10:
+        print a[i]
+    end
+end_main
