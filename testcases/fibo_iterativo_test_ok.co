@@ -1,0 +1,17 @@
+func int fib(int n)
+    int a, b, aux
+    a = 0
+    b = 1
+    for i from 0 to n:
+        aux = a
+        a = b
+        b = aux + b
+    end
+    return a
+end
+
+main
+    int a
+    a = fib(11)
+    print a
+end_main

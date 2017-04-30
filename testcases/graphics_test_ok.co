@@ -14,4 +14,3 @@ main
         drawLine(base + i, 200.0, 50.1 * i, 600.0, i, 'yellow')
     end
 end_main
-
