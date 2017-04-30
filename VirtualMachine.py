@@ -16,8 +16,7 @@ custom_functions = [
     'vgdrawRectangle',
     'vgdrawDot',
     'vgdrawCurve',
-    'vginsertImage',
-    'sgRGB'
+    'vginsertImage'
 ]
 
 def get_type(symbol):

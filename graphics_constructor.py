@@ -88,12 +88,6 @@ class GraphicsConstructor(object):
             image = Image(a, str(arguments.get('filename')))
             image.draw(self.window)
 
-        elif name == 'sgRGB':
-            r = int(arguments.get('r'))
-            g = int(arguments.get('g'))
-            b = int(arguments.get('b'))
-            return color_rgb(r, g, b)
-
     def display(self):
         self.window.wait() # pause for click in window
         self.window.close()
