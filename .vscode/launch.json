@@ -17,7 +17,7 @@
         "RedirectOutput"
     ],
     "args": [
-                "testcases/graphics_test_ok.co"
+                "testcases/sol_iterativo.co"
             ]
 },
         {

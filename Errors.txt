@@ -21,6 +21,10 @@
 5001 Error getting Value
 5002 Error setting Value
 5003 Incorrect type of Value. Expected: i(integer), d(double), s(string) or b(boolean). Got TYPE
+5004 Memory limit reached: Local Variables
+5005 Memory limit reached: Global Variables
+5006 Memory limit reached: Temporal Variables
+5007 Memory limit reached: constants
 
 #6000 VirtualMachine
 6001 Quadruple not valid

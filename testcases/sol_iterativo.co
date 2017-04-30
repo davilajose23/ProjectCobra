@@ -1,0 +1,16 @@
+func void dibujaSol(double radio)
+
+    if radio > 5:
+        drawCircle(200.0 , 50.0, radio, 2, 'orange', 'yellow')
+        dibujaSol(radio - 10)
+    end
+
+end
+func void dibujaPasto()
+    drawRectangle(0.0,300.0, 900.0, 900.0, 0, 'green', '')
+end
+main
+   
+    dibujaSol(100.0)
+    dibujaPasto()
+end_main
