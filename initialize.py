@@ -146,16 +146,5 @@ def add_custom_functions(fd):
     fd.functions['insertImage'].expected_arguments = 3
     fd.set_return_type('void')
 
-    fd.add_function('RGB')
-    fd.set_scope('RGB')
-    fd.add_var('r', 'int', 0, 1)
-    fd.add_var('g', 'int', 0, 1)
-    fd.add_var('b', 'int', 0, 1)
-    fd.update_function_params('r', 'int')
-    fd.update_function_params('g', 'int')
-    fd.update_function_params('b', 'int')
-    fd.functions['RGB'].expected_arguments = 3
-    fd.set_return_type('string')
-
     fd.reset_scope()
     return fd
