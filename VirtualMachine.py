@@ -49,10 +49,12 @@ def striptLR(s):
     return s.rstrip().lstrip()
 
 class VirtualMachine():
-    def __init__(self, dir_func):
+    '''Clase virtual machine para ejecutar cuadruplos
+    Recibe functions directory(fd) como apoyo'''
+    def __init__(self, fd):
         self.quadruples = []
         self.pc = 0
-        self.dir_func = dir_func
+        self.fd = fd
         self.temporal = {}
         self.memory = Memory()
         self.scope = 'main'
@@ -61,6 +63,7 @@ class VirtualMachine():
         self.pibool = False
         self.called_graphics = False
         self.window = GraphicsConstructor()
+
     def orderParams(self):
         aux = Stack()
         pc = 0
@@ -96,6 +99,7 @@ class VirtualMachine():
         # start reading the file
         self.readFiles()
         self.orderParams()
+        # self.fd.printeame()
         # for i in self.quadruples:
         #     print(i.printeame())
         #cycle until read the last quadruple 'END'
@@ -115,6 +119,7 @@ class VirtualMachine():
                 self.memory.endproc()
                 # stablish pc with the value that called the function
                 self.pc = self.PCS.pop()
+                self.scope = 'main'
 
             elif operation == 'Return':
                 self.set_memory_val(quad, 'Return')
@@ -214,6 +219,7 @@ class VirtualMachine():
                     self.window.construct(quad.left_operand, params_dict)
                     self.memory.endproc()
                 else:
+                    self.scope = quad.left_operand[2:]
                     self.PCS.push(self.pc)
                     self.pc = int(self.quadruples[self.pc].res)
                     continue
@@ -222,7 +228,7 @@ class VirtualMachine():
 
         if self.called_graphics:
             self.window.display()
-                
+
     def set_memory_val(self, quad, op):
         left = quad.left_operand
         if op == 'Param':
@@ -254,12 +260,23 @@ class VirtualMachine():
                         components.append(str(val))
                     index = self.get_memory_val(components[1], is_param)
                     helper = components[0] + '.' + str(index)
+
+                    if self.fd.functions[self.scope].variables_dict.get(components[0][2:], None) is None:
+                        var_size = self.fd.functions['global'].variables_dict.get(components[0][2:]).size
+                    else:
+                        var_size = self.fd.functions[self.scope].variablest_dict.get(components[0][2:]).size
                 else:
                     res = quad.res.split('.')
                     var = res[0]
                     index = self.get_memory_val(res[1], is_param)
                     helper = var + '.' + str(index)
-                self.memory.set_val(helper, valor)
+
+                    if self.fd.functions[self.scope].variables_dict.get(var[2:], None) is None:
+                        var_size = self.fd.functions['global'].variables_dict.get(var[2:]).size
+                    else:
+                        var_size = self.fd.functions[self.scope].variables_dict.get(var[2:]).size
+
+                self.memory.set_val(helper, valor, var_size)
             else:
                 self.memory.set_val(quad.res, valor)
 

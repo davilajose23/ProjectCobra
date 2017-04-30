@@ -75,7 +75,7 @@ class Chunk(object):
             return chunk.get(index, 'ERROR get_val: 459')
         #return chunk.getVal(direccion[1:])
 
-    def set_val(self, direccion, val):
+    def set_val(self, direccion, val, size=1):
         segment = direccion[0]
         direccion = direccion[1:]
         is_dim = False
@@ -89,12 +89,12 @@ class Chunk(object):
             if is_dim:
                 if self.local_variables.get(var, None) is None:
                     self.local_variables[var] = {}
-                # Incrementa el tamanio de memoria de local variables dimensionadas
-                if self.local_variables[var].get(index, None) is None:
-                    self.local_variables_size += 1
+                    self.local_variables_size += size
+
                 self.local_variables[var][index] = val
+
             # Incrementa el tamanio de memoria de local
-            if self.local_variables.get(direccion, None) is None: 
+            if self.local_variables.get(direccion, None) is None:
                 self.local_variables_size += 1
             self.local_variables[direccion] = val
 
@@ -102,10 +102,10 @@ class Chunk(object):
             if is_dim:
                 if self.temporal.top.get(var, None) is None:
                     self.temporal.top[var] = {}
-                # Incrementa el tamanio de memoria de temporales con variables dimensionadas
-                if self.temporal.top[var].get(index, None): 
-                    self.temporal_size += 1
+                    self.temporal_size += size
+
                 self.temporal.top[var][index] = val
+
             # Incrementa el tamanio de memoria de temporales
             if self.temporal.top.get(direccion, None)  is None:
                 self.temporal_size += 1
@@ -115,12 +115,12 @@ class Chunk(object):
             if is_dim:
                 if self.global_variables.get(var, None) is None:
                     self.global_variables[var] = {}
-                # Incrementa el tamanio de memoria de variables globales dimensionadas
-                if self.global_variables[var].get(index, None) is None: 
-                    self.global_variables_size += 1
+                    self.global_variables_size += size
+
                 self.global_variables[var][index] = val
+
             # Incrementa el tamanio de memoria de variables globales
-            if self.global_variables.get(direccion,None): 
+            if self.global_variables.get(direccion, None):
                 self.global_variables_size += 1
             self.global_variables[direccion] = val
 
@@ -128,11 +128,12 @@ class Chunk(object):
             if is_dim:
                 if self.constants.get(var, None) is None:
                     self.constants[var] = {}
-                # Incrementa el tamanio de memoria de variables globales dimensionadas
-                if self.constants[var].get(index, None) is None: 
-                    self.constants_size += 1
+                    self.constants_size += size
+
                 self.constants[var][index] = val
-            if self.constants.get(direccion, None) is None: 
+
+            # Incrementa el tamanio de memoria de constantes
+            if self.constants.get(direccion, None) is None:
                 self.constants_size += 1
             self.constants[direccion] = val
         else:
@@ -165,21 +166,21 @@ class Chunk(object):
     def EndProc(self):
         self.temporal_size -= len(self.temporal.top)
         self.temporal.pop()
-    
+
     def checkLimits(self):
         '''Funcion para checar los limites del chunk'''
         if self.local_variables_size >= self.local_variables_limit:
             raise Exception('ERROR 5004 Memory limit reached: Local Variables')
-            
+
         elif self.temporal_size >= self.temporal_limit:
             raise Exception('ERROR 5005 Memory limit reached: Global Variables')
-           
+
         elif self.global_variables_size >= self.global_variables_limit:
             raise Exception('ERROR 5006 Memory limit reached: Temporal Variables')
-           
+
         elif self.constants_size >= self.constants_limit:
             raise Exception('ERROR 5007 Memory limit reached: constants')
-        
+
 
 class Memory(object):
     'Clase de memoria para la Maquina Virtual'
@@ -207,7 +208,7 @@ class Memory(object):
             return 'ERROR get_val:458'
         return chunk.get_val(direccion[1:], param)
 
-    def set_val(self, direccion, val):
+    def set_val(self, direccion, val, size=1):
         tipo = direccion[0].rstrip().lstrip()
         chunk = None
         if tipo == 'i':
@@ -220,7 +221,7 @@ class Memory(object):
             chunk = self.booleans
         else:
             print('ERROR Memory 5214')
-        chunk.set_val(direccion[1:], val)
+        chunk.set_val(direccion[1:], val, size)
 
     def printeame(self):
         print('Integers')
