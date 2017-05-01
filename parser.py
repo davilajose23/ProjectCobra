@@ -479,7 +479,7 @@ def p_print_default(p):
 
 # ********************* Diagram read *********************
 def p_read(p):
-    'read : READ start_read LEFT_PARENTHESIS identifier RIGHT_PARENTHESIS read_var'
+    'read : READ start_read LEFT_PARENTHESIS ID validate_var push_var array_notation RIGHT_PARENTHESIS read_var'
 
 def p_start_read(p):
     'start_read :'
