@@ -157,10 +157,10 @@ class EditCont(tk.Frame):
 
 class IDE(object):
 
-    def __init__(self):
+    def __init__(self, openfile=None):
         self.root = tk.Tk()
         
-        
+        self.root.iconbitmap(r'logo.ico')
         self.filename = None
         self.closing = False
         
@@ -200,6 +200,9 @@ class IDE(object):
 
         # TODO: line number http://stackoverflow.com/questions/16369470/tkinter-adding-line-number-to-text-widget
 
+        if openfile:
+            self.filename = openfile
+            self.open_file()
 
     def open_file(self):
         # get filename
@@ -277,6 +280,7 @@ class IDE(object):
         archivo.close()
         subprocess.Popen('python parser.py '+ nombre)
 
-app = IDE()
-app.root.protocol("WM_DELETE_WINDOW", app.close)
-app.root.mainloop()
+if __name__ == '__main__':
+    app = IDE()
+    app.root.protocol("WM_DELETE_WINDOW", app.close)
+    app.root.mainloop()

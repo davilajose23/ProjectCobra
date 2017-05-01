@@ -28,7 +28,7 @@ def debug(x):
     print(x)
 # ********************* Diagram program *********************
 def p_init(p):
-    'init : push_goto program'
+    'init : push_goto optional_eol program'
 
 def p_program(p):
     '''program : pre_variables functions main
