@@ -55,14 +55,39 @@ class CustomText(tk.Text):
             interp alias {{}} ::{widget} {{}} widget_proxy {widget} _{widget}
         '''.format(widget=str(self)))
 
+    def highlight_pattern(self, pattern, tag, start="1.0", end="end",
+                          regexp=False):
+        '''Apply the given tag to all text that matches the given pattern
+
+        If 'regexp' is set to True, pattern will be treated as a regular
+        expression according to Tcl's regular expression syntax.
+        '''
+
+        start = self.index(start)
+        end = self.index(end)
+        self.mark_set("matchStart", start)
+        self.mark_set("matchEnd", start)
+        self.mark_set("searchLimit", end)
+
+        count = tk.IntVar()
+        while True:
+            index = self.search(pattern, "matchEnd","searchLimit", count=count, regexp=regexp)
+            
+            if index == "": break
+            #if count.get() == 0: break # degenerate pattern which matches zero-length strings
+            self.mark_set("matchStart", index)
+            self.mark_set("matchEnd", "%s+%sc" % (index, len(pattern)))
+            self.tag_add(tag, "matchStart", "matchEnd")
+
 class EditCont(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
         self.text = CustomText(self)
-        self.vsb = tk.Scrollbar(orient="vertical", command=self.text.yview)
-        self.linenumbers = TextLineNumbers(self, width=30)
+        self.vsb = tk.Scrollbar(self,orient="vertical", command=self.text.yview)
+        self.text.configure(yscrollcommand=self.vsb.set)
+        self.linenumbers = TextLineNumbers(master=self, width=30)
         self.linenumbers.attach(self.text)
-
+        self.root = args[0]
         self.vsb.pack(side="right", fill="y")
         self.linenumbers.pack(side="left", fill="y")
         self.text.pack(side="right", fill="both", expand=True)
@@ -73,10 +98,59 @@ class EditCont(tk.Frame):
 
     def _on_change(self, event):
         self.linenumbers.redraw()
+
+        self.text.tag_config("keyword", foreground="#1D1DFF")
+        self.text.tag_config("function", foreground="#33691e")
+        self.text.tag_config("type", foreground="#311b92")
+        self.text.tag_config("specials", foreground="blue")
+
+
+        # highlight for spetial funcitons
+        self.text.highlight_pattern("drawText", "function", regexp=True)
+        self.text.highlight_pattern("drawLine", "function", regexp=True)
+        self.text.highlight_pattern("drawCircle", "function", regexp=True)
+        self.text.highlight_pattern("drawOval", "function", regexp=True)
+        self.text.highlight_pattern("drawTriangle", "function", regexp=True)
+        self.text.highlight_pattern("drawRectangle", "function", regexp=True)
+        self.text.highlight_pattern("drawDot", "function", regexp=True)
+        self.text.highlight_pattern("drawCurve", "function", regexp=True)
+        self.text.highlight_pattern("insertImage", "function", regexp=True)
+        self.text.highlight_pattern("read", "function", regexp=True)
+        self.text.highlight_pattern("print", "function", regexp=True)
+
+        self.text.highlight_pattern("int", "type", regexp=True)
+        self.text.highlight_pattern("double", "type", regexp=True)
+        self.text.highlight_pattern("string", "type", regexp=True)
+        self.text.highlight_pattern("bool", "type", regexp=True)
+
+        self.text.highlight_pattern("if", "specials", regexp=True)
+        self.text.highlight_pattern("end", "specials", regexp=True)
+        self.text.highlight_pattern("while", "specials", regexp=True)
+        self.text.highlight_pattern("else", "specials", regexp=True)
+        self.text.highlight_pattern("and", "specials", regexp=True)
+        self.text.highlight_pattern("or", "specials", regexp=True)
+        self.text.highlight_pattern("for", "specials", regexp=True)
+        self.text.highlight_pattern("true", "specials", regexp=True)
+        self.text.highlight_pattern("false", "specials", regexp=True)
+        self.text.highlight_pattern("from", "specials", regexp=True)
+        self.text.highlight_pattern("to", "specials", regexp=True)
+        self.text.highlight_pattern("mod", "specials", regexp=True)
+        self.text.highlight_pattern("func", "specials", regexp=True)
+        self.text.highlight_pattern("void", "specials", regexp=True)
+        
+        self.text.highlight_pattern("main", "specials", regexp=True)
+        self.text.highlight_pattern("end_main", "specials", regexp=True)
+
+        self.text.highlight_pattern(r'\#.*', "function", regexp=True)
     
     def insert(self, texto):
         self.text.delete("1.0", tk.END)
         self.text.insert(tk.INSERT, texto)
+
+        
+
+
+    
 
     def getText(self):
         return self.text.get("1.0", tk.END)
@@ -85,7 +159,8 @@ class IDE(object):
 
     def __init__(self):
         self.root = tk.Tk()
-    
+        
+        
         self.filename = None
         self.closing = False
         
@@ -134,9 +209,9 @@ class IDE(object):
         if self.filename:
             archivo = open(self.filename, 'r')
             self.editContainer.insert(archivo.read())
-            archivo.close()
-            self.filename = os.path.basename(self.filename)
-            self.root.wm_title("Project Cobra - " + self.filename)
+            # archivo.close()
+            nombre = os.path.basename(self.filename)
+            self.root.wm_title("Project Cobra - " + nombre)
 
     def save_as(self):
         """Returns an opened file in write mode."""
@@ -148,8 +223,8 @@ class IDE(object):
             archivo.write(self.editContainer.getText())
             archivo.close()
             return archivo
-            self.filename = os.path.basename(export.name)
-            self.root.wm_title("Project Cobra - " + self.filename)
+            nombre = os.path.basename(self.filename)
+            self.root.wm_title("Project Cobra - " + nombre)
 
         return export
 
@@ -163,13 +238,16 @@ class IDE(object):
         if self.filename:
             archivo = open(self.filename, 'w')
             archivo.write(self.editContainer.getText())
+            print(self.editContainer.getText())
             archivo.close()
         else:
             self.save_as()
 
     def about(self):
         pass
-        info = '''
+        info = '''      
+                        **Project Cobra**
+
                         Tec de Monterrey                    
                 
                         Compilers Design
