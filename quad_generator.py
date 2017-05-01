@@ -59,6 +59,8 @@ class QuadGenerator(object):
         self.scope = 'global'
         # Diccionary for initial quadruple of each function
         self.func_counter = {}
+        # Last verified dimension
+        self.last_verified = ''
 
     def printeame(self):
         '''Funcion auxiliar para imprimir contenidos de la clase'''
@@ -160,13 +162,15 @@ class QuadGenerator(object):
         self.cont += 1
         self.quadruples.append(quad)
 
-    def generate_read(self, var):
+    def generate_read(self, var, is_dim=False):
         '''Funcion para generar cuadruplo de read'''
         if var.get_name() == 'constant':
             name = var.get_value()
         else:
             name = var.get_name()
 
+        if is_dim:
+            name = str(name) + '.' + str(self.last_verified)
         quad = Quadruple(self.cont, 'Read', None, None, name)
         self.quadruples.append(quad)
         self.cont += 1
@@ -251,6 +255,7 @@ class QuadGenerator(object):
         else:
             tmp_name = tmp.get_name()
 
+        self.last_verified = tmp_name
         quad = Quadruple(self.cont, 'Verify', tmp_name, 0, var.size)
         self.quadruples.append(quad)
         self.cont += 1

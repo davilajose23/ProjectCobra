@@ -249,6 +249,8 @@ def p_validate_var(p):
     'validate_var :'
     functions_directory.validate_variable(p[-1])
     functions_directory.last_id.push(p[-1])
+    if functions_directory.reading:
+        functions_directory.last_read.push(p[-1])
 
 def p_push_var(p):
     'push_var :'
@@ -485,9 +487,13 @@ def p_start_read(p):
 
 def p_read_var(p):
     'read_var :'
-    var = functions_directory.get_var(functions_directory.last_id.pop())
-    generator.generate_read(var)
+    var = functions_directory.get_var(functions_directory.last_read.top)
+    if var.is_dim:
+        generator.generate_read(var, True)
+    else:
+        generator.generate_read(var)
     functions_directory.reading = False
+    functions_directory.last_read.pop()
 
 
 # ********************* Diagram identifier *********************
