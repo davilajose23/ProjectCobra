@@ -1,9 +1,26 @@
+"""Modulo que contiene la clase GraphicsConstructor que conecta la ventana
+Canvas de Tkinter con la MaquinaVirtual.
+-----------------------------------------------------------------
+Compilers Design Project
+Tec de Monterrey
+Julio Cesar Aguilar Villanueva  A01152537
+Jose Fernando Davila Orta       A00999281
+-----------------------------------------------------------------
+
+DOCUMENTATION: For complete Documentation see UserManual.pdf"""
 from graphics import *
+
 class GraphicsConstructor(object):
+    '''Clase que crea una instancia de un Canvas de Tkinter para crear
+        una nueva ventana que lo muestre'''
     def __init__(self):
+        # creamos una nueva ventana con el tamanio predefinido
         self.window = GraphWin('ProjectCobra', 900, 600)
 
     def construct(self, name, arguments):
+        '''metodo que sirve para ir agregando objetos al canvas.
+            Por cada funcion se buscan todos los argumentos necesarios
+            y se forma el objecto para al final dibujarlo en el canvas.'''
         if name == 'vgdrawText':
             point = Point(float(arguments.get('x')), float(arguments.get('y')))
             text = Text(point, arguments.get('text'))
@@ -89,5 +106,6 @@ class GraphicsConstructor(object):
             image.save("mypic.gif")
 
     def display(self):
-        self.window.wait() # pause for click in window
+        '''metodo para mostrar la nueva ventana creada'''
+        self.window.wait() 
         self.window.close()

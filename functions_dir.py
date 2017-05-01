@@ -1,9 +1,19 @@
-'''Modulo que contiene la clase directorio de funciones'''
+"""Modulo que contiene la clase directorio de funciones
+-----------------------------------------------------------------
+Compilers Design Project
+Tec de Monterrey
+Julio Cesar Aguilar Villanueva  A01152537
+Jose Fernando Davila Orta       A00999281
+-----------------------------------------------------------------
+
+DOCUMENTATION: For complete Documentation see UserManual.pdf"""
+
 from stack import Stack
 from function import Function
 from variable import Variable
 
 def get_var_type(var_type):
+    '''retorna el identificador de cada tipo de variable'''
     if var_type == 'int':
         return 'i'
     elif var_type == 'double':
@@ -14,6 +24,7 @@ def get_var_type(var_type):
         return 'b'
 
 def get_var_scope(scope):
+    '''retorna el identificador de cada tipo de scope'''
     if scope == 'global':
         return 'g'
     elif scope == 'main':
@@ -22,20 +33,26 @@ def get_var_scope(scope):
         return 't'
 
 def get_var_name(var_type, scope, var_name):
+    '''construct the direccion of a variable based on
+        the type, scope and variable name.'''
     name_type = get_var_type(var_type)
     name_scope = get_var_scope(scope)
     name = name_type + name_scope + var_name
     return name
 
 class FunctionsDir(object):
-    '''
-        Las funciones son entradas en el diccionario functions.
+    '''Las funciones son entradas en el diccionario functions.
         A cada funcion le corresponde de valor una lista.
-        Esta lista contiene otro diccionario para varibales, y un return type, y cantidad de args
-        Scope global del programa se inicia con diccionario de variables globales vacio.
+
+        Esta lista contiene otro diccionario para varibales,
+        y un return type, y cantidad de args
+
+        Scope global del programa se inicia con diccionario
+        de variables globales vacio.
+
         No se tiene un return type para el scope global.
-        Scope es el function_id de cada funcion.
-    '''
+        Scope es el function_id de cada funcion.'''
+
     def __init__(self):
         '''Metodo de inicializacion'''
         self.functions = {}

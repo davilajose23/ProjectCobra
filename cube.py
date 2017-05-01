@@ -1,6 +1,20 @@
-operations      = ( '+',  '-', '*', '/', '+=', '-=', '*=', '/=', '%', 'mod', '<', '>', '!=', '==', '<=', '>=', 'and', 'not', 'or', '=')
+"""This module is a semantic validator
+-----------------------------------------------------------------
+Compilers Design Project
+Tec de Monterrey
+Julio Cesar Aguilar Villanueva  A01152537
+Jose Fernando Davila Orta       A00999281
+-----------------------------------------------------------------
+
+DOCUMENTATION: For complete Documentation see UserManual.pdf"""
+
+# Create a tuple with all the operations posible
+operations = ( '+',  '-', '*', '/', '+=', '-=', '*=', '/=', '%', 'mod', '<', '>', '!=', '==', '<=', '>=', 'and', 'not', 'or', '=')
+
+# Some lambda functions
 create = lambda x: dict(zip(operations, x))
 create_manual = lambda x: dict(zip(operations, [x] * len(operations)))
+
 # semantic cube
 semantic_cube = {
     #                       '+',        '-',        '*',        '/',        '+=',       '-=',       '*=',       '/=',        '%',        'mod',       <,           >,          !=,         ==,        <=,          >=,         and,        not,        or,      =
@@ -35,7 +49,7 @@ semantic_cube = {
         'bool':  create([  'Error',     'Error',   'Error',     'Error',    'Error',    'Error',   'Error',     'Error',    'Error',    'Error',      'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',     'bool',   'bool']) ,
         'list': create_manual('Error') 
     },
-    #                       '+',        '-',        '*',        '/',        '+=',       '-=',       '*=',       '/=',        '%',        'mod',       <,           >,          !=,         ==,        <=,          >=,         and,        not,        or
+    #                       '+',        '-',        '*',        '/',        '+=',       '-=',       '*=',       '/=',        '%',        'mod',       <,           >,          !=,         ==,        <=,          >=,         and,        not,        or ,        =
     'list': {
         'int' : create_manual('Error'),
         'double': create_manual('Error'),
@@ -44,3 +58,4 @@ semantic_cube = {
         'list': create_manual('Error') 
     }
 }
+
