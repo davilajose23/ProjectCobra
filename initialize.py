@@ -88,6 +88,7 @@ def add_custom_functions(fd):
     fd.update_function_params('size', 'int')
     fd.update_function_params('fill', 'string')
     fd.update_function_params('line', 'string')
+    fd.functions['drawTriangle'].expected_arguments = 9
     fd.set_return_type('void')
 
     fd.add_function('drawRectangle')

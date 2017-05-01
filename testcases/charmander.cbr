@@ -76,4 +76,5 @@ main
     drawRectangle(420.0, 120.0, 440.0, 140.0, 1, '#FF931C', '#FF931C')
     drawRectangle(440.0, 100.0, 460.0, 120.0, 1, '#FF931C', '#FF931C')
     insertImage(600.0, 400.0, 'pokeball.gif')
+    drawText(250.0, 500.0, '#FF0000', 'Charmander No.004', 20)
 end_main
