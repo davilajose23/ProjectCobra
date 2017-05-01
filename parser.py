@@ -28,7 +28,7 @@ def debug(x):
     print(x)
 # ********************* Diagram program *********************
 def p_init(p):
-    'init : push_goto program'
+    'init : push_goto optional_eol program'
 
 def p_program(p):
     '''program : pre_variables functions main
@@ -66,10 +66,8 @@ def p_types(p):
     functions_directory.set_type(p[1])
 # ********************* Diagram delcaration *********************
 def p_declaration(p):
-    'declaration : finish_evaluating types set_type inter_declaration required_eol start_evaluating'
+    'declaration : finish_evaluating types inter_declaration required_eol start_evaluating'
 
-def p_set_type(p):
-    'set_type :'
 
 def p_inter_declaration(p):
     'inter_declaration : ID process_variable array_declaration cycle_declaration'
@@ -162,7 +160,7 @@ def p_post_arguments(p):
 
 # ********************* Diagram function *********************
 def p_function(p):
-    'function : FUNC func_types set_type ID register_function LEFT_PARENTHESIS post_function'
+    'function : FUNC func_types ID register_function LEFT_PARENTHESIS post_function'
 
 def p_func_types(p):
     '''func_types : types
@@ -214,7 +212,7 @@ def p_reset_scope(p):
 
 # ********************* Diagram parameters *********************
 def p_parameters(p):
-    'parameters : finish_evaluating start_params types set_type identifier update_function_parameters post_parameters finish_params start_evaluating'
+    'parameters : finish_evaluating start_params types identifier update_function_parameters post_parameters finish_params start_evaluating'
 
 def p_start_params(p):
     'start_params :'
@@ -474,7 +472,7 @@ def p_print_post_mod(p):
     generator.generate_print(p[-1])
 
 def p_print_default(p):
-    'print_default : empty'
+    'print_default :'
     generator.generate_print()
 
 # ********************* Diagram read *********************
@@ -564,8 +562,6 @@ def p_empty(p):
     'empty :'
     pass
 
-'''def p_expression_uminus(p):
-    'expression : MINUS expression %prec UMINUS'''
 
 # Error rule for syntax errors
 def p_error(p):

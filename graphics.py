@@ -494,6 +494,7 @@ class GraphicsObject:
         graphwin.addItem(self)
         if graphwin.autoflush:
             _root.update()
+        time.sleep(.05)
         return self
 
             
