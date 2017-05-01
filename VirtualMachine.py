@@ -326,11 +326,11 @@ class VirtualMachine():
             valor = self.memory.strings.constants[base[1:-1]]
         elif base == 'true':
             if self.memory.booleans.constants.get(base, None) is None:
-                self.memory.booleans.constants[base] = True
+                self.memory.booleans.constants[base] = 'true'
             valor = self.memory.booleans.constants[base]
         elif base == 'false':
             if self.memory.booleans.constants.get(base, None) is None:
-                self.memory.booleans.constants[base] = False
+                self.memory.booleans.constants[base] = 'false'
             valor = self.memory.booleans.constants[base]
         # si no es constante se busca el valor en la memoria
         else:

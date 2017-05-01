@@ -408,7 +408,8 @@ def p_variable_constant(p):
                         | INT_CONSTANT push_constant
                         | DOUBLE_CONSTANT push_constant
                         | STRING_CONSTANT push_constant
-                        | BOOL_CONSTANT push_constant'''
+                        | TRUE push_constant
+                        | FALSE push_constant'''
 
 def p_push_constant(p):
     'push_constant :'
@@ -560,10 +561,6 @@ def p_create_pending_goto(p):
 def p_post_cycle(p):
     'post_cycle : COLON optional_eol block END'
 
-def p_BOOL_CONSTANT(p):
-    '''BOOL_CONSTANT : TRUE
-                    | FALSE'''
-
 def p_empty(p):
     'empty :'
     pass
@@ -575,7 +572,7 @@ def p_error(p):
     # While there are syntax errors, turn off the semantics reporting
 
 def get_type(symbol):
-    if symbol == 'TRUE' or symbol == 'FALSE':
+    if symbol == 'true' or symbol == 'false':
         return 'bool'
     res = str(type(symbol))[7:10]
     if res == 'int':
