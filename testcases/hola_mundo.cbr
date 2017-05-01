@@ -1,13 +1,17 @@
+int a
 main
 
 	print "hola mundo"
 	print "modificacion"
 
-end_mainmain
+endmain main
 
 	print "hola mundo"
 	print "modificacion"
 
 end_main
+
+
+
 
 
