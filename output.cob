@@ -1,5 +1,3 @@
 (Goto, None, None, 1)
-(Read, None, None, ila)
-(Verify, 0, 0, 5)
-(Print, ila.0, \n, )
+(Print, "hola mundo", \n, )
 (END, , , )
