@@ -86,6 +86,7 @@ class GraphicsConstructor(object):
             a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
             image = Image(a, str(arguments.get('filename')))
             image.draw(self.window)
+            image.save("mypic.gif")
 
     def display(self):
         self.window.wait() # pause for click in window
