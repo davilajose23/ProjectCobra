@@ -11,8 +11,7 @@ end
 
 main
     int sol
-    read(sol)
+    sol = 6
     sol = fibo(sol)
     print sol
-
 end_main

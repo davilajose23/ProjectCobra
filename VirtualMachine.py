@@ -157,7 +157,37 @@ class VirtualMachine():
                 elif RepresentsDouble(temp):
                     temp = float(temp)
                 #TODO: checar cubo semantico
-                self.memory.set_val(quad.res, temp)
+                if '.' in quad.res:
+                    if quad.res.count('.') > 1:
+                        components = quad.res.split('.')
+                        while len(components) > 2:
+                            index = components.pop()
+                            index = self.get_memory_val(index)
+                            var = components.pop()
+                            aux = var + '.' + str(index)
+                            val = self.memory.get_val(aux)
+                            components.append(str(val))
+                        index = self.get_memory_val(components[1])
+                        helper = components[0] + '.' + str(index)
+
+                        if self.fd.functions[self.scope].variables_dict.get(components[0][2:], None) is None:
+                            var_size = self.fd.functions['global'].variables_dict.get(components[0][2:]).size
+                        else:
+                            var_size = self.fd.functions[self.scope].variablest_dict.get(components[0][2:]).size
+                    else:
+                        res = quad.res.split('.')
+                        var = res[0]
+                        index = self.get_memory_val(res[1])
+                        helper = var + '.' + str(index)
+
+                        if self.fd.functions[self.scope].variables_dict.get(var[2:], None) is None:
+                            var_size = self.fd.functions['global'].variables_dict.get(var[2:]).size
+                        else:
+                            var_size = self.fd.functions[self.scope].variables_dict.get(var[2:]).size
+
+                    self.memory.set_val(helper, temp, var_size)
+                else:
+                    self.memory.set_val(quad.res, temp)
 
             #basic operations +, - , *, /
             elif operation == '+':
@@ -244,7 +274,7 @@ class VirtualMachine():
 
         if op == 'Return':
             self.memory.set_val(self.last_func, valor)
-        elif op == 'Param' or op == '=':
+        elif op == 'Param' or op == '=' or op == 'Read':
             is_param = False
             if op == 'Param':
                 is_param = True

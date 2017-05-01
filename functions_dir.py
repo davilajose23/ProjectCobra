@@ -65,6 +65,8 @@ class FunctionsDir(object):
         Se utiliza una pilla para llamadas nesteadas'''
         self.call_arguments = Stack()
 
+        self.last_read = Stack()
+
     def add_function(self, function_id):
         '''Add function to fuctions directory. Verify if function already exists'''
         if self.functions.get(function_id, None) is not None:
