@@ -1,0 +1,5 @@
+main
+    int a[5]
+    read(a[0])
+    print a[0]
+end_main
