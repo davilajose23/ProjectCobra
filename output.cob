@@ -1,4 +1,5 @@
 (Goto, None, None, 1)
+<<<<<<< HEAD
 (ERA, vgdrawRectangle, , )
 (Param, 160.0, , dtax)
 (Param, 20.0, , dtay)
@@ -686,4 +687,13 @@
 (Param, 'Charmander No.004', , sttext)
 (Param, 20, , itsize)
 (Gosub, vgdrawText, , _)
+=======
+(=, true, , blflag)
+(Print, blflag, \n, )
+(=, 10.5, , dlc)
+(Print, dlc, \n, )
+(+, 8, dlc, dlt1)
+(=, dlt1, , ilb)
+(Print, ilb, \n, )
+>>>>>>> fc117f9906ad77200ea0a894cb6026db02ce61e2
 (END, , , )
