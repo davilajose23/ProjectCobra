@@ -38,11 +38,7 @@ main
     drawRectangle(420.0, 220.0, 440.0, 260.0, 1, 'black', 'black')
     drawRectangle(400.0, 260.0, 420.0, 280.0, 1, 'black', 'black')
     drawRectangle(380.0, 280.0, 400.0, 300.0, 1, 'black', 'black')
-	drawRectangle(260.0, 220.0, 280.0, 240.0, 1, 'black', 'black')
-    drawRectangle(240.0, 240.0, 260.0, 260.0, 1, 'black', 'black')
-    drawRectangle(260.0, 260.0, 300.0, 280.0, 1, 'black', 'black')
-    drawRectangle(180.0, 120.0, 220.0, 180.0, 1, 'black', 'black')
-	drawRectangle(160.0, 40.0, 240.0, 220.0, 1, '#FF931C', '#FF931C')
+    drawRectangle(160.0, 40.0, 240.0, 220.0, 1, '#FF931C', '#FF931C')
     drawRectangle(120.0, 100.0, 160.0, 200.0, 1, '#FF931C', '#FF931C')
     drawRectangle(140.0, 60.0, 160.0, 100.0, 1, '#FF931C', '#FF931C')
     drawRectangle(100.0, 120.0, 120.0, 180.0, 1, '#FF931C', '#FF931C')
@@ -63,6 +59,10 @@ main
     drawRectangle(240.0, 280.0, 280.0, 320.0, 1, '#EEF30C', '#EEF30C')
     drawRectangle(240.0, 260.0, 260.0, 280.0, 1, '#EEF30C', '#EEF30C')
     drawRectangle(220.0, 280.0, 240.0, 300.0, 1, '#EEF30C', '#EEF30C')
+    drawRectangle(260.0, 220.0, 280.0, 240.0, 1, 'black', 'black')
+    drawRectangle(240.0, 240.0, 260.0, 260.0, 1, 'black', 'black')
+    drawRectangle(260.0, 260.0, 300.0, 280.0, 1, 'black', 'black')
+    drawRectangle(180.0, 120.0, 220.0, 180.0, 1, 'black', 'black')
     drawRectangle(180.0, 120.0, 200.0, 140.0, 1, 'white', 'white')
     drawRectangle(180.0, 280.0, 200.0, 300.0, 1, 'white', 'white')
     drawRectangle(280.0, 340.0, 300.0, 360.0, 1, 'white', 'white')
@@ -78,5 +78,3 @@ main
     insertImage(600.0, 400.0, 'pokeball.gif')
     drawText(250.0, 500.0, '#FF0000', 'Charmander No.004', 20)
 endmain
-
-
