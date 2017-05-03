@@ -20,7 +20,7 @@ class Chunk(object):
         self.local_variables_limit = 100
 
         self.temporal_size = 0
-        self.temporal_limit = 100
+        self.temporal_limit = 1000
 
         self.global_variables_size = 0
         self.global_variables_limit = 100

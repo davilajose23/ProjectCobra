@@ -1,0 +1,25 @@
+func void drawH(double x, double y, double size, int times)
+    double startx, starty, endx, endy
+    if times >= 0:
+        if times % 2 == 0:
+            startx = x - size/2
+            starty = y
+            endx = x + size/2
+            endy = y
+        else:
+            startx = x
+            starty = y + size/2
+            endx = x
+            endy = y - size/2
+        end
+        drawLine(startx, starty, endx, endy, 1, 'black')
+        size = size/2
+        times -= 1
+        drawH(startx, starty, size, times)
+        drawH(endx, endy, size, times)
+    end
+end
+
+main
+    drawH(450.0, 350.0, 500.0, 6)
+end_main
