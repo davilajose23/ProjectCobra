@@ -1,7 +1,0 @@
-main
-	int a[5]
-	for i from 0 to 5:
-		read(a[i])
-		print a[i]
-	end
-endmain
