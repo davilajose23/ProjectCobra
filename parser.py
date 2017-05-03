@@ -194,8 +194,14 @@ def p_void_return(p):
     'void_return : block post_void_return'
 
 def p_post_void_return(p):
-    '''post_void_return : END reset_scope required_eol
-                        | RETURN required_eol END reset_scope required_eol'''
+    '''post_void_return : END validate_void_func reset_scope required_eol
+                        | RETURN required_eol END validate_void_func reset_scope required_eol'''
+
+def p_validate_void_func(p):
+    'validate_void_func :'
+    if functions_directory.functions[functions_directory.current_scope].return_type != 'void':
+        msg = 'Reached end of non-void function without return value. Function: '
+        raise ValueError(msg + functions_directory.current_scope)
 
 def p_value_return(p):
     '''value_return : block RETURN cond create_return required_eol END reset_scope required_eol
@@ -203,6 +209,9 @@ def p_value_return(p):
 
 def p_create_return(p):
     'create_return :'
+    if functions_directory.functions[functions_directory.current_scope].return_type == 'void':
+        msg = 'Returning value in void function. Function: '
+        raise ValueError(msg + functions_directory.current_scope)
     val = generator.generate_return()
     functions_directory.functions['global'].variables_dict[functions_directory.current_scope].value = val
 

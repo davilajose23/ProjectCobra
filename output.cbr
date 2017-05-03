@@ -1,7 +1,7 @@
 main
-	bool flags[3]
-	flags[0] = true
-	if flags[0]:
-		print flags[0]
+	int a[5]
+	for i from 0 to 5:
+		read(a[i])
+		print a[i]
 	end
 endmain

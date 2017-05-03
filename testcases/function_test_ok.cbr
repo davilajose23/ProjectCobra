@@ -1,9 +1,6 @@
-double l
-l = 0
-
 func void hola():
 	print 'Hola mundo'
-	return 
+	return 1
 end
 
 func double otro_hola(double x, double b, double c):
