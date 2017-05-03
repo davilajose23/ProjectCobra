@@ -10,4 +10,4 @@ main
         #drawCircle(x,y,radio, grosor, relleno, contorno)
         drawLine(base * i - 2, 200.0, 50.1 * i, 600.0, i, 'yellow')
     end
-end_main
+endmain

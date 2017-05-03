@@ -2,7 +2,7 @@ int a, b, x
 a = 5
 b = 7
 
-func max(a, b)
+func max(a, b):
 	x = 0
 
 	if a < b:
@@ -18,4 +18,4 @@ end
 main
 	x = max(a, b)
 	print x
-end_main
+endmain

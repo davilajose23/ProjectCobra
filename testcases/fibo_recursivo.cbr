@@ -1,4 +1,4 @@
-func int fibo(int x)
+func int fibo(int x):
     int ret
     if x < 2:
         ret = x
@@ -11,8 +11,7 @@ end
 
 main
     int sol
-    read(sol)
+    sol = 8
     sol = fibo(sol)
     print sol
-
-end_main
+endmain

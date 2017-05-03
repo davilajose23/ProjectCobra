@@ -2,11 +2,11 @@ int a
 int b
 int x
 
-func hola()
+func hola():
 	a = 3
 	return 1
 end
 
 main
 	x = hola()
-end_main
+endmain

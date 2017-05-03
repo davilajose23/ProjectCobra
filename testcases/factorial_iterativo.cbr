@@ -1,0 +1,15 @@
+func int fact(int x):
+    int res
+    res = 1
+
+    for i from 1 to x + 1:
+        res = res * i
+    end 
+
+    return res
+end
+
+main
+   print fact(5)
+
+endmain

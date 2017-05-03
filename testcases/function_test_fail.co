@@ -1,6 +1,0 @@
-func otro(x, b, z)
-	a = 4 end
-
-main
-	x = 2
-end_main

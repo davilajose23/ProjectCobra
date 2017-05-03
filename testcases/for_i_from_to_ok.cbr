@@ -1,4 +1,4 @@
-func void print_vals()
+func void print_vals():
 	for i from 0 to 3:
 		print i
 	end
@@ -7,4 +7,4 @@ end
 # Funcion main
 main
 	print_vals()
-end_main
+endmain

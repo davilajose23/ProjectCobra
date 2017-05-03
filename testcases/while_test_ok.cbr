@@ -1,6 +1,6 @@
 int a
 
-func void increment(int n)
+func void increment(int n):
 	while a < n:
 		a += 1
 	end
@@ -12,4 +12,4 @@ main
 	n = 10
 	increment(n)
 	print a
-end_main
+endmain

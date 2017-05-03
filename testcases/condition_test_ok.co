@@ -1,7 +1,7 @@
 int a
 a = 0
 
-func int eval(a)
+func int eval(a):
 	if a >= 0:
 		a -= 1
 	else:
@@ -15,4 +15,4 @@ main
 	if a >= 1:
 		print a, '\n'
 	end
-end_main
+endmain

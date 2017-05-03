@@ -12,4 +12,4 @@ main
 	print c
 	b = 8 + c
 	print b
-end_main
+endmain

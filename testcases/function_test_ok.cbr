@@ -1,25 +1,25 @@
 double l
 l = 0
 
-func void hola()
+func void hola():
 	print 'Hola mundo'
 	return 
 end
 
-func double otro_hola(double x, double b, double c)
+func double otro_hola(double x, double b, double c):
 	x = b + c
 end
 
-func int final(int a, int b)
+func int final(int a, int b):
 	return a + b 
 end
 
-func int hyp(int a, int b, int c)
+func int hyp(int a, int b, int c):
 	c = a - b
 	return c 
 end
 
-func recursivo(int a)
+func recursivo(int a):
 	int x
 	x = a
 	return recursivo(a - 1) 
@@ -29,4 +29,4 @@ main
 	str l
 	l = 'hola'
 	print l
-end_main
+endmain

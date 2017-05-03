@@ -1,4 +1,4 @@
-func void hello(int b)
+func void hello(int b):
     print b
 end
 
@@ -6,4 +6,4 @@ main
     int x[5]
     x[0] = 5
     hello(x[0 * 0 + 0])
-end_main
+endmain

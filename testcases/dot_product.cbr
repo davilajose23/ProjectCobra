@@ -13,4 +13,4 @@ main
     end
 
     print sum
-end_main
+endmain

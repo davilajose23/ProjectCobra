@@ -1,6 +1,6 @@
 int a
 
-func int mas(int a, int b)
+func int mas(int a, int b):
 	
 	return a + b
 end
@@ -19,4 +19,4 @@ main
 	# Prueba llamada nesteada
 	x = mas(mas(a, b+2), b + 2)
 	print x
-end_main
+endmain

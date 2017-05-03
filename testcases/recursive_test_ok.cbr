@@ -1,4 +1,4 @@
-func int sumaRecursiva(int x, int acum)
+func int sumaRecursiva(int x, int acum):
 	int res
 	if x == 0:
 		res = acum
@@ -12,4 +12,4 @@ main
     int x
     x = sumaRecursiva(sumaRecursiva(1 + 1, 0), sumaRecursiva(0,0))
     print x
-end_main
+endmain

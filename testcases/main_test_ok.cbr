@@ -1,4 +1,4 @@
 main
 	int a
 	a = 1 
-end_main
+endmain
