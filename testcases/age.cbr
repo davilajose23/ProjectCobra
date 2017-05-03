@@ -1,8 +1,8 @@
 main
-	int age
-	print "plese enter your age"
-	read(age)
-	print "your age is ", "string"
-	print age
+	int a
+	int b
+	a = 20
+	b = 5
+	print a != b 
 endmain
 

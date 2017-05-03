@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 func int fact(int x)
+=======
+func int fibo(int x):
+>>>>>>> eb492a4f83aeab9a53a2b604eb1b5075d68ac965
     int res
     res = 1
 
@@ -10,5 +14,10 @@ func int fact(int x)
 end
 
 main
+<<<<<<< HEAD
    print fact(5)
+=======
+   print fibo(5)
+
+>>>>>>> eb492a4f83aeab9a53a2b604eb1b5075d68ac965
 endmain

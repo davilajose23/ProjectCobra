@@ -183,8 +183,8 @@ def p_register_function(p):
     generator.add_function(p[-1], functions_directory.last_type)
 
 def p_post_function(p):
-    '''post_function : parameters RIGHT_PARENTHESIS required_eol post_variables func_return
-                          | RIGHT_PARENTHESIS required_eol post_variables func_return'''
+    '''post_function : parameters RIGHT_PARENTHESIS COLON required_eol post_variables func_return
+                          | RIGHT_PARENTHESIS COLON required_eol post_variables func_return'''
     generator.generate_endproc()
 def p_func_return(p):
     '''func_return : void_return
