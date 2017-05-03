@@ -52,19 +52,30 @@ class VirtualMachine():
     '''Clase virtual machine para ejecutar cuadruplos
     Recibe functions directory(fd) como apoyo'''
     def __init__(self, fd):
+        #Lista de cuadruplos
         self.quadruples = []
+        # Program counter
         self.pc = 0
+        # Directorio de funciones
         self.fd = fd
+        # Diccionario auxiliar
         self.temporal = {}
+        # Instancia de memoria
         self.memory = Memory()
+        # Scope del programa
         self.scope = 'main'
+        # Ultima funcion llamada
         self.last_func = None
+        # Stack de contadores pendientes
         self.PCS = Stack()
         self.pibool = False
+        # Bool para saber si se llamaron metodos graficos
         self.called_graphics = False
+        # Instancia de graficas
         self.window = GraphicsConstructor()
 
     def orderParams(self):
+        '''Parsea cuadruplos para mejor ejecucion de llamadas a funciones'''
         aux = Stack()
         pc = 0
         while self.quadruples[pc].op != 'END':
@@ -84,6 +95,7 @@ class VirtualMachine():
                 pc += 1
 
     def readFiles(self):
+        '''Lee output y actualiza lista de cuadruplos'''
         cont = 0
         f = open('output.cob', 'r')
         for line in f:
@@ -139,7 +151,6 @@ class VirtualMachine():
                     raise ValueError('Index out of range')
 
             elif operation == 'Print':
-                #TODO agregar el segundo parametro del print
                 val = self.get_memory_val(quad.left_operand)
                 # obtiene como quiere terminar el print
                 endprint = quad.right_operand

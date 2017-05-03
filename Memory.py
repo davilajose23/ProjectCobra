@@ -1,6 +1,6 @@
 from stack import Stack
 from cube import semantic_cube
-    
+
 class Chunk(object):
     'clase chunk para los pedazos de memoria'
     def __init__(self, name):
@@ -29,17 +29,23 @@ class Chunk(object):
         self.constants_limit = 100
 
     def get_val(self, direccion, param=False):
+        '''Funcion que obtiene el valor guardado en memoria'''
+        # Separa segmento de direccion
         segment = direccion[0]
         direccion = direccion[1:]
+
+        # Verifica si es dimensionada
         is_dim = False
         chunk = None
 
+        # Separa valores para acceder al valor de arreglo
         if '.' in direccion:
             res = direccion.split('.')
             var = res[0]
             index = res[1]
             is_dim = True
 
+        # Accede dependiendo del segmento
         if segment == 'l':
             if is_dim:
                 chunk = self.local_variables.get(var, 'ERROR get_val: 458')
@@ -69,24 +75,29 @@ class Chunk(object):
             else:
                 chunk = self.constants.get(direccion, 'ERROR get_val: 458')
 
+        # Retorna valor
         if not is_dim:
             return chunk
         else:
             return chunk.get(index, 'ERROR get_val: 459')
-        #return chunk.getVal(direccion[1:])
 
     def set_val(self, direccion, val, size=1):
+        '''Funcion que asigna valor a un pedazo de memoria'''
+        # Separa segmento y direccion
         segment = direccion[0]
         direccion = direccion[1:]
         is_dim = False
+        # Separa en caso de que sea dimensionada
         if '.' in direccion:
             res = direccion.split('.')
             var = res[0]
             index = res[1]
             is_dim = True
 
+        # Escoge el segmento
         if segment == 'l':
             if is_dim:
+                # Registra e incrementa tamanio del arreglo a contadores
                 if self.local_variables.get(var, None) is None:
                     self.local_variables[var] = {}
                     self.local_variables_size += size
@@ -100,6 +111,7 @@ class Chunk(object):
 
         elif segment == 't':
             if is_dim:
+                # Registra e incrementa tamanio del arreglo a contadores
                 if self.temporal.top.get(var, None) is None:
                     self.temporal.top[var] = {}
                     self.temporal_size += size
@@ -113,6 +125,7 @@ class Chunk(object):
 
         elif segment == 'g':
             if is_dim:
+                # Registra e incrementa tamanio del arreglo a contadores
                 if self.global_variables.get(var, None) is None:
                     self.global_variables[var] = {}
                     self.global_variables_size += size
@@ -126,6 +139,7 @@ class Chunk(object):
 
         elif segment == 'c':
             if is_dim:
+                # Registra e incrementa tamanio del arreglo a contadores
                 if self.constants.get(var, None) is None:
                     self.constants[var] = {}
                     self.constants_size += size
@@ -161,9 +175,11 @@ class Chunk(object):
             print(k, v)
 
     def Era(self):
+        '''Pushea diccionario al stack de temporales para funciones'''
         self.temporal.push({})
 
     def EndProc(self):
+        '''Elimina stacks y resta de los tamanios'''
         self.temporal_size -= len(self.temporal.top)
         self.temporal.pop()
 
@@ -193,6 +209,7 @@ class Memory(object):
 
     # direccion = TypeSegmentID
     def get_val(self, direccion, param=False):
+        '''Obtiene valor de memoria con chunk'''
         direccion = direccion.rstrip().lstrip()
         tipo = direccion[0]
         chunk = None
@@ -209,6 +226,7 @@ class Memory(object):
         return chunk.get_val(direccion[1:], param)
 
     def set_val(self, direccion, val, size=1):
+        '''Asigna valor de memoria con chunk'''
         tipo = direccion[0].rstrip().lstrip()
         chunk = None
         if tipo == 'i':
@@ -234,12 +252,14 @@ class Memory(object):
         self.booleans.printeame()
 
     def era(self):
+        '''Pushea stacks para funciones'''
         self.integers.Era()
         self.doubles.Era()
         self.strings.Era()
         self.booleans.Era()
 
     def endproc(self):
+        '''Pop de stacks de funciones'''
         self.integers.EndProc()
         self.doubles.EndProc()
         self.strings.EndProc()
