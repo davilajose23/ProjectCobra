@@ -398,24 +398,3 @@ class VirtualMachine():
                 res = left_val or right_val
 
         self.memory.set_val(quad.res, res)
-
-    def assignment(self, quad, where):
-        ''' function that assign a value to a variable'''
-        # get the value to be set
-        left = quad.left_operand
-        # check if the value is a string constant 
-        if left[0] == "\'" or left[0] == "\"":
-            # set value as string constant ignoring " or '
-            valor = left[1:-1]
-        else:
-            # if left is not a string constant try to get from memory
-            valor = self.get_memory_val(left)
-
-        #TODO: check semantic cube and type of assignment
-        if where[0] == "d":
-            valor = float(valor)
-        if where[0] == "i":
-            valor = int(valor)
-
-        # set the value in memory
-        self.memory.set_val(where, valor)

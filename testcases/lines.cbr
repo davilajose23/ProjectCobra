@@ -1,0 +1,29 @@
+main
+    double ax, ay, bx, by, cx, cy, dx, dy
+    int size
+    string color
+    ax = 100.0
+    ay = 100.0
+    bx = 150.0
+    by = 100.0
+    cx = 150.0
+    cy = 200.0
+    dx = 100.0
+    dy = 200.0
+    size = 1
+    color = 'black'
+    for i from 0 to 20:
+        drawLine(ax, ay, bx, by, size, color)
+        ax += 10
+        ay += 10
+        drawLine(bx, by, cx, cy, size, color)
+        bx += 10
+        by += 10
+        drawLine(cx, cy, dx, dy, size, color)
+        cx += 10
+        cy += 10
+        drawLine(dx, dy, ax, ay, size, color)
+        dx += 10
+        dy += 10
+    end
+end_main
