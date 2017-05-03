@@ -105,7 +105,7 @@ class GraphicsConstructor(object):
                 point = Point(x, y)
                 point.setOutline(arguments.get('fill'))
                 point.draw(self.window)
-                cont += 0.001
+                cont += 0.005
 
         elif name == 'vginsertImage':
             a = Point(float(arguments.get('ax')), float(arguments.get('ay')))
