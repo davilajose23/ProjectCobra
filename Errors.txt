@@ -1,39 +1,42 @@
 ''' This file is for Error handling '''
 
 # 1000 Functions
-1001 Function already declared! Function: NAME
-1002 Function not declared! Name: NAME 
+Error 1001: Function already declared! Function: NAME
+Error 1002: Function not declared! Name: NAME 
 
 # 2000 Variables
-2001 Variable already declared! VAR: NAME Type: TYPE
-2002 Variable not declared! VAR: NAME 
+Error 2001: Variable already declared! VAR: NAME Type: TYPE
+Error 2002: Variable not declared! VAR: NAME 
 
 # 3000 Functions
-3001 Missing arguments in function call for function: NAME  Expected arguments: ARGS Got: ARGS
-3002 Too many arguments in function call for function: NAME Expected arguments: ARGS Got: ARGS
-3003 Expected type in function call
+Error 3001: Missing arguments in function call for function: NAME  Expected arguments: ARGS Got: ARGS
+Error 3002: Too many arguments in function call for function: NAME Expected arguments: ARGS Got: ARGS
+Error 3003: Expected type in function call
 
 # 4000 Operations
-4001 Type missmatch TYPE and TYPE for operator: OPERATOR
-4002 Type missmatch. Non bool variables in condition
+Error 4001: Type missmatch TYPE and TYPE for operator: OPERATOR
+Error 4002: Type missmatch. Non bool variables in condition
 
 #5000 Memory
-5001 Error getting Value
-5002 Error setting Value
-5003 Incorrect type of Value. Expected: i(integer), d(double), s(string) or b(boolean). Got TYPE
-5004 Memory limit reached: Local Variables
-5005 Memory limit reached: Global Variables
-5006 Memory limit reached: Temporal Variables
-5007 Memory limit reached: constants
+Error 5001: Error getting Value
+Error 5002: Error setting Value
+Error 5003: Incorrect type of Value. Expected: i(integer), d(double), s(string) or b(boolean). Got TYPE
+Error 5004: Memory limit reached: Local Variables
+Error 5005: Memory limit reached: Global Variables
+Error 5006: Memory limit reached: Temporal Variables
+Error 5007: Memory limit reached: constants
 
 #6000 VirtualMachine
-6001 Quadruple not valid
-6002 Quadruple is Incomplete
-6003 Division by zero
+Error 6001: Quadruple not valid
+Error 6002: Quadruple is Incomplete
+Error 6003: Division by zero
+Error 6004: Invalid Input Type 
+Error 6005: Can't read to bool variable
+Error 6006: Module by zero
 
 #7000 Arrays
-7001 Index expected to be integer. Got: TYPE
-7002 Index out of range
-7003 Variable is not array
-7004 Expected index for array variable
-7005 Array size must be a positive integer
+Error 7001: Index expected to be integer. Got: TYPE
+Error 7002: Index out of range
+Error 7003: Variable is not array
+Error 7004: Expected index for array variable
+Error 7005: Array size must be a positive integer

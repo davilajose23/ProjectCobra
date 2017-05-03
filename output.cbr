@@ -1,8 +1,5 @@
 main
-   int a
-	a = 5
-	while a > 0:
-		print a
-		a -= 1
-	end
+	int a
+	read(a)
+	print a
 endmain

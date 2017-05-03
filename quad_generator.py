@@ -127,7 +127,7 @@ class QuadGenerator(object):
         else:
             left_type = left_operand.get_type()
             right_type = right_operand.get_type()
-            msg = 'Type missmatch ' + left_type + ' and ' + right_type + ' for operator: ' + str(op)
+            msg = 'Error 4001: Type missmatch ' + left_type + ' and ' + right_type + ' for operator: ' + str(op)
             raise TypeError(msg)
 
 
@@ -209,7 +209,7 @@ class QuadGenerator(object):
         '''Funcion para generar cuadruplos de gotoF'''
         last_operand = self.pile_o.pop()
         if last_operand.get_type() != 'bool':
-            raise TypeError('Type missmatch. Non bool variables in condition')
+            raise TypeError('Error 4002: Type missmatch. Non bool variables in condition')
         else:
             quad = Quadruple(self.cont, 'GotoF', last_operand.get_name(), None, None)
             self.quadruples.append(quad)

@@ -186,16 +186,16 @@ class Chunk(object):
     def checkLimits(self):
         '''Funcion para checar los limites del chunk'''
         if self.local_variables_size >= self.local_variables_limit:
-            raise Exception('ERROR 5004 Memory limit reached: Local Variables')
+            raise MemoryError('ERROR 5004: Memory limit reached: Local Variables')
 
         elif self.temporal_size >= self.temporal_limit:
-            raise Exception('ERROR 5005 Memory limit reached: Global Variables')
+            raise MemoryError('ERROR 5005: Memory limit reached: Global Variables')
 
         elif self.global_variables_size >= self.global_variables_limit:
-            raise Exception('ERROR 5006 Memory limit reached: Temporal Variables')
+            raise MemoryError('ERROR 5006: Memory limit reached: Temporal Variables')
 
         elif self.constants_size >= self.constants_limit:
-            raise Exception('ERROR 5007 Memory limit reached: constants')
+            raise MemoryError('ERROR 5007: Memory limit reached: constants')
 
 
 class Memory(object):

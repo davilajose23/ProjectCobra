@@ -148,7 +148,7 @@ class VirtualMachine():
             elif operation == 'Verify':
                 valor = self.get_memory_val(quad.left_operand)
                 if valor < int(quad.right_operand) or valor >= int(quad.res):
-                    raise ValueError('Index out of range')
+                    raise IndexError('Error 7002: Index out of range')
 
             elif operation == 'Print':
                 val = self.get_memory_val(quad.left_operand)
@@ -161,13 +161,8 @@ class VirtualMachine():
                     print(val, end=endprint[1:-1])
 
             elif operation == 'Read':
+                var_type = None
                 temp = raw_input(">>> ")
-                # aqui no lo guardo en constante el valor que entra porque se va a guardar en una variable
-                if temp.isdigit():
-                    temp = int(temp)
-                elif RepresentsDouble(temp):
-                    temp = float(temp)
-                #TODO: checar cubo semantico
                 if '.' in quad.res:
                     if quad.res.count('.') > 1:
                         components = quad.res.split('.')
@@ -182,9 +177,13 @@ class VirtualMachine():
                         helper = components[0] + '.' + str(index)
 
                         if self.fd.functions[self.scope].variables_dict.get(components[0][2:], None) is None:
-                            var_size = self.fd.functions['global'].variables_dict.get(components[0][2:]).size
+                            variable = self.fd.functions['global'].variables_dict.get(components[0][2:])
+                            var_size = variable.size
+                            var_type = variable.type
                         else:
-                            var_size = self.fd.functions[self.scope].variablest_dict.get(components[0][2:]).size
+                            variable = self.fd.functions[self.scope].variablest_dict.get(components[0][2:])
+                            var_size = variable.size
+                            var_type = variable.type
                     else:
                         res = quad.res.split('.')
                         var = res[0]
@@ -192,12 +191,44 @@ class VirtualMachine():
                         helper = var + '.' + str(index)
 
                         if self.fd.functions[self.scope].variables_dict.get(var[2:], None) is None:
-                            var_size = self.fd.functions['global'].variables_dict.get(var[2:]).size
+                            variable = self.fd.functions['global'].variables_dict.get(var[2:])
+                            var_size = variable.size
+                            var_type = variable.type
                         else:
-                            var_size = self.fd.functions[self.scope].variables_dict.get(var[2:]).size
+                            variable = self.fd.functions[self.scope].variables_dict.get(var[2:])
+                            var_size = variable.size
+                            var_type = variable.type
+
+                    if var_type == 'bool':
+                        raise TypeError("Error 6005: Can't read to bool variable")
+                    try:
+                        if var_type == 'int':
+                            temp = int(temp)
+                        elif var_type == 'float':
+                            temp = float(temp)
+                    except Exception:
+                        raise TypeError("Error 6004: Invalid Input Type")
 
                     self.memory.set_val(helper, temp, var_size)
                 else:
+                    # si no es un arreglo se obtiene el var type
+                    if self.fd.functions[self.scope].variables_dict.get(quad.res[2:], None) is None:
+                        variable = self.fd.functions['global'].variables_dict.get(quad.res[2:])
+                        var_type = variable.type
+                    else:
+                        variable = self.fd.functions[self.scope].variables_dict.get(quad.res[2:])
+                        var_type = variable.type
+                    
+                    if var_type == 'bool':
+                        raise TypeError("Error 6005: Can't read to bool variable")
+                    try:
+                        if var_type == 'int':
+                            temp = int(temp)
+                        elif var_type == 'float':
+                            temp = float(temp)
+                    except Exception:
+                        raise TypeError("Error 6004: Invalid Input Type")
+
                     self.memory.set_val(quad.res, temp)
 
             #basic operations +, - , *, /
@@ -209,9 +240,11 @@ class VirtualMachine():
                 self.execute(quad, '*')
             elif operation == '/':
                 if quad.right_operand == "0" or quad.right_operand == "0.0":
-                    raise Exception("Error 6003: Division by zero")
+                    raise ZeroDivisionError("Error 6003: Division by zero")
                 self.execute(quad, '/')
             elif operation == '%' or operation == 'mod':
+                if quad.right_operand == "0" or quad.right_operand == "0.0":
+                    raise ZeroDivisionError("Error 6006: Module by zero")
                 self.execute(quad, '%')
 
             #assignment
@@ -375,9 +408,9 @@ class VirtualMachine():
         right_val = self.get_memory_val(right)
 
         if left_val == 'ERROR get_val: 458':
-            raise ValueError('ERROR get_val: 458')
+            raise MemoryError('Error 5001: Error getting Value')
         elif right_val == 'ERROR get_val: 458':
-            raise ValueError('ERROR get_val: 458')
+            raise MemoryError('Error 5001: Error getting Value')
         else:
             if op == '+':
                 res = left_val + right_val
@@ -387,7 +420,7 @@ class VirtualMachine():
                 res = left_val * right_val
             elif op == '/':
                 if right_val == 0 or right_val == 0.0:
-                    raise Exception("Error 6003: Division by zero")
+                    raise ZeroDivisionError("Error 6003: Division by zero")
                 res = left_val / right_val
             elif op == '%':
                 res = left_val % right_val

@@ -84,14 +84,14 @@ class FunctionsDir(object):
     def add_function(self, function_id):
         '''Add function to fuctions directory. Verify if function already exists'''
         if self.functions.get(function_id, None) is not None:
-            raise NameError('Function already declared! Function: ' + str(function_id))
+            raise NameError('Error: 1001 Function already declared! Function: ' + str(function_id))
         else:
             self.functions[function_id] = Function()
 
     def validate_function(self, function_id):
         '''Validate function exists'''
         if self.functions.get(function_id, None) is None:
-            raise ValueError('Function not declared! Name: ' + str(function_id))
+            raise NameError('Error: 1002 Function not declared! Name: ' + str(function_id))
 
     def increase_expected_arguments(self):
         '''Manda llamar el metodo increase expected arguments de la clase Function'''
@@ -125,8 +125,8 @@ class FunctionsDir(object):
             self.functions[self.scope].variables_dict[variable_id] = Variable(var_name, value, var_type, self.scope, size)
         else:
             variable_type = self.functions[self.scope].variables_dict[variable_id].get_type()
-            msg = 'Variable already declared! VAR: ' + str(variable_id) + '. TYPE: ' + variable_type
-            raise KeyError(msg)
+            msg = 'Error 2001: Variable already declared! ' + str(variable_id) + '. TYPE: ' + variable_type
+            raise NameError(msg)
 
     def add_for_var(self, variable_id, var_type):
         '''Agrega variable al diccionario del current scope, si ya existe sobreescribe valor
@@ -137,8 +137,8 @@ class FunctionsDir(object):
         else:
             variable_type = self.functions[self.scope].variables_dict[variable_id].get_type()
             if variable_type != 'int':
-                msg = 'Variable already declared! VAR: ' + str(variable_id) + '. TYPE: ' + variable_type
-                raise KeyError(msg)
+                msg = 'Error 2001: Variable already declared! ' + str(variable_id) + '. TYPE: ' + variable_type
+                raise NameError(msg)
             else:
                 self.functions[self.scope].variables_dict[variable_id].value = -1
 
@@ -147,7 +147,7 @@ class FunctionsDir(object):
         if self.functions[self.scope].variables_dict.get(variable_id, None) is None:
             # Busca variable en el scope global
             if self.functions['global'].variables_dict.get(variable_id, None) is None:
-                raise ValueError('Variable not declared! VAR: ' + variable_id)
+                raise NameError('Error 2002: Variable not declared! VAR: ' + variable_id)
 
     def start_evaluating(self):
         '''Indica que el directorio de funciones esta evaluando la existencia de variables'''
@@ -190,7 +190,7 @@ class FunctionsDir(object):
     def update_var_size(self, size):
         '''Actualiza el size de una variable en caso de ser dimensionada'''
         if size <= 0:
-            raise ValueError('Array size must be a positive integer')
+            raise ValueError('Error 7005: Array size must be a positive integer')
         else:
             self.functions[self.scope].variables_dict[self.last_id.top].size = size
             self.functions[self.scope].variables_dict[self.last_id.top].is_dim = True
@@ -201,13 +201,13 @@ class FunctionsDir(object):
         if self.functions[self.call_function.top].expected_arguments != self.call_arguments.top:
 
             if self.functions[self.call_function.top].expected_arguments > self.call_arguments.top:
-                msg = 'Missing arguments in function call for function: ' + str(self.call_function)
+                msg = 'Error 3001: Missing arguments in function call for function: ' + str(self.call_function)
             elif self.functions[self.call_function.top].expected_arguments < self.call_arguments.top:
-                msg = 'Too many arguments in function call for function: ' + str(self.call_function)
+                msg = 'Error 3002: Too many arguments in function call for function: ' + str(self.call_function)
             msg += '. Expected arguments: ' + str(self.functions[self.call_function.top].expected_arguments) + '. Got: ' + str(self.call_arguments.top)
             self.call_arguments.pop()
             self.call_function.pop()
-            raise TypeError(msg)
+            raise ValueError(msg)
         else:
             self.call_arguments.pop()
             return self.call_function.pop()
@@ -216,16 +216,16 @@ class FunctionsDir(object):
         '''Funcion que valida que el tipo de argumento que se manda sea del tipo esperado'''
         expected_type = self.functions[self.call_function.top].params[self.call_arguments.top - 1][1]
         if var_type != expected_type:
-            msg = 'Expected type in function call ' + str(self.scope) + ': ' + expected_type
+            msg = 'Error 3003: Expected type in function call ' + str(self.scope) + ': ' + expected_type
             msg += '. Got: ' + var_type
-            raise TypeError(msg)
+            raise ValueError(msg)
         return self.functions[self.call_function.top].params[self.call_arguments.top - 1]
 
     def verify_var_dim(self):
         '''Verifica que el id de una variable sea dimensionada'''
         var = self.get_var(self.last_id.top)
         if not var.is_dim:
-            raise ValueError('Variable is not array')
+            raise ValueError('Error 7003: Variable is not array')
 
     @property
     def current_scope(self):
