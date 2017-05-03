@@ -120,9 +120,6 @@ class VirtualMachine():
         # start reading the file
         self.readFiles()
         self.orderParams()
-        # self.fd.printeame()
-        # for i in self.quadruples:
-        #     print(i.printeame())
         #cycle until read the last quadruple 'END'
         while self.quadruples[self.pc].op != 'END':
 
@@ -147,7 +144,7 @@ class VirtualMachine():
 
             elif operation == 'Param':
 
-                if self.pibool == False:
+                if not self.pibool:
                     # allocate memory for the function that is going to be called
                     self.memory.era()
                     self.pibool = True
