@@ -17,7 +17,7 @@ class Chunk(object):
         self.constants = {}
         # Variables para manejar el limite de memoria
         self.local_variables_size = 0
-        self.local_variables_limit = 100
+        self.local_variables_limit = 1000
 
         self.temporal_size = 0
         self.temporal_limit = 1000
