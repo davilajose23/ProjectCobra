@@ -1,5 +1,7 @@
 main
-	int a
-	read(a)
-	print a
+	bool flags[3]
+	flags[0] = true
+	if flags[0]:
+		print flags[0]
+	end
 endmain

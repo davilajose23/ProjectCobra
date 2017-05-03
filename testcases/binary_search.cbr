@@ -1,0 +1,32 @@
+int list[10]
+
+func bool binary_search(int item):
+    int first, last, mid
+    bool found
+    first = 0
+    last = 9
+    found = false
+    
+    while first <= last and found != true:
+        mid = (first + last) / 2
+        if list[mid] == item:
+            found = true
+        else:
+            if item < list[mid]:
+                last = mid - 1
+            else:
+                first = mid + 1
+            end
+        end
+    end
+
+    return found
+end
+
+main
+    for i from 0 to 10:
+        list[i] = i
+    end
+    print binary_search(2)
+    print binary_search(20)
+endmain
