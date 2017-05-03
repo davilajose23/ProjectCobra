@@ -200,7 +200,7 @@ def p_post_void_return(p):
 def p_validate_void_func(p):
     'validate_void_func :'
     if functions_directory.functions[functions_directory.current_scope].return_type != 'void':
-        msg = 'Reached end of non-void function without return value. Function: '
+        msg = 'Error 3004: Reached end of non-void function without return value. Function: '
         raise ValueError(msg + functions_directory.current_scope)
 
 def p_value_return(p):
@@ -210,7 +210,7 @@ def p_value_return(p):
 def p_create_return(p):
     'create_return :'
     if functions_directory.functions[functions_directory.current_scope].return_type == 'void':
-        msg = 'Returning value in void function. Function: '
+        msg = 'Error 3005: Returning value in void function. Function: '
         raise ValueError(msg + functions_directory.current_scope)
     val = generator.generate_return()
     functions_directory.functions['global'].variables_dict[functions_directory.current_scope].value = val

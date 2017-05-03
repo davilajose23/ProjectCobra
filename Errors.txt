@@ -12,6 +12,8 @@ Error 2002: Variable not declared! VAR: NAME
 Error 3001: Missing arguments in function call for function: NAME  Expected arguments: ARGS Got: ARGS
 Error 3002: Too many arguments in function call for function: NAME Expected arguments: ARGS Got: ARGS
 Error 3003: Expected type in function call
+Error 3004: Reached end of non-void function without return value. Function: FUNCTION
+Error 3005: Returning value in void function. Function: FUNCTION
 
 # 4000 Operations
 Error 4001: Type missmatch TYPE and TYPE for operator: OPERATOR
