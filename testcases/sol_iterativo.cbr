@@ -14,4 +14,4 @@ main
    
     dibujaSol(100.0)
     dibujaPasto()
-end_main
+endmain

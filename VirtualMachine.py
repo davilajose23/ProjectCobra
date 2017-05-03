@@ -223,7 +223,8 @@ class VirtualMachine():
                 self.execute(quad, '>')
             elif operation == '<':
                 self.execute(quad, '<')
-
+            elif operation == '!=':
+                self.execute(quad, '!=')
             # gotos
             elif operation == 'Goto':
                 self.pc = int(self.quadruples[self.pc].res)
@@ -259,7 +260,6 @@ class VirtualMachine():
             self.pc += 1
 
         if self.called_graphics:
-            print("called")
             self.window.display()
 
     def set_memory_val(self, quad, op):
@@ -386,6 +386,8 @@ class VirtualMachine():
                 res = left_val > right_val
             elif op == '==':
                 res = left_val == right_val
+            elif op == '!=':
+                res = left_val != right_val
             elif op == '<=':
                 res = left_val <= right_val
             elif op == '>=':
