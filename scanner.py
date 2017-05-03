@@ -1,7 +1,13 @@
-# ------------------------------------------------------------
-#
-# tokenizer for Project Cobra Language
-# ------------------------------------------------------------
+"""This module is a Simple Scanner using ply
+-----------------------------------------------------------------
+Compilers Design Project
+Tec de Monterrey
+Julio Cesar Aguilar Villanueva  A01152537
+Jose Fernando Davila Orta       A00999281
+-----------------------------------------------------------------
+
+DOCUMENTATION: For complete Documentation see UserManual.pdf"""
+
 import ply.lex as lex
 # List of reserved words in the leanguage
 
@@ -27,39 +33,39 @@ reserved = {
     'mod': 'MOD',
     'func': 'FUNC',
     'main': 'MAIN',
-    'end_main': 'END_MAIN',
+    'endmain': 'END_MAIN',
     'void': 'VOID'
 }
 
 # List of token names.   This is always required
 tokens = [
-   'PLUS',
-   'MINUS',
-   'TIMES',
-   'DIVIDE',
-   'LESS',
-   'GREATER',
-   'EQUALS',
-   'EQUALS_EQUALS',
-   'GREATER_EQUALS',
-   'LESS_EQUALS',
-   'NOT_EQUALS',
-   'PLUS_EQUALS',
-   'MINUS_EQUALS',
-   'TIMES_EQUALS',
-   'DIVIDE_EQUALS',
-   'PERCENTAGE',
-   'LEFT_PARENTHESIS',
-   'RIGHT_PARENTHESIS',
-   'LEFT_BRACKET',
-   'RIGHT_BRACKET',
-   'COMMA',
-   'COLON',
-   'ID',
-   'EOL',
-   'INT_CONSTANT',
-   'DOUBLE_CONSTANT',
-   'STRING_CONSTANT'
+    'PLUS',
+    'MINUS',
+    'TIMES',
+    'DIVIDE',
+    'LESS',
+    'GREATER',
+    'EQUALS',
+    'EQUALS_EQUALS',
+    'GREATER_EQUALS',
+    'LESS_EQUALS',
+    'NOT_EQUALS',
+    'PLUS_EQUALS',
+    'MINUS_EQUALS',
+    'TIMES_EQUALS',
+    'DIVIDE_EQUALS',
+    'PERCENTAGE',
+    'LEFT_PARENTHESIS',
+    'RIGHT_PARENTHESIS',
+    'LEFT_BRACKET',
+    'RIGHT_BRACKET',
+    'COMMA',
+    'COLON',
+    'ID',
+    'EOL',
+    'INT_CONSTANT',
+    'DOUBLE_CONSTANT',
+    'STRING_CONSTANT'
 ] + list(reserved.values())
 
 #Regular expression rules for simple tokens
@@ -89,7 +95,7 @@ t_RIGHT_BRACKET         = r'\]'
 
 def t_ID(t):
     r'[a-zA-Z](_?[a-zA-Z0-9]+)*'
-    t.type = reserved.get(t.value,'ID') # Check for reserved words
+    t.type = reserved.get(t.value, 'ID') # Check for reserved words
     return t
 
 # Define a rule so we can track line numbers
@@ -104,7 +110,7 @@ t_ignore  = ' \t'
 def t_COMMENT(t):
     r'\#.*'
     pass
-    
+
 def t_DOUBLE_CONSTANT(t):
     r'([-]?[0-9]+[.])[0-9]+'
     t.value = float(t.value)

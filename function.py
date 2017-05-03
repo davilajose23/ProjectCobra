@@ -1,4 +1,14 @@
-'''Modulo que define la clase Function usada en el directorio de funciones'''
+"""This Module define a Function Class that is used in the Functions
+Directory.
+-----------------------------------------------------------------
+Compilers Design Project
+Tec de Monterrey
+Julio Cesar Aguilar Villanueva  A01152537
+Jose Fernando Davila Orta       A00999281
+-----------------------------------------------------------------
+
+DOCUMENTATION: For complete Documentation see UserManual.pdf"""
+
 class Function(object):
     '''Function object'''
     def __init__(self):

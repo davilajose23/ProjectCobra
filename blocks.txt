@@ -1,3 +1,8 @@
+'''
+    Deprecated
+
+'''
+
 # Bloque de programa
 https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#zr4s6t
 

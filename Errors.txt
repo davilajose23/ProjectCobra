@@ -29,6 +29,7 @@
 #6000 VirtualMachine
 6001 Quadruple not valid
 6002 Quadruple is Incomplete
+6003 Division by zero
 
 #7000 Arrays
 7001 Index expected to be integer. Got: TYPE

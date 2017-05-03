@@ -82,7 +82,7 @@ class CustomText(tk.Text):
 class EditCont(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
-        self.text = CustomText(self)
+        self.text = CustomText(self, undo=True)
         self.vsb = tk.Scrollbar(self,orient="vertical", command=self.text.yview)
         self.text.configure(yscrollcommand=self.vsb.set, tabs="30")
         self.linenumbers = TextLineNumbers(master=self, width=30)

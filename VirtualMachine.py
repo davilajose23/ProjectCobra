@@ -150,7 +150,7 @@ class VirtualMachine():
                     print(val, end=endprint[1:-1])
 
             elif operation == 'Read':
-                temp = raw_input("")
+                temp = raw_input(">>> ")
                 # aqui no lo guardo en constante el valor que entra porque se va a guardar en una variable
                 if temp.isdigit():
                     temp = int(temp)
@@ -197,6 +197,8 @@ class VirtualMachine():
             elif operation == '*':
                 self.execute(quad, '*')
             elif operation == '/':
+                if quad.right_operand == "0" or quad.right_operand == "0.0":
+                    raise Exception("Error 6003: Division by zero")
                 self.execute(quad, '/')
             elif operation == '%' or operation == 'mod':
                 self.execute(quad, '%')
@@ -257,6 +259,7 @@ class VirtualMachine():
             self.pc += 1
 
         if self.called_graphics:
+            print("called")
             self.window.display()
 
     def set_memory_val(self, quad, op):
@@ -372,6 +375,8 @@ class VirtualMachine():
             elif op == '*':
                 res = left_val * right_val
             elif op == '/':
+                if right_val == 0 or right_val == 0.0:
+                    raise Exception("Error 6003: Division by zero")
                 res = left_val / right_val
             elif op == '%':
                 res = left_val % right_val

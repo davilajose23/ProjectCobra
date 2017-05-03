@@ -3,6 +3,7 @@ int a[10]
 main
 	int b
 	double c
+	double g
 	string s
 	bool flag
 	flag = true
