@@ -1,0 +1,14 @@
+main
+    double x, y
+    drawRectangle(0.0, 0.0, 900.0, 400.0, 1, 'cyan', 'black')
+    drawRectangle(0.0, 400.0, 900.0, 700.0, 1, 'green', 'black')
+    drawRectangle(200.0, 280.0, 250.0, 400.0, 1, 'gray', 'black')
+    drawRectangle(250.0, 300.0, 350.0, 400.0, 1, 'gray', 'black')
+    drawRectangle(350.0, 280.0, 400.0, 400.0, 1, 'gray', 'black')
+    drawTriangle(200.0, 280.0, 250.0, 280.0, 225.0, 230.0, 1, 'red', 'black')
+    drawTriangle(350.0, 280.0, 400.0, 280.0, 375.0, 230.0, 1, 'red', 'black')
+    drawRectangle(280.0, 340.0, 320.0, 400.0, 1, 'brown', 'black')
+    drawOval(800.0, 0.0, 920.0, 100.0, 1, 'yellow', 'black')
+    drawCurve(400.0, 700.0, 280.0, 400.0, 'black')
+    drawCurve(320.0, 400.0, 440.0, 700.0, 'black')
+endmain

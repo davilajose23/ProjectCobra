@@ -86,6 +86,14 @@ class GraphicsConstructor(object):
             bx = b.getX()
             by = b.getY()
 
+            if bx < ax:
+                helper = ax
+                ax = bx
+                bx = helper
+                helper2 = ay
+                ay = by
+                by = helper2
+
             curvx = 400
             curvy = 500
 
