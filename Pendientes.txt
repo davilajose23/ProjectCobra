@@ -1,3 +1,0 @@
-
-- Soportar multiples return
-- breaks en ciclos
