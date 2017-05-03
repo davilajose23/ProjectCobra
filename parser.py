@@ -10,6 +10,8 @@ from quadruple import Quadruple
 from VirtualMachine import VirtualMachine
 from initialize import add_custom_functions
 
+sys.tracebacklimit = 0
+
 functions_directory = add_custom_functions(FunctionsDir())
 # Precedence rules for the arithmetic operators
 precedence = (

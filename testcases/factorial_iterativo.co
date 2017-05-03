@@ -1,4 +1,4 @@
-func int fibo(int x)
+func int fact(int x)
     int res
     res = 1
 
@@ -10,6 +10,5 @@ func int fibo(int x)
 end
 
 main
-   print fibo(5)
-
-end_main
+   print fact(5)
+endmain

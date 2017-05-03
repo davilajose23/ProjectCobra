@@ -1,15 +1,22 @@
 main
-    int a[10], aux
+    int a[10], aux, index
     aux = 10
     for i from 0 to 10:
         a[i] = aux
         aux -= 1
     end
-
+    index = -1
     aux = 3
     for i from 0 to 10:
         if a[i] == aux:
-            print i
+            index = i
         end
     end
-end_main
+
+    if index == -1:
+        print 'Value not found'
+    else:
+        print 'Index'
+        print index
+    end
+endmain

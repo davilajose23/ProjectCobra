@@ -12,4 +12,4 @@ main
     int a
     a = 5
     print fact(a)
-end_main
+endmain

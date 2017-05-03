@@ -14,4 +14,4 @@ main
     int a
     a = fib(11)
     print a
-end_main
+endmain

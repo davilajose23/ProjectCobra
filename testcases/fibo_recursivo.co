@@ -11,7 +11,7 @@ end
 
 main
     int sol
-    sol = 10
+    sol = 8
     sol = fibo(sol)
     print sol
 endmain

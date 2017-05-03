@@ -8,4 +8,4 @@ main
     end
     a[b[0]] = 50
     print a[b[0]]
-end_main
+endmain
