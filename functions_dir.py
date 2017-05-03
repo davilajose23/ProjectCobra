@@ -42,15 +42,12 @@ def get_var_name(var_type, scope, var_name):
 
 class FunctionsDir(object):
     '''Las funciones son entradas en el diccionario functions.
-        A cada funcion le corresponde de valor una lista.
 
-        Esta lista contiene otro diccionario para varibales,
-        y un return type, y cantidad de args
+        Las funciones son objetos con diccionarios de variables.
 
-        Scope global del programa se inicia con diccionario
-        de variables globales vacio.
+        Scope global del programa se inicia con una funcion global
+        sin variables.
 
-        No se tiene un return type para el scope global.
         Scope es el function_id de cada funcion.'''
 
     def __init__(self):

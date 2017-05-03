@@ -224,6 +224,7 @@ class QuadGenerator(object):
         self.cont += 1
 
     def generate_func_assign(self, func_name, func_type, value):
+        '''Funcion que asigna variablo global de funcion a temporal'''
         res_type = get_var_type(func_type)
         curr_scope = get_var_scope(self.scope)
         temp_name = res_type + curr_scope + 't' + str(self.temporal_id)
@@ -236,6 +237,7 @@ class QuadGenerator(object):
         self.cont += 1
 
     def generate_return(self):
+        '''Genera cuadruplo de retorno'''
         var = self.pile_o.pop()
         if var.get_name() == 'constat':
             name = var.get_value()
@@ -247,6 +249,7 @@ class QuadGenerator(object):
         return var.get_value()
 
     def generate_verify(self):
+        '''Crea cuadruplo de verificacion'''
         var = self.pdim.top[1]
         tmp = self.pile_o.pop()
 
