@@ -16,9 +16,9 @@ def add_custom_functions(fd):
     # Agrega como parametros de la funcion
     fd.update_function_params('x', 'double')
     fd.update_function_params('y', 'double')
-    fd.update_function_params('color', 'string')
     fd.update_function_params('text', 'string')
     fd.update_function_params('size', 'int')
+    fd.update_function_params('color', 'string')
     fd.functions['drawText'].expected_arguments = 5
     fd.set_return_type('void')
 

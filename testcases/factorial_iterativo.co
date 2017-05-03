@@ -1,4 +1,4 @@
-func int fibo(int x)
+func int fibo(int x):
     int res
     res = 1
 
@@ -12,4 +12,4 @@ end
 main
    print fibo(5)
 
-end_main
+endmain
