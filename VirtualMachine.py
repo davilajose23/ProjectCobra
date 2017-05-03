@@ -1,3 +1,12 @@
+"""This module is a Simple Scanner using ply
+-----------------------------------------------------------------
+Compilers Design Project
+Tec de Monterrey
+Julio Cesar Aguilar Villanueva  A01152537
+Jose Fernando Davila Orta       A00999281
+-----------------------------------------------------------------
+
+DOCUMENTATION: For complete Documentation see UserManual.pdf"""
 from __future__ import print_function
 from quad_generator import QuadGenerator
 from variable import Variable
@@ -162,8 +171,11 @@ class VirtualMachine():
 
             elif operation == 'Read':
                 var_type = None
+                # se realiza el input en formato raw
                 temp = raw_input(">>> ")
+                # verifica si va a guardar en una variable dimensionada
                 if '.' in quad.res:
+                    # parsea para variable dimensionada
                     if quad.res.count('.') > 1:
                         components = quad.res.split('.')
                         while len(components) > 2:
@@ -176,6 +188,8 @@ class VirtualMachine():
                         index = self.get_memory_val(components[1])
                         helper = components[0] + '.' + str(index)
 
+                        # se obtiene el size y type de la variable a la que se va a guardar ya sea
+                        # en el scope global o alguno local
                         if self.fd.functions[self.scope].variables_dict.get(components[0][2:], None) is None:
                             variable = self.fd.functions['global'].variables_dict.get(components[0][2:])
                             var_size = variable.size
@@ -185,10 +199,14 @@ class VirtualMachine():
                             var_size = variable.size
                             var_type = variable.type
                     else:
+                        # cuando estan varias variables dimensionadas anidadas
                         res = quad.res.split('.')
                         var = res[0]
                         index = self.get_memory_val(res[1])
                         helper = var + '.' + str(index)
+
+                        # se obtiene el size y type de la variable a la que se va a guardar ya sea
+                        # en el scope global o alguno local
 
                         if self.fd.functions[self.scope].variables_dict.get(var[2:], None) is None:
                             variable = self.fd.functions['global'].variables_dict.get(var[2:])
@@ -199,9 +217,11 @@ class VirtualMachine():
                             var_size = variable.size
                             var_type = variable.type
 
+                    # si la variable a la que se va a guardar es de tipo booleano se manda llamar un error
                     if var_type == 'bool':
                         raise TypeError("Error 6005: Can't read to bool variable")
                     try:
+                        # se intenta castear el valor del usuario al tipo de la variable en donde se va a guardar
                         if var_type == 'int':
                             temp = int(temp)
                         elif var_type == 'float':
@@ -218,10 +238,11 @@ class VirtualMachine():
                     else:
                         variable = self.fd.functions[self.scope].variables_dict.get(quad.res[2:])
                         var_type = variable.type
-                    
+                    # si la variable a la que se va a guardar es de tipo booleano se manda llamar un error
                     if var_type == 'bool':
                         raise TypeError("Error 6005: Can't read to bool variable")
                     try:
+                        # se intenta castear el valor del usuario al tipo de la variable en donde se va a guardar
                         if var_type == 'int':
                             temp = int(temp)
                         elif var_type == 'float':
@@ -239,17 +260,18 @@ class VirtualMachine():
             elif operation == '*':
                 self.execute(quad, '*')
             elif operation == '/':
+                # muestra un error cuando se intenta hacer una division entre 0
                 if quad.right_operand == "0" or quad.right_operand == "0.0":
                     raise ZeroDivisionError("Error 6003: Division by zero")
                 self.execute(quad, '/')
             elif operation == '%' or operation == 'mod':
+                # muestra error cuando se intenta hacer un modulo 0
                 if quad.right_operand == "0" or quad.right_operand == "0.0":
                     raise ZeroDivisionError("Error 6006: Module by zero")
                 self.execute(quad, '%')
 
             #assignment
             elif operation == '=':
-                #TODO: parsear a int en caso de assignacion y checar cubo semantico
                 self.set_memory_val(quad, '=')
 
             #logic operations
@@ -288,6 +310,7 @@ class VirtualMachine():
                     continue
             elif operation == 'Gosub':
                 self.pibool = False
+                # si el gosub es a una funcion especial
                 if quad.left_operand in custom_functions:
                     self.called_graphics = True
                     params_dict = self.memory.doubles.temporal.top.copy()
@@ -313,7 +336,7 @@ class VirtualMachine():
         else:
             valor = self.get_memory_val(left)
         res = quad.res
-
+        # se intenta castear a float o a int dependiendo de la variable donde se va a guardar
         if res[0] == "d":
             valor = float(valor)
         if res[0] == "i":
@@ -325,6 +348,7 @@ class VirtualMachine():
             is_param = False
             if op == 'Param':
                 is_param = True
+            # parsea si es una variable dimensionada
             if '.' in quad.res:
                 if quad.res.count('.') > 1:
                     components = quad.res.split('.')
@@ -338,6 +362,7 @@ class VirtualMachine():
                     index = self.get_memory_val(components[1], is_param)
                     helper = components[0] + '.' + str(index)
 
+                    # obtiene el size de la variable
                     if self.fd.functions[self.scope].variables_dict.get(components[0][2:], None) is None:
                         var_size = self.fd.functions['global'].variables_dict.get(components[0][2:]).size
                     else:
@@ -347,7 +372,7 @@ class VirtualMachine():
                     var = res[0]
                     index = self.get_memory_val(res[1], is_param)
                     helper = var + '.' + str(index)
-
+                    # obtiene el size de la variable
                     if self.fd.functions[self.scope].variables_dict.get(var[2:], None) is None:
                         var_size = self.fd.functions['global'].variables_dict.get(var[2:]).size
                     else:
@@ -358,7 +383,7 @@ class VirtualMachine():
                 self.memory.set_val(quad.res, valor)
 
     def get_memory_val(self, base, param=False):
-        # TODO: verificar de mejor manera cuando es int o float, un float puede ser int y viceversa
+        # intenta obtener valores de constantes
         if RepresentsInt(base):
             if self.memory.integers.constants.get(base, None) is None:
                 self.memory.integers.constants[base] = int(base)
@@ -381,6 +406,7 @@ class VirtualMachine():
             valor = self.memory.booleans.constants[base]
         # si no es constante se busca el valor en la memoria
         else:
+            # parsea cuando una variable es dimensionada
             if '.' in base:
                 if base.count('.') > 1:
                     components = base.split('.')
@@ -398,6 +424,7 @@ class VirtualMachine():
                     var = res[0]
                     index = self.get_memory_val(res[1], param)
                     base = var + '.' + str(index)
+            # trae el valor desde memoria
             valor = self.memory.get_val(base, param)
         return valor
 

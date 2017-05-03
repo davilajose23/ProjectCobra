@@ -178,6 +178,7 @@ class IDE(object):
     
     # shortcuts
         self.root.bind_all("<Control-s>", self.save)
+        self.root.bind_all("<Control-r>", self.runCode)
 
         helpmenu = tk.Menu(menu)
         menu.add_cascade(label="Help", menu=helpmenu)
@@ -237,11 +238,11 @@ class IDE(object):
         This time the dialog just returns a filename and the file is opened by your own code.
         """
         # open file on your own
-        print self.filename
+        #print self.filename
         if self.filename:
             archivo = open(self.filename, 'w')
             archivo.write(self.editContainer.getText())
-            print(self.editContainer.getText())
+            # print(self.editContainer.getText())
             archivo.close()
         else:
             self.save_as()
@@ -271,7 +272,7 @@ class IDE(object):
             self.root.destroy()
             self.root.quit()
 
-    def runCode(self):
+    def runCode(self, event=None):
 
     # Guarda el codigo en un archivo y lo ejecuta
         nombre = "output.cbr"
